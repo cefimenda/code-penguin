@@ -1,5 +1,5 @@
 # Code Penguin
-A developer community dedicate to requesting, creating and trading solutions to coding conundrums.
+A developer community dedicated to requesting, creating and trading solutions to coding conundrums.
 
 ## Why Penguins?
 Penguins are renowned in the animal kingdom for their generosity and we wanted our community to incorporate that pay-it-forward spirit. Penguins famously find the prettiest pebbles they can to give to others. Technically, their goal is to mate, but let's not stretch the metaphor too far.
