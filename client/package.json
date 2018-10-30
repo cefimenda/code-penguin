@@ -23,8 +23,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "semantic-ui": "^2.4.2"
-  }
+  ]
 }
