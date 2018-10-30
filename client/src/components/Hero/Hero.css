@@ -1,0 +1,37 @@
+/* HERO IMAGE */
+#hero {
+	height: 817px;
+	position: fixed;
+	width: 100%;
+    padding-top: 0;
+    z-index: -2;
+    opacity: .7;
+}
+
+.heightblock {
+    height: 817px;
+}
+
+.hero-inner {
+	background-color: rgba(32, 32, 32, 0.788);
+	text-align: "center";
+	position: absolute;
+	border-radius: 5px;
+	top: 25%;
+	left: 15%;
+	padding: 30px;
+	line-height: 24px;
+	letter-spacing: 2px;
+	font-size: 18px;
+	color: #fff;
+}
+
+@media (max-width:1024px) {
+	#hero {
+		position: relative;
+	}
+
+	.heightblock {
+		display: none
+	}
+}
