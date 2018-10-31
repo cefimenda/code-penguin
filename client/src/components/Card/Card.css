@@ -1,0 +1,40 @@
+.marketcard {
+  position: relative;
+  width: 90px;
+  height: 300px;
+  color: #aaa;
+  float: left;
+}
+
+.marg {
+  margin: 0 90px;
+}
+
+.front-card {
+  position: absolute;
+  border-radius: 5px;
+  outline: 1px solid #aaa;
+  outline-offset: -8px;
+  background-color: #212f33;
+  transform: perspective(600px) rotateY( -20deg);
+  padding: 15px;
+  width: 200px;
+  height: 300px;
+  backface-visibility: hidden;
+  transition: all 300ms ease-in-out;
+  writing-mode: vertical-rl; 
+}
+
+.fixed-para-length {
+  height: 180px;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.isactive {
+  color: #fff;
+  writing-mode: horizontal-tb; 
+  transform: perspective(600px) rotateY( 0deg);
+  transform: scale(1.2,1.2);
+  z-index: 99 !important;
+}

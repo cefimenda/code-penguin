@@ -3,24 +3,18 @@ import Profinfo from "./Profileinfo";
 import './HoverBox.css';
 
 export default class HoverBox extends Component {
-    state = {
-        side: "",
-        shadow: ""
-    }
-    componentDidMount() {
-        // control shadow box
-        this.setState({ side: this.props.side });
-        if (this.props.side === "right") {
-            this.setState({ shadow: "10px" })
-        } else {
-            this.setState({ shadow: "-10px" })
-        }
-    }
-
-
     render() {
+        let side = this.props.side
+        let shadow = ""
+
+        if (this.props.side === "right") {
+             shadow = "10px" 
+        } else {
+             shadow = "-10px" 
+        }
+
         return (
-            <div className="fixed-box" style={{ [this.state.side] : "8%", boxShadow: `${this.state.shadow} 10px 8px #00000091`}}>
+            <div className="fixed-box" style={{ [side] : "8%", boxShadow: `${shadow} 10px 8px #00000091`}}>
                 {this.props.prof ? <Profinfo prof={this.props.prof} menu= {this.props.children}/> : this.props.children}
             </div>
         )
