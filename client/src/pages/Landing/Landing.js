@@ -3,44 +3,27 @@ import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import Container from "../../components/Container";
 import Snipit from "../../components/Snipit";
-import HoverBox from "../../components/HoverBox";
-import { Image, Button } from 'semantic-ui-react';
+import HoverBox from "../../components/HoverBox/HoverBox";
+import Landinginfo from "../../components/HoverBox/Landinginfo";
 import './Landing.css';
 
 export default class App extends Component {
-  state = {
-    Hero: "https://images.unsplash.com/photo-1536242918817-db5e93c7a0e4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5b334adee965d8d086cb0ad8bc445ce4&auto=format&fit=crop&w=1950&q=80",
-    focus: "right"
-  }
     ////////////////////////////////////////////////////////
     // TODO: Need to figure out to to log in with Github ///
     // IDEA: https://www.npmjs.com/package/passport-github /
     // For now it is to get to marketplace and portfolio ///
     ////////////////////////////////////////////////////////
-    handlebtn = event => {
-        const { name } = event.target
-        if (name === "Signup") {
-            window.location.pathname = "/profile"
-        } else if (name === "Login"){
-            window.location.pathname = "/marketplace"
-        }
-    }
   
     render() {
+        const focus = "right"
         return (
         <React.Fragment>
             <Navbar landing="true" />
-            <Hero heroimg={this.state.Hero} />
-            <HoverBox side={this.state.focus}> 
-                <h1 className="github-h1">Login with Github</h1>
-                <Image src="https://magentys.io/wp-content/uploads/2017/04/github-logo-1.png" size="small" centered />
-                <Button.Group fluid>
-                    <Button name="Signup" onClick={this.handlebtn}>Sign Up</Button>
-                    <Button.Or />
-                    <Button name="Login" onClick={this.handlebtn} color='teal'>Login</Button>
-                </Button.Group>
+            <Hero heroimg="https://images.unsplash.com/photo-1536242918817-db5e93c7a0e4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5b334adee965d8d086cb0ad8bc445ce4&auto=format&fit=crop&w=1950&q=80" />
+            <HoverBox side={focus}> 
+                <Landinginfo />
             </HoverBox>
-            <Container padding={this.state.focus} bgcolor="rgb(32,32,32)">
+            <Container padding={focus} bgcolor="rgb(32,32,32)">
                 <Snipit width="100%" textSide="left">
                     <h3>Why Penguins?</h3>
                     <p>

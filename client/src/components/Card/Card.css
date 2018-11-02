@@ -1,0 +1,110 @@
+.marketcard {
+  position: relative;
+  width: 13%;
+  height: 300px;
+  color: #aaa;
+  float: left;
+}
+
+.marg {
+  margin: 0 60px;
+}
+
+.front-card {
+  position: absolute;
+  transform: perspective(600px) rotateY( -20deg);
+  backface-visibility: hidden;
+  transition: all 300ms ease-in-out;
+  writing-mode: vertical-rl; 
+  width: 200px;
+  height: 300px;
+  border-radius: 5px;
+  outline: 1px solid #aaa;
+  outline-offset: -8px;
+  background-color: #212f33;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.isactive {
+  color: #fff;
+  writing-mode: horizontal-tb; 
+  transform: perspective(600px) rotateY( 0deg);
+  transform: scale(1.2,1.2);
+  z-index: 99 !important;
+}
+
+.back-card {
+  opacity: 0;
+  position: absolute;
+  transform: perspective(600px) rotateY( -90deg);
+  backface-visibility: hidden;
+  transition: all 300ms ease-in-out;
+  width: 200px;
+  height: 300px;
+  border-radius: 5px;
+  outline: 1px solid #aaa;
+  outline-offset: -8px;
+  background-color: #212f33;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.backactive {
+  opacity: 1;
+  writing-mode: horizontal-tb; 
+  transform: perspective(600px) rotateY( -180deg);
+  transform: scale(1.2,1.2);
+  z-index: 99 !important;
+  color: #fff;
+}
+
+.fixed-para-length {
+  height: 232px;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.card-tags {
+  font-size: 13px;
+}
+
+.card-creator {
+  position: absolute;
+  bottom: 28px;
+  font-size: 10px;
+  width: 170px;
+  overflow: hidden;
+}
+
+.time-stamp {
+  position: absolute;
+  bottom: 15px;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+.choose-card-btn {
+  background-color: #212f33;
+  border: none;
+  color: #fff;
+}
+
+.choose-card-btn:hover {
+  text-shadow: 0 0 15px #aaa;
+}
+
+.flip-card-btn{
+  background-color: #212f33;
+  border: none;
+  color: #fff;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 5px 10px;
+  transition: all 300ms ease-in-out;
+}
+
+.flip-card-btn:hover{
+  text-shadow: 0 0 15px #aaa;
+}
