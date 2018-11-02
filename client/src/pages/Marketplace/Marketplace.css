@@ -1,6 +1,28 @@
 .cardholder {
-    margin-top: 20%;
+    margin-top: 15%;
     width: 100%;
-    margin-left: -10px;
+    height: 360px;
     padding: 10px;
+}
+
+.pagination-div {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    padding: 10px;
+}
+
+.pagination-div li {
+    margin-right: 15px;
+    color: #fff;
+    user-select: none;
+    cursor: pointer;
+    padding: 8px 15px;
+    border: 1px solid #467f8f;
+}
+
+.pagination-div li:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    border: 1px solid #fff;
 }

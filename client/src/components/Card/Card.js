@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
 import './Card.css'
 
 export default class Card extends Component {
+    state= {
+        cardflip: true
+    }
+
+    handleflip = () => {
+        if(this.state.cardflip) {
+            this.setState({cardflip: false})
+        } else {
+            this.setState({cardflip: true})
+        }
+    }
 
     render() {
         const {id, activeCard} = this.props
@@ -10,11 +20,18 @@ export default class Card extends Component {
         activeCard === id ? chosen = true : chosen = false
         return(
             <React.Fragment>
-                <div className={chosen ? 'marg marketcard' : 'marketcard'} style={{ zIndex: `${chosen ? "99" : this.props.zIndex}` }}>
-                    <div id={id} className={chosen ? 'isactive front-card' : 'front-card'} onClick={this.props.click}>
-                        <h4 id={id} >Description of issue</h4>
-                        {chosen ? <p id={id} className="fixed-para-length">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>: ""}
-                        {chosen ? <Button content='More' icon='right arrow' labelPosition='right' color='black' compact fluid /> : ""}
+                <div className={chosen ? `marg marketcard` : 'marketcard'} style={{ zIndex: `${chosen ? "99" : this.props.zIndex}` }}>
+                    <div className={chosen ? `backactive front-card` : 'front-card'} style={{transform: `${this.state.cardflip && chosen ? "perspective(600px) rotateY( 0deg)" : ""}`}}>
+                        {chosen ? <p id={id} className="fixed-para-length">{this.props.info.details}</p>: ""}
+                        <button className="choose-card-btn" >Choose</button>
+                        <button className="flip-card-btn" onClick={this.handleflip}><i className="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div id={id} className={chosen ? `isactive front-card` : 'front-card'} onClick={this.props.click} style={{transform: `${chosen ? this.state.cardflip ? "" : "perspective(600px) rotateY( -180deg)" : ""}`}}>
+                        <h3 id={id} >{this.props.info.title}</h3>
+                        {chosen ? <p className="card-tags"><strong><u>TAGS</u></strong>: {this.props.info.tags.join(", ")}</p> : ""}
+                        {chosen ? <p className="card-creator">-- {this.props.info.creator}</p> : ""}
+                        {chosen ? <p className="time-stamp">{this.props.info.time}</p> : ""}
+                        {chosen ? <button className="flip-card-btn" onClick={this.handleflip}><i className="fas fa-arrow-right"></i></button> : ""}
                     </div>
                 </div>
             </React.Fragment>
