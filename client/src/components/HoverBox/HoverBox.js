@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Profinfo from "./Profileinfo";
 import './HoverBox.css';
 
 export default class HoverBox extends Component {
@@ -15,7 +14,7 @@ export default class HoverBox extends Component {
 
         return (
             <div className="fixed-box" style={{ [side] : "7%", boxShadow: `${shadow} 10px 8px #00000091`}}>
-                {this.props.prof ? <Profinfo prof={this.props.prof} menu={this.props.children} profclass={this.props.profclass}/> : this.props.children}
+                {this.props.children}
             </div>
         )
     }

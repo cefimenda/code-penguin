@@ -3,21 +3,21 @@ import Navbar from "../../components/Navbar";
 import Container from "../../components/Container";
 import HoverBox from "../../components/HoverBox/HoverBox";
 import Profinfo from "../../components/HoverBox/Profileinfo";
-import './Profile.css';
+import './Choose.css';
 
-export default class Profile extends Component {
+export default class Choose extends Component {
     render() {
         const focus = "left"
 
         return (
             <React.Fragment>
-                <Navbar page="Profile" />
+                <Navbar />
                 <HoverBox side={focus}>
                     <Profinfo prof={this.props.profseed}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="div-404">
-                        <h1>Profile</h1>
+                        <h1>Chosen</h1>
                     </div>
                 </Container>
             </React.Fragment>

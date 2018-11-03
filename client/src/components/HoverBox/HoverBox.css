@@ -11,7 +11,13 @@
 	text-align: center;
 }
 
-.prof-info {
+
+
+/* ////////////////////////////////////////////// */
+/* Portfolio and Marketplace top img and name css */
+/* ////////////////////////////////////////////// */
+.prof-info,
+.mark-info {
 	padding: 5px 30px;
 }
 
@@ -20,11 +26,13 @@
 	line-height: 8px;
 }
 
-.prof-info a {
+.prof-info a,
+.mark-info a {
 	color: #fff;
 }
 
-.prof-info a:hover {
+.prof-info a:hover,
+.mark-info a:hover {
 	letter-spacing: 1px;
 	color: #fff;
 	text-decoration: underline;
@@ -34,7 +42,24 @@
 	margin-bottom: 20px;
 }
 
-.ui.secondary.pointing.menu {
+.ui.verysmall{
+	width: 60px;
+	height: auto;
+}
+
+.mark-p {
+	margin-top: 12px;
+}
+
+.mark-info p {
+	line-height: 8px;
+}
+
+
+/* /////////////////////////////////// */
+/* Force adjustments to Portfolio Menu */
+/* /////////////////////////////////// */
+.ui.secondary.menu {
 	margin-top: 40px;
 }
 
@@ -42,7 +67,7 @@
 	color: #fff !important;
 }
 
-.ui.secondary.pointing.menu .item {
+.ui.secondary.menu .item {
 	color: #aaa !important;
 }
 
@@ -56,6 +81,70 @@
 
 .ui.secondary.vertical.pointing.menu .item {
 	border-color: #444 !important;
+}
+
+
+
+/* ///////////////////////////////////// */
+/* Force adjustments to Marketplace Menu */
+/* ///////////////////////////////////// */
+.ui.vertical.secondary.menu .item:not(.dropdown)>.menu {
+	margin: 2px 2px;
+	cursor: pointer;
+}
+
+.mini-menu p:hover {
+	cursor: pointer;
+}
+
+.inner-item input {
+	padding: 5px;
+	margin-top: 5px;
+	border: none;
+	background-color: #444;
+	color: #fff;
+}
+
+.inner-item {
+	display: none;
+}
+
+.inner-item.active {
+	display: block;
+}
+
+.sort-div {
+	padding: 5px;
+	margin-top: 5px;
+	margin-left: 10px;
+}
+
+.clear-btn {
+	border: none;
+	font-size: 20px;
+	background-color: transparent;
+	color: #aaa;
+	position: absolute;
+	bottom: 30px;
+	left: 30px;
+	cursor: pointer;
+}
+
+.filtersort-btn {
+	border: none;
+	font-size: 20px;
+	background-color: transparent;
+	color: #aaa;
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	cursor: pointer;
+}
+
+.filtersort-btn:hover,
+.clear-btn:hover {
+	color: #fff;
+	border-bottom: 2px solid #fff;
 }
 
 @media (max-width: 720px) {

@@ -15,7 +15,7 @@ export default class HoverBox extends Component {
             <div className="prof-info">
                 <Image src={this.props.prof.img} size="small" centered circular />
                 <p>{this.props.prof.name}</p>
-                <p><a href={this.props.prof.url} target="_blank" rel="noopener noreferrer" >{this.props.prof.url}</a></p>
+                <p><a href={this.props.prof.url} target="_blank" rel="noopener noreferrer" >{this.props.prof.user}</a></p>
                 <Menu pointing secondary vertical>
                         <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
                         <Menu.Item name='solved' active={activeItem === 'solved'} onClick={this.handleItemClick} />
