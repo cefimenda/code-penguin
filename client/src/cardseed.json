@@ -1,86 +1,98 @@
 [
     {
+        "id": 0,
         "creator": "Katherine He",
         "title": "Need a quick landing page created for a bakery",
         "details" : "The website needs to be a light a fluffy theme, there ase some images of the store at www.yelp.com, need a home page, a ordering page and a food display page. If you choose to acccept please contact me at (555) 555 - 5555 for more details",
         "tags": ["HTML", "CSS", "Javascript", "Time sensitive", "Project"],
-        "time": "2018-01-11 12:40PM"
+        "time": "2018-01-11"
     },
     {
+        "id": 1,
         "creator": "Sandy Yeung",
         "title": "Large Team project to build an AI with Javascript and Phython",
         "details" : "Looking for a coder that can assist with a large teme project. We are tryignt o build an AI taht can tell the future witht he data from people's social media. Please submit some ideas of how you yould go about this project and your contact info, if it aline wiht our ideas we will contact you. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["Javascript", "Phython", "Project", "Looking to Hire", "Robotics Learining", "AI creation", "BrainJS", "TenserFlow", "fill in space tag", "fill in space tag", "fill in space tag", "fill in space tag", "fill in space tag"],
-        "time": "2018-25-01 10:02AM"
+        "time": "2018-01-25"
     },
     {
+        "id": 2,
         "creator": "Cefi Menda",
         "title": "Holochain Assistance",
         "details" : "Project on holochain",
         "tags": ["Holochain"],
-        "time": "2016-01-01 08:16PM"
+        "time": "2016-01-01"
     },
     {
+        "id": 3,
         "creator": "Evan Ross",
         "title": "Creating a Mobile app with React-Native",
         "details" : "contact me at email@email.com",
         "tags": ["React-Native", "JS"],
-        "time": "2018-01-11 02:03AM"
+        "time": "2018-01-11"
     },
     {
+        "id": 4,
         "creator": "Fillerspace Person with long name that I need to test out",
         "title": "Random info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 06:30PM"
+        "time": "2018-03-13"
     },
     {
+        "id": 5,
         "creator": "Filler Person",
         "title": "Randon info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 05:00PM"
+        "time": "2018-05-20"
     },
     {
+        "id": 6,
         "creator": "Filler Person",
         "title": "Random title info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 01:23AM"
+        "time": "2016-12-25"
     },
     {
+        "id": 7,
         "creator": "Katherine He",
         "title": "Basic Portfolio Page",
         "details" : "Need detail, detail, detail and detail on my portfolio",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 02:10PM"
+        "time": "2018-08-08"
     },
     {
+        "id": 8,
         "creator": "Sandy Yeung",
         "title": "UI / UX Help",
         "details" : "Assistance on UI/ UX project",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 11:48AM"
+        "time": "2017-12-01"
     },
     {
+        "id": 9,
         "creator": "Cefi Menda",
         "title": "Cellphone Holochain project",
         "details" : "Random text random text, info on holochain project. contact info adding more stuff",
         "tags": ["Holochain", "Mobile app"],
-        "time": "2018-01-11 09:00PM"
+        "time": "2018-02-02"
     },
     {
+        "id": 10,
         "creator": "John Doe",
         "title": "Recipe app for new ressturant",
         "details" : "Quick simple HTML project",
         "tags": ["JS", "HTML", "CSS"],
-        "time": "2018-01-11 12:38AM"
+        "time": "2018-09-16"
     },
     {
+        "id": 11,
         "creator": "Jane Doe",
         "title": "Github assistance",
         "details" : "need help with error on Git hub",
         "tags": ["Github"],
-        "time": "2018-01-11 01:00PM"
+        "time": "2018-11-24"
     }
 ]
