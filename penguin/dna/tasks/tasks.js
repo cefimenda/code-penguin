@@ -26,12 +26,30 @@ function getCreator(hash) {
   return get(hash, { GetMask: HC.GetMask.Sources })[0];
 }
 
+/**
+ * Returns an object, plus a timestamp.
+ * 
+ * @param {object} object The object that needs a timestamp added.
+ * @return {object} The object, plus a timestamp.
+ */
+function addTimestamp(object) {
+  object.timestamp = Date.now();
+  return object;
+}
+
 /*******************************************************************************
  * CRUD functions
  ******************************************************************************/
 
-// TASKS
-function taskCreate(task) {
+/*********************************************
+ * TASKS
+ * {
+ *    title: (title of the task)
+ *    description: (description of the task)
+ * }
+ ********************************************/
+function createTask(task) {
+  task = addTimestamp(task);
   console.log(JSON.stringify(task))
   var hash = commit('task', task);
   console.log(hash)
@@ -39,7 +57,7 @@ function taskCreate(task) {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
   console.log("tasksLink: " + tasksLink)
-  var mytasksLink = commit('task_link', {
+  var myTasksLink = commit('task_link', {
     Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "tasks" }]
   });
   return hash;
@@ -77,7 +95,73 @@ function deleteTask(hash) {
   return true
 }
 
-// Transactions
+/*********************************************
+ * TASKS
+ * {
+ *    origin: (origin of the funds)
+ *    destination: (destination of the funds)
+ *    pebbles: (amount of pebbles to be transfered)
+ * }
+ ********************************************/
+function createTransaction(transaction) {
+  transaction = addTimestamp(transaction);
+  console.log(JSON.stringify(transaction))
+  var hash = commit('transaction', transaction);
+  console.log(hash)
+  var withdrawalsLink = commit('transaction_link', {
+    Links: [{ Base: transaction.origin, Link: hash, Tag: "withdrawals" }]
+  });
+  console.log("withdrawals: " + withdrawalsLink)
+  var depositsLink = commit('transaction_link', {
+    Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
+  });
+  console.log("depositions: " + depositsLink)
+  return hash;
+}
+
+function readTransaction(hash) {
+  var transaction = get(hash);
+  return transaction;
+}
+
+function readTransactions(hash){
+  var deposits = getLinks(hash, "deposits", { Load: true });
+  console.log("deposits: " + deposits);
+  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
+  console.log("withdrawals: " + withdrawals);
+  return { 
+    deposits: deposits,
+    withdrawals: withdrawals
+  }
+}
+
+function readWithdrawals(hash) {
+  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
+  console.log("withdrawals: " + withdrawals);
+  return { withdrawals: withdrawals };
+}
+
+function readDeposits(hash) {
+  var deposits = getLinks(hash, "deposits", { Load: true });
+  console.log("deposits: " + deposits);
+  return { deposits: deposits };
+}
+
+function tabulate(hash) {
+  var deposits = getLinks(hash, "deposits", { Load: true });
+  console.log("deposits: " + deposits);
+  var totalDeposits = 0;
+  deposits.forEach(function(deposit){
+    totalDeposits += deposit.Entry.pebbles;
+  });
+  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
+  console.log("withdrawals: " + withdrawals);
+  var totalWithdrawals = 0;
+  withdrawals.forEach(function(withdrawal){
+    totalWithdrawals += withdrawal.Entry.pebbles;
+  });
+  return totalDeposits - totalWithdrawals;
+}
 
 // Solutions
 

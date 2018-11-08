@@ -97,12 +97,37 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "reward",
+                    "Name": "createTransaction",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readTransaction",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readWithdrawals",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readDeposits",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
                     "Name": "tabulate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "reward",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

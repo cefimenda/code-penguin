@@ -1,6 +1,6 @@
 
 
-post("/fn/task/allTasksRead", {}, function (response) {
+post("/fn/tasks/allTasksRead", {}, function (response) {
     console.log(response)
 })
 
