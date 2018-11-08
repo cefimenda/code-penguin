@@ -33,6 +33,45 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
+                },
+                {
+                    "Name": "transaction",
+                    "DataFormat": "json",
+                    "Schema": "",
+                    "SchemaFile": "transaction.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "transaction_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "solution",
+                    "DataFormat": "json",
+                    "Schema": "",
+                    "SchemaFile": "solution.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "solution_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "comment",
+                    "DataFormat": "json",
+                    "Schema": "",
+                    "SchemaFile": "comment.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "comment_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
                 }
             ],
             "Functions": [
@@ -58,6 +97,16 @@
                 },
                 {
                     "Name": "taskDelete",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "reward",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "tabulate",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

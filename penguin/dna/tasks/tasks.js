@@ -61,8 +61,6 @@ function myTasksRead() {
 
 function taskDelete(hash) {
   console.log(hash)
-  hash = JSON.stringify(hash)
-  console.log(hash)
   //remove the task entry
   remove(hash);
   //mark the task link on the DNA as deleted

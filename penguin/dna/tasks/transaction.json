@@ -1,0 +1,24 @@
+{
+    "title": "transaction Schema",
+    "type": "object",
+    "properties": {
+        "origin": {
+            "type": "string"
+        },
+        "destination": {
+            "type": "string"
+        },
+        "pebbles": {
+            "type": "integer"
+        },
+        "timestamp": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "origin",
+        "destination",
+        "pebbles",
+        "timestamp"
+    ]
+}
