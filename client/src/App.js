@@ -4,9 +4,11 @@ import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Marketplace from "./pages/Marketplace";
 import Choose from "./pages/Choose";
+import Solution from "./pages/Solution"
 import NoMatch from "./pages/NoMatch";
 import Profseed from "./profseed.json"
 import Cardseed from "./cardseed.json"
+import Solutionseed from "./solutionSeed.json"
 import './App.css';
 
 export default class App extends Component {
@@ -18,6 +20,7 @@ export default class App extends Component {
                     <Route path="/profile" render={() => <Profile profseed={Profseed} />} />
                     <Route path="/marketplace" render={() => <Marketplace profseed={Profseed} cardseed={Cardseed}/>} />
                     <Route path="/choose/:id" render={() => <Choose profseed={Profseed} cardseed={Cardseed}/>} />
+                    <Route path="/solution" render={() => <Solution solutionseed={Solutionseed} />} />
                     <Route component={NoMatch} />
                 </Switch>
             </Router>
