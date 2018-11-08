@@ -19,7 +19,7 @@ export default class HoverBox extends Component {
                 <Menu pointing secondary vertical>
                         <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
                         <Menu.Item name='solved' active={activeItem === 'solved'} onClick={this.handleItemClick} />
-                        <Menu.Item name='setting' active={activeItem === 'setting'} onClick={this.handleItemClick} />
+                        {/* <Menu.Item name='setting' active={activeItem === 'setting'} onClick={this.handleItemClick} /> */}
                 </Menu>
             </div>
         )
