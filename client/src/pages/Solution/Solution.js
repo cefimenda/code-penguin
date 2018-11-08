@@ -6,13 +6,13 @@ import './Solution.css';
 
 export default class Solution extends Component {
   render() {
-    const focus = 'left';
+    const focus = 'center';
 
     return (
       <React.Fragment>
-        <Navbar page="Profile" />
+        <Navbar page="Solution" />
         <SolveBox side={focus}>
-          <SolveBox prof={this.props.solutionseed} />
+          <SolveBox prof={this.props.solutionSeed} />
         </SolveBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <div className="div-404">

@@ -9,15 +9,15 @@ import './Marketplace.css';
 export default class Marketplace extends Component {
     state = {
         activeCard: "card-id-0",
-        datalist: this.props.cardseed,
+        datalist: this.props.cardSeed,
         currentPage: 1,
         perPage: 5
     }
 
     // Filter Functions
     filtercreator = name => {
-        const { cardseed } = this.props
-        const newArray = cardseed.filter(cardinfo => cardinfo.creator.includes(name));
+        const { cardSeed } = this.props
+        const newArray = cardSeed.filter(cardinfo => cardinfo.creator.includes(name));
         this.setState({ datalist: newArray })
     }
 
@@ -26,8 +26,8 @@ export default class Marketplace extends Component {
         const startDate = new Date(date.start.replace(/-/g, '/'))
         const endDate = new Date(date.end.replace(/-/g, '/'))
 
-        const { cardseed } = this.props
-        const newArray = cardseed.filter(cardinfo => {
+        const { cardSeed } = this.props
+        const newArray = cardSeed.filter(cardinfo => {
             let cdate = new Date(cardinfo.time)
             return cdate >= startDate && cdate <= endDate;
         });
@@ -35,13 +35,13 @@ export default class Marketplace extends Component {
     }
 
     filtertag = tag => {
-        const { cardseed } = this.props
-        const newArray = cardseed.filter(cardinfo => cardinfo.tags.includes(tag));
+        const { cardSeed } = this.props
+        const newArray = cardSeed.filter(cardinfo => cardinfo.tags.includes(tag));
         this.setState({ datalist: newArray })
     }
 
     clearfilter = () => {
-        this.setState({datalist: this.props.cardseed})
+        this.setState({datalist: this.props.cardSeed})
     }
 
 
@@ -120,7 +120,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <MarketInfo prof={this.props.profseed} filtercreator={this.filtercreator} filterdate={this.filterdate} filtertag={this.filtertag} clearfilter={this.clearfilter} sortdate={this.sortdate} sorttitle={this.sorttitle}/>
+                    <MarketInfo prof={this.props.profSeed} filtercreator={this.filtercreator} filterdate={this.filterdate} filtertag={this.filtertag} clearfilter={this.clearfilter} sortdate={this.sortdate} sorttitle={this.sorttitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="cardholder">
