@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import Container from "../../components/Container";
-import Snipit from "../../components/Snipit";
+import Snippet from "../../components/Snippet";
 import HoverBox from "../../components/HoverBox/HoverBox";
-import Landinginfo from "../../components/HoverBox/Landinginfo";
+import LandingInfo from "../../components/HoverBox/LandingInfo";
 import './Landing.css';
 
 export default class App extends Component {
@@ -12,7 +12,7 @@ export default class App extends Component {
     // TODO: Need to figure out to to log in with Github ///
     // IDEA: https://www.npmjs.com/package/passport-github /
     // For now it is to get to marketplace and portfolio ///
-    ////////////////////////////////////////////////////////
+    //////////////////////////////a//////////////////////////
   
     render() {
         const focus = "right"
@@ -21,28 +21,28 @@ export default class App extends Component {
             <Navbar landing="true" />
             <Hero heroimg="https://images.unsplash.com/photo-1536242918817-db5e93c7a0e4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5b334adee965d8d086cb0ad8bc445ce4&auto=format&fit=crop&w=1950&q=80" />
             <HoverBox side={focus}> 
-                <Landinginfo />
+                <LandingInfo />
             </HoverBox>
             <Container padding={focus} bgcolor="rgb(32,32,32)">
-                <Snipit width="100%" textSide="left">
+                <Snippet width="100%" textSide="left">
                     <h3>Why Penguins?</h3>
                     <p>
                         Penguins are renowned in the animal kingdom for their generosity and we wanted our community to incorporate 
                         that pay-it-forward spirit. Penguins famously find the prettiest pebbles they can to give to others. Technically, 
                         their goal is to mate, but let's not stretch the metaphor too far.
                     </p>
-                </Snipit>
+                </Snippet>
 
-                <Snipit width="100%" textSide="right" simg="https://i.gifer.com/4m3b.gif" sizing="small">
+                <Snippet width="100%" textSide="right" simg="https://i.gifer.com/4m3b.gif" sizing="small">
                     <h3>What are Pebbles?</h3>
                     <p>
                         The "currency" of Code Penguin is the pebble. Pebbles are earned by submitting solutions to others' problems. Pebbles 
                         are spent to "buy" solutions for problems of your own. Pebbles are powered by blockchain technology, but they aren't 
                         a cryptocurrency. They cannot be mined or traded for other currencies. They can only be traded for solutions to problems.
                     </p>
-                </Snipit>
+                </Snippet>
 
-                <Snipit width="100%" textSide="left" simg="https://techflourish.com/images/clear-background-pumpkin-spice-latte-clipart-8.png" sizing="medium">
+                <Snippet width="100%" textSide="left" simg="https://techflourish.com/images/clear-background-pumpkin-spice-latte-clipart-8.png" sizing="medium">
                     <h3>Problems</h3>
                     <p>
                         Problems penguins pose range from simple tasks to full-fledged projects. The key to a good Code Penguin problem is that it be 
@@ -62,9 +62,9 @@ export default class App extends Component {
                         If you find an open problem that has yet to find a satisfactory solution, you can work on solving it yourself to get some pebbles, or 
                         you can throw down some pebbles of your own and become a backer, adding to the value of that problem for any would-be solver.
                     </p>
-                </Snipit>
+                </Snippet>
 
-                <Snipit width="100%" textSide="right" sizing="small">
+                <Snippet width="100%" textSide="right" sizing="small">
                     <h3>Solutions</h3>
                     <p>
                         Solutions are rated by the user who originally posed the problem. Solutions are given a zero if they simply do not get the job done. Other solutions 
@@ -72,7 +72,7 @@ export default class App extends Component {
                         on their solution, 70% of the prize goes to them, and the remaining 30% is left waiting for someone else to come in to put the finishing touches on. 
                         If the problem is closed without a 100% solution, the remainder is divvied up among all active users of the platform.
                     </p>
-                </Snipit>
+                </Snippet>
             </Container>
             <Container bgcolor="#111">
                 <p>&copy; 2018 By Coding Penguins</p>

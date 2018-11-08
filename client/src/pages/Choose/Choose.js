@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navbar from "../../components/Navbar";
 import Container from "../../components/Container";
 import HoverBox from "../../components/HoverBox/HoverBox";
-import Profinfo from "../../components/HoverBox/Profileinfo";
+import ProfileInfo from "../../components/HoverBox/ProfileInfo";
 import './Choose.css';
 
 export default class Choose extends Component {
@@ -13,7 +13,7 @@ export default class Choose extends Component {
             <React.Fragment>
                 <Navbar />
                 <HoverBox side={focus}>
-                    <Profinfo prof={this.props.profseed}/>
+                    <ProfileInfo prof={this.props.profseed}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="div-404">

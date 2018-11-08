@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navbar from "../../components/Navbar";
 import Container from "../../components/Container";
 import HoverBox from "../../components/HoverBox/HoverBox";
-import Markinfo from "../../components/HoverBox/Marketinfo";
+import MarketInfo from "../../components/HoverBox/MarketInfo";
 import Card from '../../components/Card'
 import './Marketplace.css';
 
@@ -120,7 +120,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <Markinfo prof={this.props.profseed} filtercreator={this.filtercreator} filterdate={this.filterdate} filtertag={this.filtertag} clearfilter={this.clearfilter} sortdate={this.sortdate} sorttitle={this.sorttitle}/>
+                    <MarketInfo prof={this.props.profseed} filtercreator={this.filtercreator} filterdate={this.filterdate} filtertag={this.filtertag} clearfilter={this.clearfilter} sortdate={this.sortdate} sorttitle={this.sorttitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="cardholder">
