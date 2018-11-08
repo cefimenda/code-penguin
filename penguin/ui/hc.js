@@ -1,9 +1,9 @@
-$(function () {
 
-    post("/fn/task/allTasksRead", {}, function (response) {
-        console.log(response)
-    })
+
+post("/fn/task/allTasksRead", {}, function (response) {
+    console.log(response)
 })
+
 this.sampleTask = {
     "title": "title",
     "description": "some stuff here",
