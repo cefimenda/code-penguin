@@ -6,8 +6,8 @@ import Marketplace from "./pages/Marketplace";
 import Choose from "./pages/Choose";
 import Solution from "./pages/Solution"
 import NoMatch from "./pages/NoMatch";
-import Profseed from "./profseed.json"
-import Cardseed from "./cardseed.json"
+import Profseed from "./profSeed.json"
+import Cardseed from "./cardSeed.json"
 import Solutionseed from "./solutionSeed.json"
 import './App.css';
 
@@ -17,10 +17,10 @@ export default class App extends Component {
             <Router>
                 <Switch>
                     <Route exact path="/" component={Landing} />
-                    <Route path="/profile" render={() => <Profile profseed={Profseed} />} />
-                    <Route path="/marketplace" render={() => <Marketplace profseed={Profseed} cardseed={Cardseed}/>} />
-                    <Route path="/choose/:id" render={() => <Choose profseed={Profseed} cardseed={Cardseed}/>} />
-                    <Route path="/solution" render={() => <Solution solutionseed={Solutionseed} />} />
+                    <Route path="/profile" render={() => <Profile profSeed={Profseed} />} />
+                    <Route path="/marketplace" render={() => <Marketplace profSeed={Profseed} cardSeed={Cardseed}/>} />
+                    <Route path="/choose/:id" render={() => <Choose profSeed={Profseed} cardSeed={Cardseed}/>} />
+                    <Route path="/solution" render={() => <Solution solutionSeed={Solutionseed} />} />
                     <Route component={NoMatch} />
                 </Switch>
             </Router>

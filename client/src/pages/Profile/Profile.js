@@ -13,7 +13,7 @@ export default class Profile extends Component {
             <React.Fragment>
                 <Navbar page="Profile" />
                 <HoverBox side={focus}>
-                    <ProfileInfo prof={this.props.profseed}/>
+                    <ProfileInfo prof={this.props.profSeed}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="div-404">
