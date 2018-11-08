@@ -72,27 +72,27 @@
             ],
             "Functions": [
                 {
-                    "Name": "taskCreate",
+                    "Name": "createTask",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "taskRead",
+                    "Name": "readTask",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "allTasksRead",
+                    "Name": "readAllTasks",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "myTasksRead",
+                    "Name": "readMyTasks",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "taskDelete",
+                    "Name": "DeleteTask",
                     "CallingType": "json",
                     "Exposure": "public"
                 },

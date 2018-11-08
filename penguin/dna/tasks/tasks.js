@@ -30,6 +30,7 @@ function getCreator(hash) {
  * CRUD functions
  ******************************************************************************/
 
+// TASKS
 function taskCreate(task) {
   console.log(JSON.stringify(task))
   var hash = commit('task', task);
@@ -44,23 +45,23 @@ function taskCreate(task) {
   return hash;
 }
 
-function taskRead(hash) {
+function readTask(hash) {
   var task = get(hash);
   return task;
 }
 
-function allTasksRead() {
+function readAllTasks() {
   var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
   console.log("links: " + links)
   return { links: links };
 }
 
-function myTasksRead() {
+function readMyTasks() {
   var links = getLinks(App.Agent.Hash, "tasks", { Load: true });
   return { links: links };
 }
 
-function taskDelete(hash) {
+function deleteTask(hash) {
   console.log(hash)
   //remove the task entry
   remove(hash);
@@ -75,6 +76,12 @@ function taskDelete(hash) {
   })
   return true
 }
+
+// Transactions
+
+// Solutions
+
+// Comments
 
 /*******************************************************************************
  * Required callbacks
