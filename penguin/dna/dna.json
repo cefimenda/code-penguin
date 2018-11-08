@@ -7,21 +7,16 @@
         "language": "en"
     },
     "PropertiesSchemaFile": "properties_schema.json",
-    "BasedOn": "",
     "RequiresVersion": 26,
     "DHTConfig": {
         "HashType": "sha2-256",
         "RedundancyFactor": 0
     },
-    "Progenitor": {
-        "Identity": "",
-        "PubKey": null
-    },
     "Zomes": [
         {
-            "Name": "task",
+            "Name": "tasks",
             "Description": "provide a sample zome",
-            "CodeFile": "task.js",
+            "CodeFile": "tasks.js",
             "RibosomeType": "js",
             "BridgeFuncs": null,
             "Config": null,

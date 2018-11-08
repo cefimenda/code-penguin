@@ -60,6 +60,9 @@ function myTasksRead() {
 }
 
 function taskDelete(hash) {
+  console.log(hash)
+  hash = JSON.stringify(hash)
+  console.log(hash)
   //remove the task entry
   remove(hash);
   //mark the task link on the DNA as deleted
@@ -172,6 +175,10 @@ function validateDel(entryType, hash, pkg, sources) {
   return isValidEntryType(entryType)
     // Only allow the creator of the entity to delete it.
     && getCreator(hash) === sources[0];
+}
+
+function validateLink() {
+  return true;
 }
 
 /**
