@@ -1,0 +1,55 @@
+{
+    "Version": 1,
+    "UUID": "36842d32-e13e-11e8-89b6-448a5b45da0c",
+    "Name": "HoloWorld",
+    "Properties": {
+        "description": "helps Evan and Cefi learn Holochain",
+        "language": "en"
+    },
+    "PropertiesSchemaFile": "properties_schema.json",
+    "RequiresVersion": 26,
+    "DHTConfig": {
+        "HashType": "sha2-256",
+        "RedundancyFactor": 0
+    },
+    "Zomes": [
+        {
+            "Name": "readerWriter",
+            "Description": "read and write data",
+            "CodeFile": "readerWriter.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "holoText",
+                    "DataFormat": "string",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "text_links",
+                    "Required": true,
+                    "DataFormat": "links",
+                    "Sharing": "public"
+                  }
+            ],
+            "Functions": [
+                {
+                    "Name": "holoTextWrite",
+                    "CallingType": "string",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "holoTextRead",
+                    "CallingType": "string",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "allTextsRead",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        }
+    ]
+}

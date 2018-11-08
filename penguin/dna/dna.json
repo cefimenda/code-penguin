@@ -1,0 +1,72 @@
+{
+    "Version": 1,
+    "UUID": "53dd3b28-e221-11e8-a641-4a000212a150",
+    "Name": "penguin",
+    "Properties": {
+        "description": "provides an application template",
+        "language": "en"
+    },
+    "PropertiesSchemaFile": "properties_schema.json",
+    "BasedOn": "",
+    "RequiresVersion": 26,
+    "DHTConfig": {
+        "HashType": "sha2-256",
+        "RedundancyFactor": 0
+    },
+    "Progenitor": {
+        "Identity": "",
+        "PubKey": null
+    },
+    "Zomes": [
+        {
+            "Name": "task",
+            "Description": "provide a sample zome",
+            "CodeFile": "task.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "task",
+                    "DataFormat": "json",
+                    "Schema": "",
+                    "SchemaFile": "task.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "task_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
+                    "Name": "taskCreate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "taskRead",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "allTasksRead",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "myTasksRead",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "taskDelete",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        }
+    ]
+}

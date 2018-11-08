@@ -1,0 +1,20 @@
+{
+	"title": "task Schema",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string"
+		},
+		"description": {
+			"type": "string"
+		},
+		"timestamp": {
+			"type": "integer"
+		}
+	},
+	"required": [
+		"title",
+		"description",
+		"timestamp"
+	]
+}
