@@ -46,20 +46,32 @@ function addTimestamp(object) {
  * {
  *    title: (title of the task)
  *    description: (description of the task)
+ *    pebbles (how many pebbles the creator throws down initially)
  * }
  ********************************************/
 function createTask(task) {
+  console.log("CREATED BY AGENT: " + App.Agent.Hash);
+  var pebbles = task.pebbles;
+  delete task.pebbles;
   task = addTimestamp(task);
   console.log(JSON.stringify(task))
   var hash = commit('task', task);
-  console.log(hash)
+  console.log(hash);
+
+  var transactionHash = backTask({
+    task: hash,
+    pebbles: pebbles
+  }, App.Agent.Hash);
+  console.log("transaction hash: " + transactionHash);
+
   var tasksLink = commit('task_link', {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
-  console.log("tasksLink: " + tasksLink)
+  console.log("tasksLink: " + tasksLink);
   var myTasksLink = commit('task_link', {
     Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "tasks" }]
   });
+  console.log("myTasksLink: " + myTasksLink);
   return hash;
 }
 
@@ -95,6 +107,28 @@ function deleteTask(hash) {
   return true
 }
 
+/**
+ * 
+ * @param {object} back Object representing the pledge to back a task
+ * {
+ *    task: (hash of task to back)
+ *    pebbles: (amount of pebbles to be transfered)
+ * }
+ */
+function backTask(back, backer) {
+  if(!backer) {
+    backer = App.Agent.Hash;
+  }
+  console.log("BACKED BY AGENT " + backer);
+  var task = back.task;
+  var pebbles = back.pebbles;
+  return createTransaction({
+    origin: backer,
+    destination: task,
+    pebbles: pebbles
+  });
+}
+
 /*********************************************
  * TASKS
  * {
@@ -115,7 +149,7 @@ function createTransaction(transaction) {
   var depositsLink = commit('transaction_link', {
     Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
   });
-  console.log("depositions: " + depositsLink)
+  console.log("deposits: " + depositsLink)
   return hash;
 }
 
@@ -165,7 +199,64 @@ function tabulate(hash) {
 
 // Solutions
 
-// Comments
+/*********************************************
+ * SOLUTIONS
+ * {
+ *    task: (hash of the task it is a solution for)
+ *    link: (github link or similar)
+ *    text: (text to include if code is short or as a N.B. about the link)
+ * }
+ ********************************************/
+function createSolution(solution) {
+  solution = addTimestamp(solution);
+  console.log(JSON.stringify(solution))
+  var hash = commit('solution', solution);
+  console.log(hash)
+  var taskSolutionLink = commit('solution_link', {
+    Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
+  });
+  console.log("taskSolutionLink: " + taskSolutionLink)
+  var authorSolutionLink = commit('solution_link', {
+    Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "solutions" }]
+  });
+  console.log("agentSolutionLink: " + authorSolutionLink)
+  return hash;
+}
+
+function readSolution(hash) {
+  var solution = get(hash);
+  return solution;
+}
+
+function readSolutions(hash){
+  var solutions = getLinks(hash, "solutions", { Load: true });
+  console.log("solutions: " + solutions);
+  return { solutions: solutions };
+}
+
+/**
+ * 
+ * @param {string} hash Hash of the solution to be rewarded
+ */
+function reward(hash) {
+  var solution = get(hash);
+  var solutionTask = solution.task;
+  var solutionAuthor = getCreator(hash);
+  var pebbles = tabulate(solutionTask);
+  return createTransaction({
+    origin: solutionTask,
+    destination: solutionAuthor,
+    pebbles: pebbles
+  });
+}
+
+/*********************************************
+ * COMMENTS
+ * {
+ *    page: (hash of the page to comment on -- task or agent or maybe even DNA for like a testimonials page??)
+ *    text: (text of the comment)
+ * }
+ ********************************************/
 
 /*******************************************************************************
  * Required callbacks

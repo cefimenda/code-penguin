@@ -92,7 +92,12 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "DeleteTask",
+                    "Name": "deleteTask",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "backTask",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
@@ -123,6 +128,21 @@
                 },
                 {
                     "Name": "tabulate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createSolution",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readSolution",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readSolutions",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
