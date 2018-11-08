@@ -1,13 +1,13 @@
 
 
-post("/fn/task/allTasksRead", {}, function (response) {
+post("/fn/tasks/readAllTasks", {}, function (response) {
     console.log(response)
 })
 
 this.sampleTask = {
     "title": "title",
     "description": "some stuff here",
-    "timestamp": 123123
+    "pebbles": 50
 }
 function post(address, payload, callback) {
     var xhr = new XMLHttpRequest()
