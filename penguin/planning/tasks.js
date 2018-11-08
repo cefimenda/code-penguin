@@ -12,8 +12,7 @@ function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
   console.log(entryType)
-  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link"]
-  return (entryTypes.indexOf(entryType) > -1);
+  return (["task", "task_link"].indexOf(entryType) > -1);
 }
 
 /**
@@ -30,7 +29,6 @@ function getCreator(hash) {
  * CRUD functions
  ******************************************************************************/
 
-// TASKS
 function taskCreate(task) {
   console.log(JSON.stringify(task))
   var hash = commit('task', task);
@@ -39,29 +37,29 @@ function taskCreate(task) {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
   console.log("tasksLink: " + tasksLink)
-  var mytasksLink = commit('task_link', {
-    Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "tasks" }]
-  });
+  // var mytasksLink = commit('task_link', {
+  //   Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "tasks" }]
+  // });
   return hash;
 }
 
-function readTask(hash) {
+function taskRead(hash) {
   var task = get(hash);
   return task;
 }
 
-function readAllTasks() {
+function allTasksRead() {
   var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
   console.log("links: " + links)
   return { links: links };
 }
 
-function readMyTasks() {
+function myTasksRead() {
   var links = getLinks(App.Agent.Hash, "tasks", { Load: true });
   return { links: links };
 }
 
-function deleteTask(hash) {
+function taskDelete(hash) {
   console.log(hash)
   //remove the task entry
   remove(hash);
@@ -76,12 +74,6 @@ function deleteTask(hash) {
   })
   return true
 }
-
-// Transactions
-
-// Solutions
-
-// Comments
 
 /*******************************************************************************
  * Required callbacks
