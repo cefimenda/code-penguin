@@ -10,22 +10,19 @@ export default class TaskBox extends Component {
           <Grid>
             <Grid.Row>
               <Grid.Column width={16}>
-                <p>
-                  Number of people in the bus There is a bus moving in the city, and it takes and
-                  drop some people in each bus stop.
+                <p style={{textAlign:"center"}}>
+                  Given an Array and an Example-Array to sort to, write a function that sorts the
+                  Array following the Example-Array. Assume Example Array catalogs all elements
+                  possibly seen in the input Array. 
                   <br />
-                  You are provided with a list (or array) of integer arrays (or tuples). Each
-                  integer array has two items which represent number of people get into bus (The
-                  first item) and number of people get off the bus (The second item) in a bus stop.
+                  However, the input Array does not necessarily
+                  have to have all elements seen in the Example.
                   <br />
-                  Your task is to return number of people who are still in the bus after the last
-                  bus station (after the last array). Even though it is the last bus stop, the bus
-                  is not empty and some people are still in the bus, and they are probably sleeping
-                  there :D Take a look on the test cases.
+                  Example: Arr: [1,3,4,4,4,4,5]
                   <br />
-                  Please keep in mind that the test cases ensure that the number of people in the
-                  bus is always >= 0. So the return integer can't be negative. The second value in
-                  the first integer array is 0, since the bus is empty in the first bus stop.
+                  Example Arr: [4,1,2,3,5]
+                  <br />
+                  Result: [4,4,4,4,1,3,5]
                 </p>
               </Grid.Column>
             </Grid.Row>
