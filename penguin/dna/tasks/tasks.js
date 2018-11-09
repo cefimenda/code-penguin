@@ -43,6 +43,7 @@ function addTimestamp(object) {
 
 /*********************************************
  * TASKS
+ * (the task object that we receive from the UI should look like the following)
  * {
  *    title: (title of the task)
  *    description: (description of the task)
@@ -50,7 +51,7 @@ function addTimestamp(object) {
  * }
  ********************************************/
 function createTask(task) {
-  console.log("CREATED BY AGENT: " + App.Agent.Hash);
+  console.log("CREATED BY AGENT: " + App.Key.Hash);
   var pebbles = task.pebbles;
   delete task.pebbles;
   task = addTimestamp(task);
@@ -61,7 +62,7 @@ function createTask(task) {
   var transactionHash = backTask({
     task: hash,
     pebbles: pebbles
-  }, App.Agent.Hash);
+  }, App.Key.Hash);
   console.log("transaction hash: " + transactionHash);
 
   var tasksLink = commit('task_link', {
@@ -69,7 +70,7 @@ function createTask(task) {
   });
   console.log("tasksLink: " + tasksLink);
   var myTasksLink = commit('task_link', {
-    Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "tasks" }]
+    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
   });
   console.log("myTasksLink: " + myTasksLink);
   return hash;
@@ -87,14 +88,14 @@ function readAllTasks() {
 }
 
 function readMyTasks() {
-  var links = getLinks(App.Agent.Hash, "tasks", { Load: true });
+  var links = getLinks(App.Key.Hash, "tasks", { Load: true });
   return { links: links };
 }
 
 function deleteTask(hash) {
   console.log(hash)
   //remove the task entry
-  remove(hash);
+  remove(hash, "this task is deleted");
   //mark the task link on the DNA as deleted
   commit("task_link", {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks", LinkAction: HC.LinkAction.Del }]
@@ -115,10 +116,8 @@ function deleteTask(hash) {
  *    pebbles: (amount of pebbles to be transfered)
  * }
  */
-function backTask(back, backer) {
-  if(!backer) {
-    backer = App.Agent.Hash;
-  }
+function backTask(back) {
+  var backer = App.Key.Hash;
   console.log("BACKED BY AGENT " + backer);
   var task = back.task;
   var pebbles = back.pebbles;
@@ -130,7 +129,7 @@ function backTask(back, backer) {
 }
 
 /*********************************************
- * TASKS
+ * TRANSACTIONS
  * {
  *    origin: (origin of the funds)
  *    destination: (destination of the funds)
@@ -158,12 +157,12 @@ function readTransaction(hash) {
   return transaction;
 }
 
-function readTransactions(hash){
+function readTransactions(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   console.log("deposits: " + deposits);
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
   console.log("withdrawals: " + withdrawals);
-  return { 
+  return {
     deposits: deposits,
     withdrawals: withdrawals
   }
@@ -185,13 +184,13 @@ function tabulate(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   console.log("deposits: " + deposits);
   var totalDeposits = 0;
-  deposits.forEach(function(deposit){
+  deposits.forEach(function (deposit) {
     totalDeposits += deposit.Entry.pebbles;
   });
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
   console.log("withdrawals: " + withdrawals);
   var totalWithdrawals = 0;
-  withdrawals.forEach(function(withdrawal){
+  withdrawals.forEach(function (withdrawal) {
     totalWithdrawals += withdrawal.Entry.pebbles;
   });
   return totalDeposits - totalWithdrawals;
@@ -217,7 +216,7 @@ function createSolution(solution) {
   });
   console.log("taskSolutionLink: " + taskSolutionLink)
   var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: App.Agent.Hash, Link: hash, Tag: "solutions" }]
+    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
   });
   console.log("agentSolutionLink: " + authorSolutionLink)
   return hash;
@@ -228,7 +227,7 @@ function readSolution(hash) {
   return solution;
 }
 
-function readSolutions(hash){
+function readSolutions(hash) {
   var solutions = getLinks(hash, "solutions", { Load: true });
   console.log("solutions: " + solutions);
   return { solutions: solutions };
@@ -242,6 +241,7 @@ function reward(hash) {
   var solution = get(hash);
   var solutionTask = solution.task;
   var solutionAuthor = getCreator(hash);
+  console.log("creator: " + solutionAuthor)
   var pebbles = tabulate(solutionTask);
   return createTransaction({
     origin: solutionTask,
@@ -274,6 +274,11 @@ function reward(hash) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
+  createTransaction({
+    origin: App.DNA.Hash,
+    destination: App.Key.Hash,
+    pebbles: 10
+  });
   return true;
 }
 
@@ -291,7 +296,33 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  return isValidEntryType(entryType);
+  if (isValidEntryType(entryType)) {
+    switch (entryType) {
+      case "task":
+        return true
+      case "task_link":
+        return true
+      case "transaction":
+        return (
+          (entry.origin === App.DNA.Hash) ||
+          //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
+          (tabulate(entry.origin) >= entry.pebbles) &&
+          //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
+          (get(entry.origin).title ? (sources[0] === getCreator(entry.origin)) : true)
+        )
+      case "transaction_link":
+        return true
+      case "solution":
+        return true
+      case "solution_link":
+        return true
+      case "comment":
+        return true
+      case "comment_link":
+        return true
+    }
+  }
+  return false
 }
 
 /**
@@ -315,7 +346,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validatePut(entryType, entry, header, pkg, sources) {
-  return validateCommit(entryType, entry, header, pkg, sources);
+  return (validateCommit(entryType, entry, header, pkg, sources))
 }
 
 /**
