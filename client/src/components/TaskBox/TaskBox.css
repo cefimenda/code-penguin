@@ -1,0 +1,12 @@
+
+.box {
+  margin-bottom: 40px;
+  border: 1px solid rgb(72, 72, 92);
+  background-color: rgb(57, 57, 77);
+  padding: 10px 10px;
+}
+
+.box p {
+  letter-spacing: 2px;
+  font-size: 16px;
+}

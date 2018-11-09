@@ -1,0 +1,20 @@
+.solTitle {
+  /* position: absolute; */
+  /* right: 250px; */
+  /* margin: 0; */
+}
+
+.taskTitle {
+  /* position: absolute; */
+  /* display: inline-block; */
+  /* left: 50px; */
+  /* margin: 0; */
+}
+
+.solutionPage h1 {
+  font-size: 60px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 3px;
+ 
+}
