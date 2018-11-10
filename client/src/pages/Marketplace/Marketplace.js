@@ -5,23 +5,41 @@ import HoverBox from "../../components/HoverBox/HoverBox";
 import MarketInfo from "../../components/HoverBox/MarketInfo";
 import Card from '../../components/Card'
 import './Marketplace.css';
+import API from "../../utils/API";
 
 export default class Marketplace extends Component {
     state = {
         activeCard: "card-id-0",
-        datalist: this.props.cardSeed,
+        dataList: this.props.cardSeed,
         currentPage: 1,
         perPage: 5
     }
 
-    // Filter Functions
-    filtercreator = name => {
-        const { cardSeed } = this.props
-        const newArray = cardSeed.filter(cardinfo => cardinfo.creator.includes(name));
-        this.setState({ datalist: newArray })
+    componentDidMount = () => {
+        this.getCards();
     }
 
-    filterdate = date => {
+    // Data retrieval
+    getCards = () => {
+        API.getTasks()
+            .then(res => {
+                if(res.data.length===0) { return; }
+                this.setState({ dataList: res.data.links });
+            }
+        )
+            .catch(err =>
+            console.log(err)
+        );
+    }
+
+    // Filter Functions
+    filterCreator = name => {
+        const { cardSeed } = this.props
+        const newArray = cardSeed.filter(cardinfo => cardinfo.creator.includes(name));
+        this.setState({ dataList: newArray })
+    }
+
+    filterDate = date => {
         // RejEx needed because Js date concersion with "-" is a day behind
         const startDate = new Date(date.start.replace(/-/g, '/'))
         const endDate = new Date(date.end.replace(/-/g, '/'))
@@ -31,53 +49,53 @@ export default class Marketplace extends Component {
             let cdate = new Date(cardinfo.time)
             return cdate >= startDate && cdate <= endDate;
         });
-        this.setState({ datalist: newArray })
+        this.setState({ dataList: newArray })
     }
 
     filtertag = tag => {
         const { cardSeed } = this.props
         const newArray = cardSeed.filter(cardinfo => cardinfo.tags.includes(tag));
-        this.setState({ datalist: newArray })
+        this.setState({ dataList: newArray })
     }
 
-    clearfilter = () => {
-        this.setState({datalist: this.props.cardSeed})
+    clearFilter = () => {
+        this.setState({dataList: this.props.cardSeed})
     }
 
 
     // Sort functions
-    sortdate = (order) => {
-        let data = this.state.datalist
+    sortDate = (order) => {
+        let data = this.state.dataList
         if (order === "newest-oldest") {
             data.sort((a,b) => {
                 return new Date(b.time).getTime() - new Date(a.time).getTime();
             })
-            this.setState({datalist: data, activeCard: "card-id-0", currentPage: 1})
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         } else if (order === "oldest-newest") {
             data.sort((a,b) => {
                 return new Date(a.time).getTime() - new Date(b.time).getTime();
             })
-            this.setState({datalist: data, activeCard: "card-id-0", currentPage: 1})
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         }
         
     }
 
-    sorttitle = (order) => {
-        let data = this.state.datalist
+    sortTitle = (order) => {
+        let data = this.state.dataList
         if (order === "a-z") {
             data.sort((a,b) => {
                 var textA = a.title.toUpperCase();
                 var textB = b.title.toUpperCase();
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
             })
-            this.setState({datalist: data, activeCard: "card-id-0", currentPage: 1})
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         } else if (order === "z-a") {
             data.sort((a,b) => {
                 var textA = a.title.toUpperCase();
                 var textB = b.title.toUpperCase();
                 return (textB < textA) ? -1 : (textB > textA) ? 1 : 0;
             })
-            this.setState({datalist: data, activeCard: "card-id-0", currentPage: 1})
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         }
         
     }
@@ -97,20 +115,20 @@ export default class Marketplace extends Component {
         const focus = "left"
 
         // Logic for getting the current card data
-        const { datalist, currentPage, perPage } = this.state
+        const { dataList, currentPage, perPage } = this.state
         const indexOfLast = currentPage * perPage
         const indexOfFirst = indexOfLast - perPage
-        const currentList = datalist.slice(indexOfFirst, indexOfLast)
+        const currentList = dataList.slice(indexOfFirst, indexOfLast)
 
         // Logic for displaying page numbers
         const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(datalist.length / perPage); i++) {
+        for (let i = 1; i <= Math.ceil(dataList.length / perPage); i++) {
             pageNumbers.push(i);
         }
 
         // renders the cards
         const renderCards = currentList.map((card, i) => {
-            return <Card key={i} id={`card-id-${i}`} activeCard={this.state.activeCard} click={this.handleCardClick} zIndex={20-i} info={card}/>;
+            return <Card key={i} id={`card-id-${i}`} activeCard={this.state.activeCard} click={this.handleCardClick} zIndex={20-i} info={card.Entry || card}/>;
         });
 
         // renders the pagination btns
@@ -120,7 +138,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <MarketInfo prof={this.props.profSeed} filtercreator={this.filtercreator} filterdate={this.filterdate} filtertag={this.filtertag} clearfilter={this.clearfilter} sortdate={this.sortdate} sorttitle={this.sorttitle}/>
+                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filtertag={this.filtertag} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     <div className="cardholder">

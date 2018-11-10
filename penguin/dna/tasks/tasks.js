@@ -33,7 +33,7 @@ function getCreator(hash) {
  * @return {object} The object, plus a timestamp.
  */
 function addTimestamp(object) {
-  object.timestamp = Date.now();
+  object.time = Date.now();
   return object;
 }
 
@@ -46,15 +46,21 @@ function addTimestamp(object) {
  * (the task object that we receive from the UI should look like the following)
  * {
  *    title: (title of the task)
- *    description: (description of the task)
+ *    details: (description of the task)
+ *    tags: (array of tags)
  *    pebbles (how many pebbles the creator throws down initially)
  * }
  ********************************************/
 function createTask(task) {
   console.log("CREATED BY AGENT: " + App.Key.Hash);
-  var pebbles = task.pebbles;
+  var pebbles = task.pebbles || 0;
+  if (pebbles===0) return;
   delete task.pebbles;
   task = addTimestamp(task);
+  task.creator = App.Key.Hash;
+  task.title = task.title || "";
+  task.details = task.details || "";
+  task.tags = task.tags || [];
   console.log(JSON.stringify(task))
   var hash = commit('task', task);
   console.log(hash);
@@ -62,7 +68,7 @@ function createTask(task) {
   var transactionHash = backTask({
     task: hash,
     pebbles: pebbles
-  }, App.Key.Hash);
+  });
   console.log("transaction hash: " + transactionHash);
 
   var tasksLink = commit('task_link', {
@@ -277,7 +283,15 @@ function genesis() {
   createTransaction({
     origin: App.DNA.Hash,
     destination: App.Key.Hash,
-    pebbles: 10
+    pebbles: 100
+  });
+  createTask({
+    title: "Holochain App Debug",
+    details: "My holochain app isn't working!!",
+    creator: App.Key.Hash,
+    time: Date.now(),
+    tags: ["holochain"],
+    pebbles: 25
   });
   return true;
 }

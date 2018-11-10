@@ -11,7 +11,7 @@
         "pebbles": {
             "type": "integer"
         },
-        "timestamp": {
+        "time": {
             "type": "integer"
         }
     },
@@ -19,6 +19,6 @@
         "origin",
         "destination",
         "pebbles",
-        "timestamp"
+        "times"
     ]
 }
