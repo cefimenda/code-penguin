@@ -150,6 +150,26 @@
                     "Name": "reward",
                     "CallingType": "json",
                     "Exposure": "public"
+                },
+                {
+                    "Name": "createComment",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readComment",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readComments",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readMyComments",
+                    "CallingType": "json",
+                    "Exposure": "public"
                 }
             ]
         }
