@@ -2,7 +2,9 @@
   "name": "code-penguin",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4141",
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",

@@ -2,6 +2,7 @@
     {
         "id": 0,
         "creator": "Katherine He",
+        "pebbles": 10,
         "title": "Need a quick landing page created for a bakery",
         "details" : "The website needs to be a light a fluffy theme, there ase some images of the store at www.yelp.com, need a home page, a ordering page and a food display page. If you choose to acccept please contact me at (555) 555 - 5555 for more details",
         "tags": ["HTML", "CSS", "Javascript", "Time sensitive", "Project"],
@@ -10,6 +11,7 @@
     {
         "id": 1,
         "creator": "Sandy Yeung",
+        "pebbles": 20,
         "title": "Large Team project to build an AI with Javascript and Phython",
         "details" : "Looking for a coder that can assist with a large teme project. We are tryignt o build an AI taht can tell the future witht he data from people's social media. Please submit some ideas of how you yould go about this project and your contact info, if it aline wiht our ideas we will contact you. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["Javascript", "Phython", "Project", "Looking to Hire", "Robotics Learining", "AI creation", "BrainJS", "TenserFlow", "fill in space tag", "fill in space tag", "fill in space tag", "fill in space tag", "fill in space tag"],
@@ -18,6 +20,7 @@
     {
         "id": 2,
         "creator": "Cefi Menda",
+        "pebbles": 15,
         "title": "Holochain Assistance",
         "details" : "Project on holochain",
         "tags": ["Holochain"],
@@ -26,6 +29,7 @@
     {
         "id": 3,
         "creator": "Evan Ross",
+        "pebbles": 8,
         "title": "Creating a Mobile app with React-Native",
         "details" : "contact me at email@email.com",
         "tags": ["React-Native", "JS"],
@@ -34,6 +38,7 @@
     {
         "id": 4,
         "creator": "Fillerspace Person with long name that I need to test out",
+        "pebbles": 7,
         "title": "Random info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
@@ -42,6 +47,7 @@
     {
         "id": 5,
         "creator": "Filler Person",
+        "pebbles": 30,
         "title": "Randon info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
@@ -50,6 +56,7 @@
     {
         "id": 6,
         "creator": "Filler Person",
+        "pebbles": 50,
         "title": "Random title info",
         "details" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam quae similique porro possimus veritatis eligendi necessitatibus, unde accusantium? Adipisci dicta reiciendis expedita libero aliquam eos. Dignissimos, minima aut. Exercitationem, in.",
         "tags": ["JS", "HTML", "CSS"],
@@ -58,6 +65,7 @@
     {
         "id": 7,
         "creator": "Katherine He",
+        "pebbles": 29,
         "title": "Basic Portfolio Page",
         "details" : "Need detail, detail, detail and detail on my portfolio",
         "tags": ["JS", "HTML", "CSS"],
@@ -66,6 +74,7 @@
     {
         "id": 8,
         "creator": "Sandy Yeung",
+        "pebbles": 69,
         "title": "UI / UX Help",
         "details" : "Assistance on UI/ UX project",
         "tags": ["JS", "HTML", "CSS"],
@@ -74,6 +83,7 @@
     {
         "id": 9,
         "creator": "Cefi Menda",
+        "pebbles": 99,
         "title": "Cellphone Holochain project",
         "details" : "Random text random text, info on holochain project. contact info adding more stuff",
         "tags": ["Holochain", "Mobile app"],
@@ -82,6 +92,7 @@
     {
         "id": 10,
         "creator": "John Doe",
+        "pebbles": 2,
         "title": "Recipe app for new ressturant",
         "details" : "Quick simple HTML project",
         "tags": ["JS", "HTML", "CSS"],
@@ -90,6 +101,7 @@
     {
         "id": 11,
         "creator": "Jane Doe",
+        "pebbles": 5,
         "title": "Github assistance",
         "details" : "need help with error on Git hub",
         "tags": ["Github"],

@@ -8,11 +8,11 @@
 		"text": {
 			"type": "string"
 		},
-		"timestamp": {
+		"time": {
 			"type": "integer"
 		}
 	},
 	"required": [
-		"timestamp"
+		"time"
 	]
 }

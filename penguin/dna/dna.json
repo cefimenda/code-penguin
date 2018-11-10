@@ -104,7 +104,7 @@
                 {
                     "Name": "createTransaction",
                     "CallingType": "json",
-                    "Exposure": "public"
+                    "Exposure": "private"
                 },
                 {
                     "Name": "readTransaction",

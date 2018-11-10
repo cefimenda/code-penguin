@@ -13,7 +13,7 @@ export default class HoverBox extends Component {
         }
 
         return (
-            <div className="fixed-box" style={{ [side] : "7%", boxShadow: `${shadow} 10px 8px #00000091`}}>
+            <div className="fixed-box" style={{ [side] : "5%", boxShadow: `${shadow} 10px 8px #00000091`}}>
                 {this.props.children}
             </div>
         )

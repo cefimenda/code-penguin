@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Image } from 'semantic-ui-react'
 import './Card.css'
 
 export default class Card extends Component {
@@ -35,6 +36,7 @@ export default class Card extends Component {
                     <div id={id} className={chosen ? `isactive front-card` : 'front-card'} onClick={this.props.click} style={{transform: `${chosen ? this.state.cardflip ? "" : "perspective(600px) rotateY( -180deg)" : ""}`}}>
                         <h3 id={id} >{this.props.info.title}</h3>
                         {chosen ? <p className="card-tags"><strong><u>TAGS</u></strong>: {this.props.info.tags.join(", ")}</p> : ""}
+                        {chosen ?  <div><p className="card-pebbles">{this.props.info.pebbles}</p> <img className="card-pebble-img" src='http://pluspng.com/img-png/circle-objects-png-object-256.png' /></div> : ""}
                         {chosen ? <p className="card-creator">-- {this.props.info.creator}</p> : ""}
                         {chosen ? <p className="time-stamp">{this.props.info.time}</p> : ""}
                         {chosen ? <button className="flip-card-btn" onClick={this.handleFlip}><i className="fas fa-arrow-right"></i></button> : ""}

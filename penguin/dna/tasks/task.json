@@ -5,16 +5,19 @@
 		"title": {
 			"type": "string"
 		},
-		"description": {
+		"details": {
 			"type": "string"
 		},
-		"timestamp": {
+		"time": {
 			"type": "integer"
+		},
+		"tags": {
+			"type": "array"
 		}
 	},
 	"required": [
 		"title",
-		"description",
-		"timestamp"
+		"details",
+		"time"
 	]
 }
