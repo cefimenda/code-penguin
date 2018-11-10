@@ -1,0 +1,13 @@
+{
+  "name": "code-penguin",
+  "version": "0.0.1",
+  "repository": "https://github.com/cefimenda/code-penguin.git",
+  "scripts": {
+    "dev": "concurrently \"cd penguin && hcdev web\" \"cd client && yarn start\"",
+    "start": "concurrently \"cd penguin && hcd code-penguin\" \"cd client && yarn start\""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^4.0.1"
+  }
+}
