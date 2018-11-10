@@ -41,6 +41,13 @@ function addTimestamp(object) {
  * CRUD functions
  ******************************************************************************/
 
+/****************************************
+ * USER
+ */
+function getUser() {
+  return App.Key.Hash;
+}
+
 /*********************************************
  * TASKS
  * (the task object that we receive from the UI should look like the following)
@@ -263,6 +270,45 @@ function reward(hash) {
  *    text: (text of the comment)
  * }
  ********************************************/
+function createComment(comment) {
+  comment = addTimestamp(comment);
+  console.log(JSON.stringify(comment))
+  var hash = commit('comment', comment);
+  console.log(hash)
+  var pageCommentLink = commit('comment_link', {
+    Links: [{ Base: comment.page, Link: hash, Tag: "comments" }]
+  });
+  console.log("pageCommentLink: " + pageCommentLink)
+
+  // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
+  // in which case the user hash would be the page
+  var authorCommentLink = commit('comment_link', {
+    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
+  });
+  console.log("authorCommentLink: " + authorCommentLink)
+  return hash;
+}
+
+function readComment(hash) {
+  var comment = get(hash);
+  return comment;
+}
+
+// For reading comments from a page's hash
+function readComments(hash) {
+  var comments = getLinks(hash, "comments", { Load: true });
+  console.log("comments: " + comments);
+  return { comments: comments };
+}
+
+// For reading comments made by a particular user from the agent hash
+function readMyComments(hash) {
+  var comments = getLinks(hash, "commentsMade", { Load: true });
+  console.log("comments: " + comments);
+  return { comments: comments };
+}
+
+
 
 /*******************************************************************************
  * Required callbacks
@@ -288,7 +334,6 @@ function genesis() {
   createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
-    creator: App.Key.Hash,
     time: Date.now(),
     tags: ["holochain"],
     pebbles: 25
