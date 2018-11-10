@@ -41,6 +41,13 @@ function addTimestamp(object) {
  * CRUD functions
  ******************************************************************************/
 
+/****************************************
+ * USER
+ */
+function getUser() {
+  return App.Key.Hash;
+}
+
 /*********************************************
  * TASKS
  * (the task object that we receive from the UI should look like the following)

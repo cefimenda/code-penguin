@@ -72,6 +72,11 @@
             ],
             "Functions": [
                 {
+                    "Name": "getUser",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "createTask",
                     "CallingType": "json",
                     "Exposure": "public"
