@@ -12,7 +12,7 @@ export default class Marketplace extends Component {
         activeCard: "card-id-0",
         dataList: this.props.cardSeed,
         currentPage: 1,
-        perPage: 6
+        perPage: 5
     }
 
     componentDidMount () {
