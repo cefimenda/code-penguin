@@ -5,12 +5,12 @@
         "text": {
             "type": "string"
         },
-        "timestamp": {
+        "time": {
             "type": "integer"
         }
     },
     "required": [
         "text",
-        "timestamp"
+        "time"
     ]
 }
