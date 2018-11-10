@@ -11,7 +11,11 @@ export default class Marketplace extends Component {
         activeCard: "card-id-0",
         datalist: this.props.cardSeed,
         currentPage: 1,
-        perPage: 5
+        perPage: 6
+    }
+
+    componentDidMount () {
+        console.log(this.offsetWidth)
     }
 
     // Filter Functions

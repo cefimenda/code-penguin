@@ -6,9 +6,9 @@ export default class Container extends Component {
         let padd = ""
 
         if (this.props.padding === "left") {
-            padd = "50px 100px 50px 580px" 
+            padd = "50px 100px 50px 470px" 
         } else if (this.props.padding === "right") {
-            padd = "50px 550px 50px 100px" 
+            padd = "50px 470px 50px 100px" 
         } else {
             padd = "50px 100px" 
         }

@@ -1,6 +1,6 @@
 .marketcard {
   position: relative;
-  width: 13%;
+  width: 96px;
   height: 300px;
   color: #aaa;
   float: left;
@@ -67,6 +67,22 @@
 
 .card-tags {
   font-size: 13px;
+}
+
+.card-pebbles {
+  position: absolute;
+  bottom: 4px;
+  right: 63px;
+  padding: 2px;
+  height: 22px;
+  font-size: 10px;
+}
+
+.card-pebble-img {
+  height: 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 52px;
 }
 
 .card-creator {
