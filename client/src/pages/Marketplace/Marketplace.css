@@ -1,8 +1,35 @@
 .cardholder {
-    margin-top: 15%;
+    margin-top: 80px;
     width: 100%;
     height: 360px;
     padding: 10px;
+}
+
+.new-task-div {
+    padding: 5px 0;
+    margin-bottom: 40px;
+}
+
+.new-task-btn {
+    border: 2px solid #00b5ad;
+    letter-spacing: 1px;
+    padding: 6px 15px;
+    border-radius: 5px;
+    color: #00b5ad;
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+}
+
+.new-task-btn:active {
+    border-color: #fff;
+    color: #fff;
+}
+
+.new-task-btn:focus {
+    outline: none;
 }
 
 .pagination-div {
@@ -10,6 +37,7 @@
     list-style: none;
     display: flex;
     padding: 10px;
+    margin-top: 80px;
 }
 
 .pagination-div li {

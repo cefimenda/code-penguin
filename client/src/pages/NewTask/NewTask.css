@@ -1,0 +1,84 @@
+.new-task-title {
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.submit-new-task {
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+    border: 2px solid #00b5ad;
+    letter-spacing: 1px;
+    padding: 6px 15px;
+    border-radius: 5px;
+    color: #00b5ad;
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-new-task:active {
+    border-color: #fff;
+    color: #fff;
+}
+
+.submit-new-task:focus {
+    outline: none;
+}
+
+form {
+    margin: 50px 0;
+}
+
+.span-hash {
+    border-bottom: 2px solid #00b5ad;
+
+}
+
+.input-div {
+    margin: 30px 0;
+}
+
+.hash-div,
+.pebble-div {
+    margin-bottom: 10px 0;
+}
+
+.input-div input {
+    width: 85%;
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid #00b5ad;
+    color: #fff;
+    background-color: transparent;
+}
+
+.input-div textarea {
+    width: 85%;
+    padding: 5px;
+    border: 2px solid #00b5ad;
+    height: 150px;
+    color: #fff;
+    background-color: transparent;
+}
+
+.input-div input:focus,
+.input-div textarea:focus {
+    outline: none;
+}
+
+.input-div input::placeholder,
+.input-div textarea::placeholder {
+    color: #888;
+}
+
+.label-div {
+    height: 30px;
+    width: 12%;
+    display: inline-block;
+}
+
+.label-div label {
+    letter-spacing: 2px;
+}

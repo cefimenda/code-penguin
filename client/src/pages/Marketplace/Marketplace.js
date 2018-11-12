@@ -16,7 +16,7 @@ export default class Marketplace extends Component {
     }
 
     componentDidMount = () => {
-        this.getCards();
+        this.getCards(); //get all the info in the database
     }
 
     // Data retrieval
@@ -141,7 +141,11 @@ export default class Marketplace extends Component {
                     <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filtertag={this.filtertag} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
+                    
                     <div className="cardholder">
+                    <div className="new-task-div">
+                        <a href="/newtask"><button className="new-task-btn">+ New Task</button></a>
+                    </div>
                         {renderCards}
                     </div>
                     <div className="pagination-div">
