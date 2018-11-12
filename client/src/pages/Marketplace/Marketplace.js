@@ -15,10 +15,6 @@ export default class Marketplace extends Component {
         perPage: 5
     }
 
-    componentDidMount () {
-        console.log(this.offsetWidth)
-    }
-
     componentDidMount = () => {
         this.getCards();
     }
@@ -132,7 +128,7 @@ export default class Marketplace extends Component {
 
         // renders the cards
         const renderCards = currentList.map((card, i) => {
-            return <Card key={i} id={`card-id-${i}`} activeCard={this.state.activeCard} click={this.handleCardClick} zIndex={20-i} info={card.Entry || card}/>;
+            return <Card key={i} id={`card-id-${i}`} hash={card.Hash} activeCard={this.state.activeCard} click={this.handleCardClick} zIndex={20-i} info={card.Entry || card}/>;
         });
 
         // renders the pagination btns
