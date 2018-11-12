@@ -17,7 +17,6 @@ export default class Card extends Component {
 
     handleChoose = () => {
         const { hash } = this.props
-        // window.location.pathname = `/choose`
         window.location.pathname = `/task/${hash}`
     }
 

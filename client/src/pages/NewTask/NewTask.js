@@ -20,7 +20,7 @@ export default class Profile extends Component {
     getHash = () => {
         API.getUser()
         .then(res => {
-            this.setState({ creator: res.data });
+            this.setState({ creator: res.data.hash });
         }
         ).catch(err =>
             console.log(err)

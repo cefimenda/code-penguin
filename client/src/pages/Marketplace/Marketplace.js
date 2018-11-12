@@ -10,7 +10,8 @@ import API from "../../utils/API";
 export default class Marketplace extends Component {
     state = {
         activeCard: "card-id-0",
-        dataList: this.props.cardSeed,
+        fullList: "",
+        dataList: [],
         currentPage: 1,
         perPage: 5
     }
@@ -24,7 +25,7 @@ export default class Marketplace extends Component {
         API.getTasks()
             .then(res => {
                 if(res.data.length===0) { return; }
-                this.setState({ dataList: res.data.links });
+                this.setState({ dataList: res.data.links, fullList: res.data.links });
             }
         )
             .catch(err =>
@@ -34,8 +35,8 @@ export default class Marketplace extends Component {
 
     // Filter Functions
     filterCreator = name => {
-        const { cardSeed } = this.props
-        const newArray = cardSeed.filter(cardinfo => cardinfo.creator.includes(name));
+        const { fullList } = this.state
+        const newArray = fullList.filter(cardinfo => cardinfo.Entry.creator.includes(name));
         this.setState({ dataList: newArray })
     }
 
@@ -44,22 +45,22 @@ export default class Marketplace extends Component {
         const startDate = new Date(date.start.replace(/-/g, '/'))
         const endDate = new Date(date.end.replace(/-/g, '/'))
 
-        const { cardSeed } = this.props
-        const newArray = cardSeed.filter(cardinfo => {
-            let cdate = new Date(cardinfo.time)
+        const { fullList } = this.state
+        const newArray = fullList.filter(cardinfo => {
+            let cdate = new Date(cardinfo.Entry.time)
             return cdate >= startDate && cdate <= endDate;
         });
         this.setState({ dataList: newArray })
     }
 
-    filtertag = tag => {
-        const { cardSeed } = this.props
-        const newArray = cardSeed.filter(cardinfo => cardinfo.tags.includes(tag));
+    filterTag = tag => {
+        const { fullList } = this.state
+        const newArray = fullList.filter(cardinfo => cardinfo.Entry.tags.includes(tag));
         this.setState({ dataList: newArray })
     }
 
     clearFilter = () => {
-        this.setState({dataList: this.props.cardSeed})
+        this.setState({dataList: this.state.fullList})
     }
 
 
@@ -68,12 +69,12 @@ export default class Marketplace extends Component {
         let data = this.state.dataList
         if (order === "newest-oldest") {
             data.sort((a,b) => {
-                return new Date(b.time).getTime() - new Date(a.time).getTime();
+                return new Date(b.Entry.time).getTime() - new Date(a.Entry.time).getTime();
             })
             this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         } else if (order === "oldest-newest") {
             data.sort((a,b) => {
-                return new Date(a.time).getTime() - new Date(b.time).getTime();
+                return new Date(a.Entry.time).getTime() - new Date(b.Entry.time).getTime();
             })
             this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         }
@@ -82,17 +83,18 @@ export default class Marketplace extends Component {
 
     sortTitle = (order) => {
         let data = this.state.dataList
+        // console.log(data);
         if (order === "a-z") {
             data.sort((a,b) => {
-                var textA = a.title.toUpperCase();
-                var textB = b.title.toUpperCase();
+                var textA = a.Entry.title.toUpperCase();
+                var textB = b.Entry.title.toUpperCase();
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
             })
             this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         } else if (order === "z-a") {
             data.sort((a,b) => {
-                var textA = a.title.toUpperCase();
-                var textB = b.title.toUpperCase();
+                var textA = a.Entry.title.toUpperCase();
+                var textB = b.Entry.title.toUpperCase();
                 return (textB < textA) ? -1 : (textB > textA) ? 1 : 0;
             })
             this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
@@ -138,7 +140,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filtertag={this.filtertag} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
+                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filterTag={this.filterTag} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     

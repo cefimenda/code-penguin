@@ -44,16 +44,17 @@ export default class HoverBox extends Component {
 
     handleDateSort = event => {
         let { id } = event.target
-        this.props.sortdate(id)
+        this.props.sortDate(id)
     }
 
     handleTitleSort = event => {
         let { id } = event.target
-        this.props.sorttitle(id)
+        this.props.sortTitle(id)
     }
 
     handleSubmit = () => {
-        const { filtCreator, filtStartDate, filtEndDate, filtTag } = this.state
+        let { filtCreator, filtStartDate, filtEndDate, filtTag } = this.state
+        filtTag = filtTag.toLowerCase()
 
         // set today's date
         let today = new Date()
@@ -64,15 +65,15 @@ export default class HoverBox extends Component {
         if(mm<10) { mm=`0${mm}`}
         
         if (filtCreator !== "") {
-            this.props.filtercreator(filtCreator)
+            this.props.filterCreator(filtCreator)
         } else if (filtTag !== "") {
-            this.props.filtertag(filtTag)
+            this.props.filterTag(filtTag)
         } else if (filtStartDate !== "" && filtEndDate === "") {
-            this.props.filterdate({start: filtStartDate, end: `${yyyy}-${mm}-${dd}` })
+            this.props.filterDate({start: filtStartDate, end: `${yyyy}-${mm}-${dd}` })
         } else if (filtStartDate === "" && filtEndDate !== "") {
-            this.props.filterdate({start: "2017-01-01", end: filtEndDate})
+            this.props.filterDate({start: "2017-01-01", end: filtEndDate})
         } else if (filtStartDate !== "" && filtEndDate !== "") {
-            this.props.filterdate({start: filtStartDate, end: filtEndDate})
+            this.props.filterDate({start: filtStartDate, end: filtEndDate})
         }
     };
 
@@ -144,7 +145,7 @@ export default class HoverBox extends Component {
                     </div>
 
                 </div>
-                <button className="clear-btn" onClick={this.props.clearfilter}>Reset</button>
+                <button className="clear-btn" onClick={this.props.clearFilter}>Reset</button>
                 <button className="filtersort-btn" onClick={this.handleSubmit}>Search</button>
             </div>
         )
