@@ -8,7 +8,6 @@ export default class Comment extends Component {
   }
 
   handleSubmit(e) {
-    //link to HoloChain
     alert('The value is: ' + this.input.value);
     e.preventDefault();
   }

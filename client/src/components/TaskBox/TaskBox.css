@@ -7,5 +7,5 @@
     border-radius: 7px;
     box-shadow: 20px 20px 30px #05050596;
     background-color: #383838;
-    overflow: auto;
+    /* overflow: auto; */
 }
