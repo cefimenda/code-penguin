@@ -60,9 +60,8 @@ export default class Marketplace extends Component {
     }
 
     filterPebbles = pebbleCount => {
-        // console.log(pebbleCount)
         const { fullList } = this.state
-        const newArray = fullList.filter(cardinfo => cardinfo.Entry.pebbles === pebbleCount)
+        const newArray = fullList.filter(cardinfo => cardinfo.Entry.pebbles === parseInt(pebbleCount))
         this.setState({ dataList: newArray})
     }
 
