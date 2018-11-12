@@ -9,6 +9,7 @@ export default class HoverBox extends Component {
         filtStartDate: '',
         filtEndDate: '',
         filtTag: '',
+        filtPebble: '',
         sortDate: '',
         sortTitle: ''
     }
@@ -34,6 +35,10 @@ export default class HoverBox extends Component {
             if (e.target.id !== "filtTag") {
                 this.setState({ filtTag: "" })
             }
+
+            if (e.target.id !== "filtPebble") {
+                this.setState({ filtPebble: "" })
+            }
         }
     }
 
@@ -53,7 +58,7 @@ export default class HoverBox extends Component {
     }
 
     handleSubmit = () => {
-        let { filtCreator, filtStartDate, filtEndDate, filtTag } = this.state
+        let { filtCreator, filtStartDate, filtEndDate, filtTag, filtPebble } = this.state
         filtTag = filtTag.toLowerCase()
 
         // set today's date
@@ -68,6 +73,8 @@ export default class HoverBox extends Component {
             this.props.filterCreator(filtCreator)
         } else if (filtTag !== "") {
             this.props.filterTag(filtTag)
+        } else if (filtPebble !== "") {
+            this.props.filterPebbles(filtPebble)
         } else if (filtStartDate !== "" && filtEndDate === "") {
             this.props.filterDate({start: filtStartDate, end: `${yyyy}-${mm}-${dd}` })
         } else if (filtStartDate === "" && filtEndDate !== "") {
@@ -116,6 +123,12 @@ export default class HoverBox extends Component {
                                 Tags
                                 <div className={activeItem === 'filtTag' ? "inner-item active" : "inner-item"}>
                                     <input type="text" placeholder='Tag' name="filtTag" value={this.state.filtTag} onChange={this.handleInputChange} />
+                                </div>
+                            </div>
+                            <div className='item' id='filtPebble' onClick={this.handleInputClick}>
+                                Pebbles
+                                <div className={activeItem === 'filtPebble' ? "inner-item active" : "inner-item"}>
+                                    <input type="text" placeholder='Pebbles' name="filtPebble" value={this.state.filtPebble} onChange={this.handleInputChange} />
                                 </div>
                             </div>
                         </div>
