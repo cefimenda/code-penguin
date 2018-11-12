@@ -1,6 +1,23 @@
 .task-pebble-img{
-    height: 36px;
+    height: 30px;
     position: relative;
     left: 6px;
     top: 12px;
+}
+
+.task-problem {
+    height: 100%;
+    border-right: 1px solid #fff;
+}
+
+.ui.grid {
+    height: 100%;
+}
+
+.pebble-div {
+    line-height: 30px;
+}
+
+.pebble-div img {
+    margin-top: -2px;
 }

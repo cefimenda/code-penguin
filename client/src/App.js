@@ -4,12 +4,10 @@ import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Marketplace from "./pages/Marketplace";
 import Task from "./pages/Task";
-import Solution from "./pages/Solution"
 import NewTask from "./pages/NewTask"
 import NoMatch from "./pages/NoMatch";
 import profSeed from "./profSeed.json"
 import cardSeed from "./cardSeed.json"
-import solutionSeed from "./solutionSeed.json"
 import './App.css';
 
 export default class App extends Component {
@@ -22,7 +20,6 @@ export default class App extends Component {
                     <Route path="/marketplace" render={() => <Marketplace profSeed={profSeed} cardSeed={cardSeed}/>} />
                     <Route path="/newtask" render={() => <NewTask profSeed={profSeed} />} />
                     <Route path="/task/:hash" component={Task}/>
-                    <Route path="/solution" render={() => <Solution solutionSeed={solutionSeed} />} />
                     <Route component={NoMatch} />
                 </Switch>
             </Router>
