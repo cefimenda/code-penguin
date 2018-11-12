@@ -59,10 +59,10 @@ export default class Task extends Component {
                         <p>{task.creator}</p>
                         <p>{(new Date(task.time)).toString()}</p>
                         <ul>
-                            {task.solutions.map((solution, i)=><li key={i}><a href={solution.Entry.link}>{solution.Entry.text}</a></li>)}
+                            {task.solutions ? task.solutions.map((solution, i)=><li key={i}><a href={solution.Entry.link}>{solution.Entry.text}</a></li>) : ""}
                         </ul>
                         <ul>
-                            {task.comments.map((comment, i)=><li key={i}>{comment.Entry.text}</li>)}
+                            {task.comments ? task.comments.map((comment, i)=><li key={i}>{comment.Entry.text}</li>) : ""}
                         </ul>
                     </div>
                 </Container>
