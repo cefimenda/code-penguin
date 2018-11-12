@@ -27,28 +27,41 @@ export default class Profile extends Component {
         );
     }
 
+    createTask = task => {
+        
+    }
+
     handleChange = event => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
-    handleKeyPress = (event) => {
-        console.log(event.key);
-    }
+    // handleKeyPress = (event) => {
+    //     console.log(event.key);
+    // }
 
     handleSubmit = e => {
         e.preventDefault();
-        const { creator, pebbles, title, details, tags} = this.state
-        
-         console.log("Creator", creator);
-         console.log("Pebbles", pebbles);
-         console.log("Title", title);
-         console.log("Details", details);
-         console.log("Tags", tags);
-        //  str.split("#");  .trim()
+        const { pebbles, title, details, tags} = this.state
 
-        //  window.location.pathname = `/marketplace`
-    };
+        if (pebbles !== "" && title !== "" && details !== "" && tags !== "") {
+            let tagarr = tags.split("#")
+            tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
+            const task = { pebbles, title, details, tags: tagarr}
+
+            API.createTask(task)
+            .then(res => {
+                console.log(res);
+                //  window.location.pathname = `/marketplace`
+            }
+            ).catch(err =>
+                console.log(err)
+            );
+        } else {
+            alert("Please enter all field")
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -67,25 +80,25 @@ export default class Profile extends Component {
                                 <div className="label-div">
                                     <label>Pebbles:</label>
                                 </div>
-                                <input type="number" name="pebbles" placeholder='(ex. 200)' onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles}/>
+                                <input type="number" name="pebbles" placeholder='(ex. 200)' onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles} required/>
                             </div>
                             <div className="input-div">
                                 <div className="label-div">
                                     <label>Title:</label>
                                 </div>
-                                <input name="title" onChange={this.handleChange} placeholder='Enter short description' value={this.state.title}/>
+                                <input name="title" onChange={this.handleChange} placeholder='Enter short description' value={this.state.title} required/>
                             </div>
                             <div className="input-div">
                                 <div className="label-div">
                                     <label>Tags:</label>
                                 </div>
-                                <input  name="tags" onKeyPress={this.handleKeyPress} placeholder='Tags enter # (ex. #HTML #JS #CSS)'/>
+                                <input  name="tags" onChange={this.handleChange} placeholder='Tags enter # (ex. #HTML #JS #CSS)' value={this.state.tags} required/> {/*onKeyPress={this.handleKeyPress}*/}
                             </div>
                             <div className="input-div">
                                 <div className="label-div textarea-label">
                                     <label>Details:</label>
                                 </div>
-                                <textarea  name="details" onChange={this.handleChange} placeholder='Please enter a detail description of what is needed' value={this.state.details}/>
+                                <textarea  name="details" onChange={this.handleChange} placeholder='Please enter a detail description of what is needed' value={this.state.details} required/>
                             </div>
                             <button className="submit-new-task" onClick={this.handleSubmit} >Submit</button>
                         </form>
