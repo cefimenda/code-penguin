@@ -361,7 +361,9 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
           (tabulate(entry.origin) >= entry.pebbles) &&
           //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
-          (get(entry.origin).title ? (sources[0] === getCreator(entry.origin)) : true)
+          (get(entry.origin).title ? (sources[0] === getCreator(entry.origin)) : true) &&
+          //negative pebbles not allowed
+          (entry.pebbles>0)
         )
       case "transaction_link":
         return true
