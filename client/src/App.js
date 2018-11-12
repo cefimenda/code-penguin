@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Marketplace from "./pages/Marketplace";
-import Choose from "./pages/Choose";
+import Task from "./pages/Task";
 import Solution from "./pages/Solution"
 import NewTask from "./pages/NewTask"
 import NoMatch from "./pages/NoMatch";
@@ -21,7 +21,7 @@ export default class App extends Component {
                     <Route path="/profile" render={() => <Profile profSeed={profSeed} />} />
                     <Route path="/marketplace" render={() => <Marketplace profSeed={profSeed} cardSeed={cardSeed}/>} />
                     <Route path="/newtask" render={() => <NewTask profSeed={profSeed} />} />
-                    <Route path="/choose/:id" render={() => <Choose profSeed={profSeed} cardSeed={cardSeed}/>} />
+                    <Route path="/task/:hash" component={Task}/>
                     <Route path="/solution" render={() => <Solution solutionSeed={solutionSeed} />} />
                     <Route component={NoMatch} />
                 </Switch>
