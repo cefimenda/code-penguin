@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from "../../components/Navbar";
 import Container from "../../components/Container";
-import Task from "../../components/Task";
+import Task from "../../components/TaskBox";
 import API from "../../utils/API";
 import './NewTask.css';
 
