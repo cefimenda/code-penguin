@@ -45,7 +45,7 @@ function addTimestamp(object) {
  * USER
  */
 function getUser() {
-  return { 
+  return {
     hash: App.Key.Hash,
     pebbles: tabulate(App.Key.Hash)
   };
@@ -64,7 +64,7 @@ function getUser() {
 function createTask(task) {
   console.log("CREATED BY AGENT: " + App.Key.Hash);
   var pebbles = task.pebbles || 0;
-  if (pebbles===0) return;
+  if (pebbles === 0) return;
   delete task.pebbles;
   task = addTimestamp(task);
   task.creator = App.Key.Hash;
@@ -95,14 +95,14 @@ function createTask(task) {
 function readTask(hash) {
   var task = get(hash);
   task.pebbles = tabulate(hash);
-  task.solutions = getLinks(hash, "solutions", { Load: true});
+  task.solutions = getLinks(hash, "solutions", { Load: true });
   task.comments = getLinks(hash, "comments", { Load: true });
   return task;
 }
 
 function readAllTasks() {
   var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
-  links.forEach(function(link){
+  links.forEach(function (link) {
     var pebbles = tabulate(link.Hash);
     console.log(pebbles);
     link.Entry.pebbles = pebbles;
@@ -340,14 +340,28 @@ function genesis() {
   createTransaction({
     origin: App.DNA.Hash,
     destination: App.Key.Hash,
-    pebbles: 100
+    pebbles: 1000
   });
-  createTask({
+  var taskHash = createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
-    time: Date.now(),
     tags: ["holochain"],
     pebbles: 25
+  });
+  createTask({
+    title: "Need Holochain Help NOW",
+    details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
+    tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
+    pebbles: 200
+  });
+  createSolution({
+    task: taskHash,
+    text: "try my solution",
+    link: "https://www.google.com"
+  });
+  createComment({
+    page: taskHash,
+    text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
   });
   return true;
 }
