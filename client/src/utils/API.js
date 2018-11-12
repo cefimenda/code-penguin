@@ -10,7 +10,7 @@ export default {
 
   /* Get pebble count given a user or task hash*/
   getPebbles: function(hash) {
-    return axios.post("/fn/tasks/tabulate", hash);
+    return axios.post("/fn/tasks/tabulate", "\"" + hash + "\"");
   },
 
   //TASKS
@@ -22,7 +22,7 @@ export default {
 
   /* Get the task at one specific hash */
   getTask: function(hash){
-    return axios.post("/fn/tasks/readTask", hash);
+    return axios.post("/fn/tasks/readTask", "\"" + hash + "\"");
   },
 
   /* task: {
@@ -46,12 +46,12 @@ export default {
 
   /* Get all solutions linked with one hash (either task or user) */
   getSolutions: function(hash){
-    return axios.post("/fn/tasks/readSolutions", hash);
+    return axios.post("/fn/tasks/readSolutions", "\"" + hash + "\"");
   },
 
   /* Get the solution at one specific hash */
   getSolution: function(hash){
-    return axios.post("/fn/tasks/readSolution", hash);
+    return axios.post("/fn/tasks/readSolution", "\"" + hash + "\"");
   },
 
   /* solution: {
@@ -65,24 +65,24 @@ export default {
 
   /* Reward the solution at one specific hash */
   reward: function(hash){
-    return axios.post("/fn/tasks/reward", hash);
+    return axios.post("/fn/tasks/reward", "\"" + hash + "\"");
   },
 
   //COMMENTS
 
   /* Get all the comments linekd with one hash (any entry can theoretically be commented on.)*/
   getComments: function(hash){
-    return axios.post("/fn/tasks/readComments", hash);
+    return axios.post("/fn/tasks/readComments", "\"" + hash + "\"");
   },
 
   /* Get all the comments made by a specific user (given in hash)*/
   getMyComments: function(hash){
-    return axios.post("/fn/tasks/readMyComments", hash);
+    return axios.post("/fn/tasks/readMyComments", "\"" + hash + "\"");
   },
 
   /* Get the comment at one specific hash */
   getComment: function(hash){
-    return axios.post("/fn/tasks/readComment", hash);
+    return axios.post("/fn/tasks/readComment", "\"" + hash + "\"");
   },
 
   /* comment: {
