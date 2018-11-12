@@ -1,12 +1,11 @@
-
-.box {
-  margin-bottom: 40px;
-  border: 1px solid rgb(72, 72, 92);
-  background-color: rgb(57, 57, 77);
-  padding: 10px 10px;
-}
-
-.box p {
-  letter-spacing: 2px;
-  font-size: 16px;
+.task-div {
+    position: relative;
+    margin: 6% auto;
+    margin-bottom: 0;
+    height: 600px;
+    padding: 20px 40px;
+    border-radius: 7px;
+    box-shadow: 20px 20px 30px #05050596;
+    background-color: #383838;
+    overflow: auto;
 }

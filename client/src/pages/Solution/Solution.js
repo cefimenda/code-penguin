@@ -15,10 +15,13 @@ export default class Solution extends Component {
 
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <div className="solutionPage">
-            <h1 className="taskTitle">Task</h1>
-            <TaskBox />
             <h1 className="solTitle">Solution</h1>
+
+            {/* <h1 className="taskTitle">Task</h1> */}
+            <TaskBox >
             <SolveBox side={focus} />
+            </TaskBox>
+            
           </div>
         </Container>
       </React.Fragment>
