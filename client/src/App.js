@@ -15,9 +15,9 @@ export default class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/" render={() => <Marketplace profSeed={profSeed} cardSeed={cardSeed}/>} />
+                    <Route path="/landing" component={Landing} />
                     <Route path="/profile" render={() => <Profile profSeed={profSeed} />} />
-                    <Route path="/marketplace" render={() => <Marketplace profSeed={profSeed} cardSeed={cardSeed}/>} />
                     <Route path="/newtask" render={() => <NewTask profSeed={profSeed} />} />
                     <Route path="/task/:hash" component={Task}/>
                     <Route component={NoMatch} />
