@@ -95,7 +95,7 @@ function createTask(task) {
 function readTask(hash) {
   var task = get(hash);
   task.pebbles = tabulate(hash);
-  task.solutions = getLinks(hash, "solutions", { Load; true});
+  task.solutions = getLinks(hash, "solutions", { Load: true});
   task.comments = getLinks(hash, "comments", { Load: true });
   return task;
 }
