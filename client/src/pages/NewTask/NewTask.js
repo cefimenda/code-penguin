@@ -8,6 +8,7 @@ import './NewTask.css';
 export default class Profile extends Component {
     state = {
         creator: "",
+        maxPebbles: "",
         pebbles: "",
         title: "",
         details: "",
@@ -20,7 +21,10 @@ export default class Profile extends Component {
     getHash = () => {
         API.getUser()
         .then(res => {
-            this.setState({ creator: res.data });
+            this.setState({ 
+                creator: res.data.hash,
+                maxPebbles: res.data.pebbles
+             });
         }
         ).catch(err =>
             console.log(err)
@@ -80,7 +84,7 @@ export default class Profile extends Component {
                                 <div className="label-div">
                                     <label>Pebbles:</label>
                                 </div>
-                                <input type="number" name="pebbles" placeholder='(ex. 200)' onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles} required/>
+                                <input type="number" name="pebbles" placeholder={`(${this.state.maxPebbles} max)`} onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles} required/>
                             </div>
                             <div className="input-div">
                                 <div className="label-div">
