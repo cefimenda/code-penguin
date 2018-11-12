@@ -91,17 +91,23 @@ function createTask(task) {
 
 function readTask(hash) {
   var task = get(hash);
+  task.pebbles = tabulate(hash);
   return task;
 }
 
 function readAllTasks() {
   var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
-  console.log("links: " + links)
+  links.forEach(function(link){
+    var pebbles = tabulate(link.Hash);
+    console.log(pebbles);
+    link.Entry.pebbles = pebbles;
+  });
+  console.log("links: " + JSON.stringify(links));
   return { links: links };
 }
 
-function readMyTasks() {
-  var links = getLinks(App.Key.Hash, "tasks", { Load: true });
+function readMyTasks(userHash) {
+  var links = getLinks(userHash || App.Key.Hash, "tasks", { Load: true });
   return { links: links };
 }
 
