@@ -52,7 +52,7 @@ export default class Profile extends Component {
             let tagarr = tags.split("#")
             tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
             const task = { pebbles, title, details, tags: tagarr}
-
+            console.log(task);
             API.createTask(task)
             .then(res => {
                 console.log(res);

@@ -11,8 +11,8 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  console.log(entryType)
   var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link"]
+  if(entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!");}
   return (entryTypes.indexOf(entryType) > -1);
 }
 
@@ -62,7 +62,6 @@ function getUser() {
  * }
  ********************************************/
 function createTask(task) {
-  console.log("CREATED BY AGENT: " + App.Key.Hash);
   var pebbles = task.pebbles || 0;
   if (pebbles === 0) return;
   delete task.pebbles;
@@ -71,24 +70,19 @@ function createTask(task) {
   task.title = task.title || "";
   task.details = task.details || "";
   task.tags = task.tags || [];
-  console.log(JSON.stringify(task))
   var hash = commit('task', task);
-  console.log(hash);
 
   var transactionHash = backTask({
     task: hash,
     pebbles: pebbles
   });
-  console.log("transaction hash: " + transactionHash);
-
   var tasksLink = commit('task_link', {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
-  console.log("tasksLink: " + tasksLink);
   var myTasksLink = commit('task_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
   });
-  console.log("myTasksLink: " + myTasksLink);
+
   return hash;
 }
 
@@ -104,10 +98,8 @@ function readAllTasks() {
   var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
   links.forEach(function (link) {
     var pebbles = tabulate(link.Hash);
-    console.log(pebbles);
     link.Entry.pebbles = pebbles;
   });
-  console.log("links: " + JSON.stringify(links));
   return { links: links };
 }
 
@@ -142,7 +134,6 @@ function deleteTask(hash) {
  */
 function backTask(back) {
   var backer = App.Key.Hash;
-  console.log("BACKED BY AGENT " + backer);
   var task = back.task;
   var pebbles = back.pebbles;
   return createTransaction({
@@ -162,17 +153,13 @@ function backTask(back) {
  ********************************************/
 function createTransaction(transaction) {
   transaction = addTimestamp(transaction);
-  console.log(JSON.stringify(transaction))
   var hash = commit('transaction', transaction);
-  console.log(hash)
   var withdrawalsLink = commit('transaction_link', {
     Links: [{ Base: transaction.origin, Link: hash, Tag: "withdrawals" }]
   });
-  console.log("withdrawals: " + withdrawalsLink)
   var depositsLink = commit('transaction_link', {
     Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
   });
-  console.log("deposits: " + depositsLink)
   return hash;
 }
 
@@ -183,9 +170,7 @@ function readTransaction(hash) {
 
 function readTransactions(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
-  console.log("deposits: " + deposits);
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  console.log("withdrawals: " + withdrawals);
   return {
     deposits: deposits,
     withdrawals: withdrawals
@@ -194,25 +179,21 @@ function readTransactions(hash) {
 
 function readWithdrawals(hash) {
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  console.log("withdrawals: " + withdrawals);
   return { withdrawals: withdrawals };
 }
 
 function readDeposits(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
-  console.log("deposits: " + deposits);
   return { deposits: deposits };
 }
 
 function tabulate(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
-  console.log("deposits: " + deposits);
   var totalDeposits = 0;
   deposits.forEach(function (deposit) {
     totalDeposits += deposit.Entry.pebbles;
   });
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  console.log("withdrawals: " + withdrawals);
   var totalWithdrawals = 0;
   withdrawals.forEach(function (withdrawal) {
     totalWithdrawals += withdrawal.Entry.pebbles;
@@ -232,17 +213,13 @@ function tabulate(hash) {
  ********************************************/
 function createSolution(solution) {
   solution = addTimestamp(solution);
-  console.log(JSON.stringify(solution))
   var hash = commit('solution', solution);
-  console.log(hash)
   var taskSolutionLink = commit('solution_link', {
     Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
   });
-  console.log("taskSolutionLink: " + taskSolutionLink)
   var authorSolutionLink = commit('solution_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
   });
-  console.log("agentSolutionLink: " + authorSolutionLink)
   return hash;
 }
 
@@ -253,7 +230,6 @@ function readSolution(hash) {
 
 function readSolutions(hash) {
   var solutions = getLinks(hash, "solutions", { Load: true });
-  console.log("solutions: " + solutions);
   return { solutions: solutions };
 }
 
@@ -265,7 +241,6 @@ function reward(hash) {
   var solution = get(hash);
   var solutionTask = solution.task;
   var solutionAuthor = getCreator(hash);
-  console.log("creator: " + solutionAuthor)
   var pebbles = tabulate(solutionTask);
   return createTransaction({
     origin: solutionTask,
@@ -283,20 +258,16 @@ function reward(hash) {
  ********************************************/
 function createComment(comment) {
   comment = addTimestamp(comment);
-  console.log(JSON.stringify(comment))
   var hash = commit('comment', comment);
-  console.log(hash)
   var pageCommentLink = commit('comment_link', {
     Links: [{ Base: comment.page, Link: hash, Tag: "comments" }]
   });
-  console.log("pageCommentLink: " + pageCommentLink)
 
   // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
   // in which case the user hash would be the page
   var authorCommentLink = commit('comment_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
   });
-  console.log("authorCommentLink: " + authorCommentLink)
   return hash;
 }
 
@@ -308,14 +279,12 @@ function readComment(hash) {
 // For reading comments from a page's hash
 function readComments(hash) {
   var comments = getLinks(hash, "comments", { Load: true });
-  console.log("comments: " + comments);
   return { comments: comments };
 }
 
 // For reading comments made by a particular user from the agent hash
 function readMyComments(hash) {
   var comments = getLinks(hash, "commentsMade", { Load: true });
-  console.log("comments: " + comments);
   return { comments: comments };
 }
 

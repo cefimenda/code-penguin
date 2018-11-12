@@ -32,6 +32,7 @@ export default {
       pebbles (how many pebbles the creator throws down initially)
      } */
   createTask: function(task){
+    task.pebbles = parseInt(task.pebbles) || 0;
     return axios.post("/fn/tasks/createTask", task);
   },
   /* {
