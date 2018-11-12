@@ -59,6 +59,13 @@ export default class Marketplace extends Component {
         this.setState({ dataList: newArray })
     }
 
+    filterPebbles = pebbleCount => {
+        // console.log(pebbleCount)
+        const { fullList } = this.state
+        const newArray = fullList.filter(cardinfo => cardinfo.Entry.pebbles === pebbleCount)
+        this.setState({ dataList: newArray})
+    }
+
     clearFilter = () => {
         this.setState({dataList: this.state.fullList})
     }
@@ -140,7 +147,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filterTag={this.filterTag} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
+                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filterTag={this.filterTag} filterPebbles={this.filterPebbles} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     
