@@ -110,6 +110,10 @@
   text-shadow: 0 0 15px #aaa;
 }
 
+.choose-card-btn:focus {
+    outline: none;
+}
+
 .flip-card-btn{
   background-color: #212f33;
   border: none;
