@@ -128,7 +128,7 @@ export default class HoverBox extends Component {
                             <div className='item' id='filtPebble' onClick={this.handleInputClick}>
                                 Pebbles
                                 <div className={activeItem === 'filtPebble' ? "inner-item active" : "inner-item"}>
-                                    <input type="text" placeholder='Pebbles' name="filtPebble" value={this.state.filtPebble} onChange={this.handleInputChange} />
+                                    <input type="number" placeholder='Pebble Count' name="filtPebble" value={this.state.filtPebble} onChange={this.handleInputChange} />
                                 </div>
                             </div>
                         </div>
