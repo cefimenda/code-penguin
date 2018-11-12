@@ -45,7 +45,10 @@ function addTimestamp(object) {
  * USER
  */
 function getUser() {
-  return App.Key.Hash;
+  return { 
+    hash: App.Key.Hash,
+    pebbles: tabulate(App.Key.Hash)
+  };
 }
 
 /*********************************************
