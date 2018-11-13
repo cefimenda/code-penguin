@@ -180,6 +180,7 @@ function createTransaction(transaction) {
 
 function readTransaction(hash) {
   var transaction = get(hash);
+  transaction.taskTitle = readTask(transaction.origin).title || readTask(transaction.destination).title
   return transaction;
 }
 
