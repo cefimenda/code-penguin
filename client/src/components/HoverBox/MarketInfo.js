@@ -11,7 +11,8 @@ export default class HoverBox extends Component {
         filtTag: '',
         filtPebble: '',
         sortDate: '',
-        sortTitle: ''
+        sortTitle: '',
+        sortPebbles: ''
     }
 
     handleInputClick = e => {
@@ -55,6 +56,11 @@ export default class HoverBox extends Component {
     handleTitleSort = event => {
         let { id } = event.target
         this.props.sortTitle(id)
+    }
+
+    handlePebbleSort = event => {
+        let { id } = event.target
+        this.props.sortPebbles(id)
     }
 
     handleSubmit = () => {
@@ -151,6 +157,15 @@ export default class HoverBox extends Component {
                                     <div className="sort-div">
                                         <p id="a-z" onClick={this.handleTitleSort}>A - Z</p>
                                         <p id="z-a" onClick={this.handleTitleSort}>Z - A</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='item' id='sortPebbles' onClick={this.handleInputClick}>
+                                Pebbles
+                                <div className={activeItem === 'sortPebbles' ? "inner-item active" : "inner-item"}>
+                                    <div className="sort-div">
+                                        <p id="min-max" onClick={this.handlePebbleSort}>Min - Max</p>
+                                        <p id="max-min" onClick={this.handlePebbleSort}>Max - Min</p>
                                     </div>
                                 </div>
                             </div>
