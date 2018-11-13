@@ -105,7 +105,25 @@ export default class Marketplace extends Component {
             })
             this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
         }
-        
+    }
+
+    sortPebbles = (order) => {
+        let data = this.state.dataList
+        if (order === "min-max") {
+            data.sort((a,b) => {
+                var min = a.Entry.pebbles
+                var max = b.Entry.pebbles
+                return (min < max) ? -1 : (min > max) ? 1 : 0;
+            })
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
+        } else if (order === "max-min") {
+            data.sort((a,b) => {
+                var min = a.Entry.pebbles
+                var max = b.Entry.pebbles
+                return (max < min) ? -1 : (max > min) ? 1 : 0;
+            })
+            this.setState({dataList: data, activeCard: "card-id-0", currentPage: 1})
+        }
     }
 
     // changes state active card to card that is clicked
@@ -146,7 +164,7 @@ export default class Marketplace extends Component {
             <React.Fragment>
                 <Navbar page="Marketplace"/>
                 <HoverBox side={focus}>
-                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filterTag={this.filterTag} filterPebbles={this.filterPebbles} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle}/>
+                    <MarketInfo prof={this.props.profSeed} filterCreator={this.filterCreator} filterDate={this.filterDate} filterTag={this.filterTag} filterPebbles={this.filterPebbles} clearFilter={this.clearFilter} sortDate={this.sortDate} sortTitle={this.sortTitle} sortPebbles={this.sortPebbles}/>
                 </HoverBox>
                 <Container padding={focus} bgcolor="rgb(32,32,32)">
                     
