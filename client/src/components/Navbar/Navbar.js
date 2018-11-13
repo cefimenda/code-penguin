@@ -19,11 +19,11 @@ export default class Navbar extends Component {
 
     createli = () => {
         if (this.props.landing === "true") {
-            return (<li key="1"><a href="/"><h4 className="ui white"> Code &nbsp; Penguin</h4></a></li>)
+            return (<li key="1"><a href="/"><h4 className="ui white"> Code Penguin</h4></a></li>)
         } else {
             return (
                 <React.Fragment>
-                    <li key="1"><a href="/"><h4 className="ui white"> Code &nbsp; Penguin</h4></a></li>
+                    <li key="1"><a href="/"><h4 className="ui white"> Code Penguin</h4></a></li>
                     <li key="4" className="float-right"><a href="/landing"><p className="ui white">Log off</p></a></li>
                     <li key="3" className="float-right"><a href="/"><p className={this.props.page === "Marketplace" ? "ui white navbold" : "ui white"}>Marketplace</p></a></li>
                     <li key="2" className="float-right"><a href="/profile"><p className={this.props.page === "Profile" ? "ui white navbold" : "ui white"}>Profile</p></a></li>
