@@ -51,6 +51,10 @@ function getUser() {
   };
 }
 
+function getUserTransactions(){
+  return readTransactions(App.Key.Hash);
+}
+
 /*********************************************
  * TASKS
  * (the task object that we receive from the UI should look like the following)

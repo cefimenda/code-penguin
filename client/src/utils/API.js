@@ -13,6 +13,10 @@ export default {
     return axios.post("/fn/tasks/tabulate", "\"" + hash + "\"");
   },
 
+  getTransactionHistory: function() {
+    return axios.post("/fn/tasks/getUserTransactions");
+  },
+
   //TASKS
 
   /* Get all tasks on the chain */

@@ -77,6 +77,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "getUserTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "createTask",
                     "CallingType": "json",
                     "Exposure": "public"
