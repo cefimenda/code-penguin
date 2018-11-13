@@ -68,6 +68,18 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
+                },
+                {
+                    "Name": "userdata",
+                    "DataFormat": "json",
+                    "SchemaFile": "userdata.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "userdata_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
                 }
             ],
             "Functions": [
@@ -78,6 +90,11 @@
                 },
                 {
                     "Name": "getUserTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "setUserData",
                     "CallingType": "json",
                     "Exposure": "public"
                 },

@@ -9,6 +9,7 @@ import './Profile.css';
 export default class Profile extends Component {
   state = {
     creator: '',
+    avatar: 'https://via.placeholder.com/150',
     pebbles: '',
     withdrawals: [],
     deposits: []
@@ -21,10 +22,21 @@ export default class Profile extends Component {
   getHash = () => {
     API.getUser()
       .then(res => {
+        let {github} = res.data.userdata[0].Entry
         this.setState({
-          creator: res.data.hash,
+          creator: github || res.data.hash,
           pebbles: res.data.pebbles
         });
+        if(github){
+          API.getGithub(github)
+            .then(res => {
+              console.log(res);
+              this.setState({
+                avatar: res.data.avatar_url
+              })
+            })
+            .catch(err => console.log(err));
+        }
       })
       .catch(err => console.log(err));
   };
@@ -51,6 +63,7 @@ export default class Profile extends Component {
               <label>Hi Code Penguin User</label>
             </div>
             <span className="span-user">{this.state.creator}</span>
+            <img width="150px" src={this.state.avatar} alt={this.state.creator}/>
             <span className="span-pebbles">Pebble Count {this.state.pebbles}</span>
           </div>
         </HoverBox>
