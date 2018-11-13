@@ -1,3 +1,7 @@
+.task-padd {
+    padding: 20px 40px;
+}
+
 .new-task-title {
     text-align: center;
     letter-spacing: 2px;

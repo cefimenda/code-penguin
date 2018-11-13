@@ -4,7 +4,29 @@ import './Card.css'
 
 export default class Card extends Component {
     state= {
-        cardflip: true
+        cardflip: true,
+        date: this.props.info.time
+    }
+
+    componentDidMount = () => {
+        let { date } = this.state
+        date = new Date(date)
+        let dd = date.getDate()
+        let mm = date.getMonth()+1
+        let hh = date.getHours()
+        let min = date.getMinutes()
+        let AMPM = "AM"
+        const yyyy = date.getFullYear()
+        const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        if(dd < 10) { dd=`0${dd}`}
+        if(mm < 10) { mm=`0${mm}`}
+        if(min < 10) { min=`0${min}`}
+        if(hh === 0) { hh = 12}
+        if(hh > 12) {
+            hh = hh-12
+            AMPM = "PM"
+        }
+        this.setState({ date: `${months[mm]} ${dd}, ${yyyy} ${hh}:${min} ${AMPM}`}) 
     }
 
     handleFlip = () => {
@@ -37,7 +59,7 @@ export default class Card extends Component {
                         {chosen ? <p className="card-tags"><strong><u>TAGS</u></strong>: {this.props.info.tags.join(", ")}</p> : ""}
                         {chosen ?  <div><p className="card-pebbles">{this.props.info.pebbles}</p> <img className="card-pebble-img" src='http://pluspng.com/img-png/circle-objects-png-object-256.png' alt="pebbles"/></div> : ""}
                         {chosen ? <p className="card-creator">-- {this.props.info.creator}</p> : ""}
-                        {chosen ? <p className="time-stamp">{this.props.info.time}</p> : ""}
+                        {chosen ? <p className="time-stamp">{this.state.date}</p> : ""}
                         {chosen ? <button className="flip-card-btn" onClick={this.handleFlip}><i className="fas fa-arrow-right"></i></button> : ""}
                     </div>
                 </div>

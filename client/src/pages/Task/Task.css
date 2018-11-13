@@ -1,8 +1,30 @@
 @import url('https://fonts.googleapis.com/css?family=Cutive+Mono');
 
+:root {
+    --solution-color: #00b5ad;
+    --comment-color: #00b5ad;
+}
+.task-pebble-img{
+    height: 30px;
+    position: relative;
+    left: 6px;
+    top: 12px;
+}
 
-.task-title {
-    margin: 20px 0;
+.pebble-div {
+    margin-top: -15px;
+    margin-left: 14px;
+    height: 10px;
+}
+
+.task-problem {
+    position: relative;
+    height: 95%;
+    padding: 15px;
+    overflow: auto;
+    background-color: #333;
+    margin-left: 14px;
+    overflow: auto;
 }
 
 .title-div {
@@ -11,62 +33,8 @@
     text-align: center;
 }
 
-.task-pebble-img{
-    height: 30px;
-    position: relative;
-    left: 6px;
-    top: 12px;
-}
-
-.task-problem {
-    height: 85%;
-    border-right: 1px solid #fff;
-    padding-right: 5px;
-    padding-top: 10px;
-    overflow: auto;
-}
-
-.task-problem h4 {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    text-decoration: underline;
-}
-
-.detail-p {
-    margin-left: 4px;
-}
-
-.ui.grid {
-    height: 100%;
-    margin-top: 25px;
-}
-
-.sol-com-btn-div {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.pebble-div {
-    line-height: 30px;
-    position: absolute;
-    top: 8px;
-    left: 20px;
-}
-
-.tag-div-box {
-    background-color: #424f5f;
-    padding: 5px 8px;
-    border-radius: 5px;
-    margin: 8px 5px 8px 0px;
-    word-spacing: 7px;
-    font-family: 'Cutive Mono', monospace;
-}
-
 .creator-info-div {
-    position: absolute;
-    bottom: 15px;
-    left: 20px;
+    margin: -5px 0 30px 20px;
 }
 
 .creator-info-div p {
@@ -74,32 +42,80 @@
     font-size: 12px
 }
 
-.sol-com-input-div {
+.task-problem h4 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-decoration: underline;
+    letter-spacing: 1px;
+}
+
+.div-blue-box {
+    background-color: #424f5f;
+    padding: 5px 8px;
+    margin: 8px 5px 8px 0px;
+    font-family: 'Cutive Mono', monospace;
+}
+
+
+/* solution / Comment section */
+.sol-com-btn-div {
     position: absolute;
-    bottom: 80px;
-    width: 90%;
+    top: 15px;
+    right: 20px;
+}
+
+.sol-col-show-div {
+    margin-right: 14px;
+    height: 60%;
+    background-color: #222;
+    padding: 1px;
+}
+
+.sol-com-input-div {
+    position: relative;
+    height: 30%;
+    margin-top: 14px;
+    margin-right: 14px;
+}
+
+.sol-com-input-div input,
+.sol-com-input-div textarea {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    color: #fff;
+    background-color: #222;
+    margin: 0;
 }
 
 .sol-com-input-div input {
-    width: 100%;
-    padding: 5px;
-    border: none;
-    border-bottom: 2px solid #00b5ad;
-    color: #fff;
-    background-color: transparent;
-    border-radius: 5px;
+    /* position: absolute;
+    bottom: 45px; */
 }
 
-.sol-com-input-div input:focus {
+.sol-com-input-div textarea {
+    height: 70%;
+}
+
+.sol-com-input-div input:focus,
+.sol-com-input-div textarea:focus,
+.sol-com-input-div button:focus {
     outline: none;
-    border-radius: 0px;
 }
 
 .sol-com-input-div input::placeholder {
-    color: #888;
+    color: var(--solution-color);
+    letter-spacing: 1px;
+}
+
+.sol-com-input-div textarea::placeholder {
+    color: var(--comment-color);
 }
 
 .sol-com-input-div button {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
     margin-top: 10px;
     width: 100%;
     padding: 5px;
@@ -113,4 +129,11 @@
 
 .sol-com-input-div button:active {
     background-color: #222;
+}
+
+
+/* Overwrite semantics */
+.ui.grid {
+    height: 100%;
+    margin-top: 25px;
 }
