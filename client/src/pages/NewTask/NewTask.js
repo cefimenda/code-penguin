@@ -53,13 +53,18 @@ export default class Profile extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const { pebbles, title, details, tags } = this.state
+        let { pebbles, title, details, tags } = this.state
+        pebbles = parseInt(pebbles)
 
         if (pebbles !== "" && title !== "" && details !== "" && tags !== "") {
-            let tagarr = tags.split("#")
-            tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
-            const task = { pebbles, title, details, tags: tagarr }
-            this.createTask(task);
+            if (pebbles <= parseInt(this.state.maxPebbles) && pebbles >= 1 && Number.isInteger(pebbles)) {
+                let tagarr = tags.split("#")
+                tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
+                const task = { pebbles, title, details, tags: tagarr }
+                this.createTask(task);
+            } else {
+                alert(`Pebble needs to be an interger between 1 - ${this.state.maxPebbles}`)
+            }
         } else {
             alert("Please enter all field")
         }
