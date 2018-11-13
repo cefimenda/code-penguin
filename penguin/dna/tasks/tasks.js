@@ -38,6 +38,29 @@ function addTimestamp(object) {
 }
 
 /*******************************************************************************
+ * Set Ups
+ ******************************************************************************/
+//New User added ==> Redistribution mechanics for pebbles
+//CONSTANT: (total pebbles in the system)/(total users in the system) = 500
+
+//ToDo
+// genesis function adds 500 pebbles from DNA to DNA --> so 500 pebbles are added into the system every time a new user joins the system.
+// validateCommit --> case "transaction": --> if (origin is DNA && destination is not DNA){if(tabulate(DNA)>=entry.pebbles) {return true} else {return false}}
+// public function redistribute() --> adds 5 pebbles to your account from DNA by creating a new transaction entry
+// validateCommit --> case "transaction": --> if (origin is DNA){check last transaction from DNA to App.key; if  (newDate() - timestamp>24hrs) return true; else return false}
+
+//right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
+//in order to avoid a situation where people just build a mini app that sends a post request to /redistribute every 24 hrs automatically.
+function redistribute() {
+  var hash = createTransaction({
+    origin: App.DNA.Hash,
+    destination: App.Key.Hash,
+    pebbles: 5
+  })
+  return hash
+}
+
+/*******************************************************************************
  * CRUD functions
  ******************************************************************************/
 
@@ -97,7 +120,6 @@ function createTask(task) {
   var myTasksLink = commit('task_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
   });
-
   return hash;
 }
 
@@ -180,7 +202,11 @@ function createTransaction(transaction) {
 
 function readTransaction(hash) {
   var transaction = get(hash);
-  transaction.taskTitle = readTask(transaction.origin).title || readTask(transaction.destination).title
+  if (transaction.origin !== App.DNA.Hash) {
+    transaction.taskTitle = readTask(transaction.origin).title || readTask(transaction.destination).title
+  } else {
+    transaction.taskTitle = "Active Reward"
+  }
   return transaction;
 }
 
