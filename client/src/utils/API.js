@@ -18,7 +18,7 @@ export default {
   },
 
   getGithub: function(username) {
-    return axios.get(`https://api.github.com/user/${username}`);
+    return axios.get(`https://api.github.com/users/${username}`);
   },
 
   //TASKS
