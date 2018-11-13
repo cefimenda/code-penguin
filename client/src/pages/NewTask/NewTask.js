@@ -61,7 +61,9 @@ export default class Profile extends Component {
                 let tagarr = tags.split("#")
                 tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
                 const task = { pebbles, title, details, tags: tagarr }
-                this.createTask(task);
+                console.log(task);
+                
+                // this.createTask(task);
             } else {
                 alert(`Pebble needs to be an interger between 1 - ${this.state.maxPebbles}`)
             }
