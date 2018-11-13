@@ -52,6 +52,7 @@ form {
     border-bottom: 2px solid #00b5ad;
     color: #fff;
     background-color: transparent;
+    border-radius: 5px;
 }
 
 .input-div textarea {
@@ -66,6 +67,7 @@ form {
 .input-div input:focus,
 .input-div textarea:focus {
     outline: none;
+    border-radius: 0px;
 }
 
 .input-div input::placeholder,

@@ -29,7 +29,7 @@ export default class Card extends Component {
                 <div className={chosen ? `marg marketcard` : 'marketcard'} style={{ zIndex: `${chosen ? "99" : this.props.zIndex}` }}>
                     <div className={chosen ? `backactive front-card` : 'front-card'} style={{transform: `${this.state.cardflip && chosen ? "perspective(600px) rotateY( 0deg)" : ""}`}}>
                         {chosen ? <p id={id} className="fixed-para-length">{this.props.info.details}</p>: ""}
-                        <button className="choose-card-btn" onClick={this.handleChoose}>Choose</button>
+                        <button className="choose-card-btn" onClick={this.handleChoose}>View</button>
                         <button className="flip-card-btn" onClick={this.handleFlip}><i className="fas fa-arrow-right"></i></button>
                     </div>
                     <div id={id} className={chosen ? `isactive front-card` : 'front-card'} onClick={this.props.click} style={{transform: `${chosen ? this.state.cardflip ? "" : "perspective(600px) rotateY( -180deg)" : ""}`}}>

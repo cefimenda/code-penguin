@@ -18,7 +18,9 @@ export default class Task extends Component {
             creator: '',
             time: ''
         },
-        toggler: 'solutions'
+        toggler: 'solutions',
+        newComment: '',
+        newSolution: ''
     };
 
     componentDidMount = () => {
@@ -37,9 +39,25 @@ export default class Task extends Component {
             });
     };
 
-    handleButton = event => {
-        this.setState({ toggler: event.target.name });
+    handleToggle = event => {
+        this.setState({ toggler: event.target.name }, () => {
+            if (this.state.toggler === "comments") {
+                this.setState({ newSolution: "" });
+            } else if (this.state.toggler === "solutions") {
+                this.setState({ newComment: "" });
+            }
+        });
     };
+
+    handleChange = event => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
+    }
+
+    handleSubmit = () => {
+       console.log("comment: ", this.state.comment);
+       console.log("solution: ", this.state.solution);
+    }
 
     render() {
         var { task } = this.state;
@@ -48,24 +66,22 @@ export default class Task extends Component {
             <Navbar />
             <Container bgcolor="rgb(32,32,32)">
                 <TaskBox>
-                    <div className="title-div">
-                        <h2 className="task-title">{task.title}</h2>
-                    </div>
                     <div className="pebble-div">
                         <span> {task.pebbles === '' || task.pebbles === undefined ? '0' : `${task.pebbles}`} </span>
                         <img className="task-pebble-img" src="http://pluspng.com/img-png/circle-objects-png-object-256.png" alt="pebbles" />
                     </div>
                     <div className="sol-com-btn-div">
                         <Button.Group size="mini" compact>
-                            <Button name="solutions" onClick={this.handleButton} color={this.state.toggler === 'solutions' ? 'teal' : 'grey'}> Solutions </Button>
+                            <Button name="solutions" onClick={this.handleToggle} color={this.state.toggler === 'solutions' ? 'teal' : 'grey'}> Solutions </Button>
                             <Button.Or />
-                            <Button name="comments" onClick={this.handleButton} color={this.state.toggler === 'comments' ? 'teal' : 'grey'} > Comments </Button>
+                            <Button name="comments" onClick={this.handleToggle} color={this.state.toggler === 'comments' ? 'teal' : 'grey'} > Comments </Button>
                         </Button.Group>
                     </div>
                     <Grid divided="vertically">
                         <Grid.Row columns={2}>
                             <Grid.Column>
                                 <div className="task-problem">
+                                <h2 className="task-title">{task.title}</h2>
                                     <div className="tag-div-box">
                                         <p>{task.tags.map(tag => '#' + tag).join(' ')}</p>
                                     </div>
@@ -80,6 +96,10 @@ export default class Task extends Component {
                                 <ul  style={{ display: `${this.state.toggler === 'comments' ? 'block' : 'none'}` }} >
                                     {task.comments !== 0 ? task.comments.map((comment, i) => <li key={i}>{comment.Entry.text}</li>) : <p>There are currently no comments</p>}
                                 </ul>
+                                <div className="sol-com-input-div">
+                                    <input type="text" placeholder={this.state.toggler === 'comments' ? "enter comments here" : "enter solution link here"} name={this.state.toggler === "comments" ? "newComment" : "newSolution"} />
+                                    <button>Submit</button>
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
