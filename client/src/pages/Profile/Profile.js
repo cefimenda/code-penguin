@@ -22,7 +22,7 @@ export default class Profile extends Component {
     API.getUser()
       .then(res => {
         this.setState({
-          creator: res.data.hash,
+          creator: res.data.userdata.Entry.github || res.data.hash,
           pebbles: res.data.pebbles
         });
       })
