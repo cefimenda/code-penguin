@@ -55,12 +55,6 @@ function getLastRedistributionDate() {
 //New User added ==> Redistribution mechanics for pebbles
 //CONSTANT: (total pebbles in the system)/(total users in the system) = 500
 
-//ToDo
-// genesis function adds 500 pebbles from DNA to DNA --> so 500 pebbles are added into the system every time a new user joins the system.
-// validateCommit --> case "transaction": --> if (origin is DNA && destination is not DNA){if(tabulate(DNA)>=entry.pebbles) {return true} else {return false}}
-// public function redistribute() --> adds 5 pebbles to your account from DNA by creating a new transaction entry
-// validateCommit --> case "transaction": --> if (origin is DNA){check last transaction from DNA to App.key; if  (newDate() - timestamp>24hrs) return true; else return false}
-
 //right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
 //in order to avoid a situation where people just build a mini app that sends a post request to /redistribute every 24 hrs automatically.
 function redistribute() {
