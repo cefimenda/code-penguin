@@ -12,7 +12,7 @@ function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
   var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link", "userdata", "userdata_link"];
-  if(entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!");}
+  if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
 
@@ -48,11 +48,11 @@ function getUser() {
   return {
     hash: App.Key.Hash,
     pebbles: tabulate(App.Key.Hash) || 0,
-    userdata: getLinks(App.Key.Hash, "userdata", {Load: true}) || {}
+    userdata: getLinks(App.Key.Hash, "userdata", { Load: true }) || {}
   };
 }
 
-function getUserTransactions(){
+function getUserTransactions() {
   return readTransactions(App.Key.Hash);
 }
 
@@ -81,14 +81,12 @@ function setUserData(data) {
 function createTask(task) {
   var pebbles = task.pebbles || 0;
   if (pebbles === 0) return;
-  delete task.pebbles;
   task = addTimestamp(task);
   task.creator = App.Key.Hash;
   task.title = task.title || "";
   task.details = task.details || "";
   task.tags = task.tags || [];
   var hash = commit('task', task);
-
   var transactionHash = backTask({
     task: hash,
     pebbles: pebbles
@@ -372,7 +370,12 @@ function validateCommit(entryType, entry, header, pkg, sources) {
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "task":
-        return true
+        return (
+          //the creator of the task must have equal or more pebbles than what is specified in the transaction
+          (tabulate(sources[0]) >= entry.pebbles) &&
+          //negative pebbles not allowed
+          (entry.pebbles > 0)
+        )
       case "task_link":
         return true
       case "transaction":
@@ -383,7 +386,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
           (get(entry.origin).title ? (sources[0] === getCreator(entry.origin)) : true) &&
           //negative pebbles not allowed
-          (entry.pebbles>0)
+          (entry.pebbles > 0)
         )
       case "transaction_link":
         return true
@@ -395,10 +398,10 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "comment_link":
         return true
-      case "userdata": 
-          return true
+      case "userdata":
+        return true
       case "userdata_link":
-          return true
+        return true
     }
   }
   return false
