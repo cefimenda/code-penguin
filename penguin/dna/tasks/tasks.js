@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link"]
+  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link", "userdata", "userdata_link"];
   if(entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!");}
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -47,12 +47,25 @@ function addTimestamp(object) {
 function getUser() {
   return {
     hash: App.Key.Hash,
-    pebbles: tabulate(App.Key.Hash)
+    pebbles: tabulate(App.Key.Hash) || 0,
+    userdata: getLinks(App.Key.Hash, "userdata", {Load: true}) || {}
   };
 }
 
 function getUserTransactions(){
   return readTransactions(App.Key.Hash);
+}
+
+/* data: {
+            github: (github username)
+         } */
+function setUserData(data) {
+  data = addTimestamp(data);
+  var hash = commit('userdata', data);
+  var userdataLink = commit('userdata_link', {
+    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "userdata" }]
+  });
+  return hash;
 }
 
 /*********************************************
@@ -315,6 +328,9 @@ function genesis() {
     destination: App.Key.Hash,
     pebbles: 1000
   });
+  setUserData({
+    github: "evansimonross"
+  });
   var taskHash = createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
@@ -379,6 +395,10 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "comment_link":
         return true
+      case "userdata": 
+          return true
+      case "userdata_link":
+          return true
     }
   }
   return false
