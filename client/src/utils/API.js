@@ -76,6 +76,11 @@ export default {
     return axios.post("/fn/tasks/createSolution", solution);
   },
 
+  /* Get the rewarded solution via the task hash */
+  rewardedSolution: function(hash){
+    return axios.post("/fn/tasks/rewardedSolution", "\"" + hash + "\"");
+  },
+
   /* Reward the solution at one specific hash */
   reward: function(hash){
     return axios.post("/fn/tasks/reward", "\"" + hash + "\"");

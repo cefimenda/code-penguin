@@ -285,6 +285,10 @@ function readSolutions(hash) {
   return { solutions: solutions };
 }
 
+function rewardedSolution(hash){
+  return getLinks(hash, "rewarded_solution", { Load: true});
+}
+
 /**
  * 
  * @param {string} hash Hash of the solution to be rewarded
@@ -294,6 +298,9 @@ function reward(hash) {
   var solutionTask = solution.task;
   var solutionAuthor = getCreator(hash);
   var pebbles = tabulate(solutionTask);
+  var rewardedSolutionLink = commit('solution_link', {
+    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution"}]
+  });
   return createTransaction({
     origin: solutionTask,
     destination: solutionAuthor,
