@@ -83,8 +83,8 @@ function getUser() {
   };
 }
 
-function userDataHash(){
-  return getLinks(App.Key.Hash,"userdata").Hash
+function userDataHash() {
+  return getLinks(App.Key.Hash, "userdata")[0].Hash
 }
 
 function getUserTransactions() {
@@ -110,15 +110,16 @@ function setUserData(data) {
 
 function login(login) {
   var allUsers = getLinks(App.DNA.Hash, "userdata", { Load: true })
-  var result = allUsers.forEach(function (link) {
+  var result;
+  allUsers.forEach(function (link) {
     var user = link.Entry
     if (login.email === user.email && login.password === user.password) {
       var userdataDNALink = commit('userdata_link', {
         Links: [{ Base: App.Key.Hash, Link: link.Hash, Tag: "userdata" }]
       });
-      return getUser()
-    }else{
-      return "This email/password combination that you have tried does not exist in this DHT"
+      result = getUser()
+    } else {
+      result = "This email/password combination that you have tried does not exist in this DHT"
     }
   })
   return result
