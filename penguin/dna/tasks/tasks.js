@@ -37,6 +37,35 @@ function addTimestamp(object) {
   return object;
 }
 
+function getLastRedistributionDate() {
+  var deposits = getLinks(App.Key.Hash, "deposits", { Load: true });
+  var date = 0
+  //find the latest redistribution transaction from DNA to this particular agent's key
+  deposits.forEach(function (deposit) {
+    if ((deposit.Entry.origin === App.DNA.Hash) && (deposit.Entry.time > date)) {
+      date = deposit.Entry.time;
+    };
+  })
+  return date;
+}
+
+/*******************************************************************************
+ * Set Ups
+ ******************************************************************************/
+//New User added ==> Redistribution mechanics for pebbles
+//CONSTANT: (total pebbles in the system)/(total users in the system) = 500
+
+//right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
+//in order to avoid a situation where people just build a mini app that sends a post request to /redistribute every 24 hrs automatically.
+function redistribute() {
+  var hash = createTransaction({
+    origin: App.DNA.Hash,
+    destination: App.Key.Hash,
+    pebbles: 5
+  })
+  return hash
+}
+
 /*******************************************************************************
  * CRUD functions
  ******************************************************************************/
@@ -97,7 +126,6 @@ function createTask(task) {
   var myTasksLink = commit('task_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
   });
-
   return hash;
 }
 
@@ -169,18 +197,26 @@ function backTask(back) {
 function createTransaction(transaction) {
   transaction = addTimestamp(transaction);
   var hash = commit('transaction', transaction);
-  var withdrawalsLink = commit('transaction_link', {
-    Links: [{ Base: transaction.origin, Link: hash, Tag: "withdrawals" }]
-  });
+  //if DNA is sending itself pebbles, then we want it to be a deposit but not a withdrawal so that the total sum of pebbles in the system will increase
+  if (transaction.destination !== App.DNA.Hash || transaction.origin !== App.DNA.Hash) {
+    var withdrawalsLink = commit('transaction_link', {
+      Links: [{ Base: transaction.origin, Link: hash, Tag: "withdrawals" }]
+    });
+  }
   var depositsLink = commit('transaction_link', {
     Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
   });
+
   return hash;
 }
 
 function readTransaction(hash) {
   var transaction = get(hash);
-  transaction.taskTitle = readTask(transaction.origin).title || readTask(transaction.destination).title
+  if (transaction.origin !== App.DNA.Hash) {
+    transaction.taskTitle = readTask(transaction.origin).title || readTask(transaction.destination).title
+  } else {
+    transaction.taskTitle = "Active Reward"
+  }
   return transaction;
 }
 
@@ -324,23 +360,24 @@ function readMyComments(hash) {
 function genesis() {
   createTransaction({
     origin: App.DNA.Hash,
-    destination: App.Key.Hash,
-    pebbles: 1000
+    destination: App.DNA.Hash,
+    pebbles: 500
   });
   setUserData({
     github: "evansimonross"
   });
+  redistribute()
   var taskHash = createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
     tags: ["holochain"],
-    pebbles: 25
+    pebbles: 2
   });
   createTask({
     title: "Need Holochain Help NOW",
     details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
     tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
-    pebbles: 200
+    pebbles: 3
   });
   createSolution({
     task: taskHash,
@@ -374,18 +411,27 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return (
           //the creator of the task must have equal or more pebbles than what is specified in the transaction
           (tabulate(sources[0]) >= entry.pebbles) &&
+
           //negative pebbles not allowed
           (entry.pebbles > 0)
         )
       case "task_link":
         return true
       case "transaction":
+
         return (
-          (entry.origin === App.DNA.Hash) ||
+          //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
+          ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
+
+          //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
+          ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate()) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
+
           //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
           (tabulate(entry.origin) >= entry.pebbles) &&
+
           //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
-          (get(entry.origin).title ? (sources[0] === getCreator(entry.origin)) : true) &&
+          (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
+
           //negative pebbles not allowed
           (entry.pebbles > 0)
         )
