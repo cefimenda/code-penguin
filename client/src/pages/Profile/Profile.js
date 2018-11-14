@@ -13,7 +13,8 @@ export default class Profile extends Component {
     avatar: 'https://via.placeholder.com/150',
     pebbles: '',
     withdrawals: [],
-    deposits: []
+    deposits: [],
+    hasGithub: false
   };
 
   componentDidMount = () => {
@@ -31,11 +32,14 @@ export default class Profile extends Component {
           pebbles: res.data.pebbles
         });
         if (github) {
+          this.setState({
+            hasGithub: true
+          });
           API.getGithub(github)
             .then(res => {
               console.log(res);
               this.setState({
-                avatar: res.data.avatar_url
+                avatar: res.data.avatar_url,
               });
             })
             .catch(err => console.log(err));
@@ -75,10 +79,17 @@ export default class Profile extends Component {
         <HoverBox side={focus}>
           {/* <ProfileInfo prof={this.props.profSeed}/> */}
           <div className="input-div" style={{ margin: '10px 0' }}>
-            <div className="label">
-              <label>Hello, </label>
-            </div>
-            <span className="span-user">{this.state.creator.toUpperCase()}</span>
+            {this.state.hasGithub ? <div>
+                <div className="label">
+                  <label>Hello, </label>
+                </div>
+                <span className="span-user">{this.state.creator.toUpperCase()}</span>
+              </div> :
+              <div>
+                <div className="label">
+                  <label>Add your github username?</label>
+                </div>
+              </div>}
             {/* <span className="span-user">QmWtWoTu6qeSkiSBW7F7sKnrEYowfunci5BLHzpZDuxTjy</span> */}
             <img
               className="avatar"

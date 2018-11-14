@@ -197,6 +197,11 @@
                     "Name": "readMyComments",
                     "CallingType": "json",
                     "Exposure": "public"
+                },
+                {
+                    "Name": "redistribute",
+                    "CallingType": "json",
+                    "Exposure": "public"
                 }
             ]
         }
