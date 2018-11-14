@@ -17,6 +17,10 @@ export default {
     return axios.post("/fn/tasks/getUserTransactions");
   },
 
+  setUserData: function(data) {
+    return axios.post("/fn/tasks/setUserData", data);
+  },
+
   getGithub: function(username) {
     return axios.get(`https://api.github.com/users/${username}`);
   },

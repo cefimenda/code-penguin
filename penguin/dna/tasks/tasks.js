@@ -327,9 +327,9 @@ function genesis() {
     destination: App.Key.Hash,
     pebbles: 1000
   });
-  setUserData({
-    github: "evansimonross"
-  });
+  // setUserData({
+  //   github: "evansimonross"
+  // });
   var taskHash = createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
