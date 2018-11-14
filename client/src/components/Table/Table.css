@@ -1,0 +1,9 @@
+
+td, th {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+.shortHash {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}

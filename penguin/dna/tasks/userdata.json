@@ -1,0 +1,16 @@
+{
+    "title": "userdata Schema",
+    "type": "object",
+    "properties": {
+        "github": {
+            "type": "string"
+        },
+        "time": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "github",
+        "time"
+    ]
+}
