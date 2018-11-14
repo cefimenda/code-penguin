@@ -1,5 +1,23 @@
+.input-div {
+  text-align: center;
+}
+
 .span-user {
   font-size: 10px;
+  background-color: gold;
+  padding: 3px;
+}
+
+.label {
+  font-size: 25px;
+  letter-spacing: 6px;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
 }
 
 .span-pebbles {
@@ -11,6 +29,7 @@ table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  background-color: rgb(123, 128, 139);
 }
 
 td, th {
@@ -19,6 +38,24 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+.shortHash {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* tr:nth-child(even) {
+  background-color: #929da0
+} */
+
+td {
+  color: gold;
+}
+
+.tr-row {
+  background-color: #323232b7;
+}
+
+.tr-header {
+  /* width: 100px; */
+  background-color: #212f33;
 }

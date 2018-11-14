@@ -32,23 +32,25 @@ export default class Task extends Component {
         API.getTask(this.props.match.params.hash)
             .then(res => {
                 let rawdata = res.data
-                let date = new Date(rawdata.time)
-                let dd = date.getDate()
-                let mm = date.getMonth()+1
-                let hh = date.getHours()
-                let min = date.getMinutes()
-                let AMPM = "AM"
-                const yyyy = date.getFullYear()
-                const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-                if(dd < 10) { dd=`0${dd}`}
-                if(mm < 10) { mm=`0${mm}`}
-                if(min < 10) { min=`0${min}`}
-                if(hh === 0) { hh = 12}
-                if(hh > 12) {
-                    hh = hh-12
-                    AMPM = "PM"
-                }
-                rawdata.time = `${months[mm]} ${dd}, ${yyyy} ${hh}:${min} ${AMPM}`
+                // let date = new Date(rawdata.time)
+                // let dd = date.getDate()
+                // let mm = date.getMonth()+1
+                // let hh = date.getHours()
+                // let min = date.getMinutes()
+                // let AMPM = "AM"
+                // const yyyy = date.getFullYear()
+                // const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                // if(dd < 10) { dd=`0${dd}`}
+                // if(mm < 10) { mm=`0${mm}`}
+                // if(min < 10) { min=`0${min}`}
+                // if(hh === 0) { hh = 12}
+                // if(hh > 12) {
+                //     hh = hh-12
+                //     AMPM = "PM"
+                // }
+                // rawdata.time = `${months[mm]} ${dd}, ${yyyy} ${hh}:${min} ${AMPM}`
+                let date = new Date(res.data.time)
+                rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`
                 this.setState({ task: rawdata });
             })
             .catch(err => {
@@ -135,7 +137,7 @@ export default class Task extends Component {
                                     </ul>
                                 </div>
                                 <div className="sol-com-input-div">
-                                    <label style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}>Descriptiopn</label>
+                                    <label style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}>Description</label>
                                     <input type="text" placeholder="Link description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
                                     <label style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}>Link</label>
                                     <input type="text" placeholder="Enter SOLUTION link here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
