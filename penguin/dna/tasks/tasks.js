@@ -56,8 +56,8 @@ function getLastRedistributionDate() {
 //CONSTANT: (total pebbles in the system)/(total users in the system) = 500
 
 //right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
-//in order to avoid a situation where people just build a mini app that sends a post request to /redistribute every 24 hrs automatically.
-function redistribute() {
+//in order to avoid a situation where people just build a mini app that sends a post request to /distribute every 24 hrs automatically.
+function distribute() {
   var hash = createTransaction({
     origin: App.DNA.Hash,
     destination: App.Key.Hash,
@@ -363,7 +363,7 @@ function genesis() {
     destination: App.DNA.Hash,
     pebbles: 500
   });
-
+  distribute();
   var taskHash = createTask({
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
