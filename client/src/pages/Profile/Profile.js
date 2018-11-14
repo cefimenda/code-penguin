@@ -69,6 +69,26 @@ export default class Profile extends Component {
   //   console.log(data);
   // };
 
+  handleInputChange = event => {
+    let value = event.target.value;
+    const name = event.target.name;
+    this.setState({
+      [name]: value
+    });
+  };
+
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    API.setUserData({
+      "github": this.state.creator
+    }).then(res=>{
+      this.getHash();
+    }).catch(err=>{
+
+    });
+  }
+
   render() {
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
@@ -88,6 +108,10 @@ export default class Profile extends Component {
               <div>
                 <div className="label">
                   <label>Add your github username?</label>
+                  <form onSubmit={this.state.handleFormSubmit}>
+                    <input value={this.state.creator} name="creator" type="text" onChange={this.handleInputChange} placeholder="username"/>
+                    <button onClick={this.handleFormSubmit}>Submit</button>
+                  </form>
                 </div>
               </div>}
             {/* <span className="span-user">QmWtWoTu6qeSkiSBW7F7sKnrEYowfunci5BLHzpZDuxTjy</span> */}
