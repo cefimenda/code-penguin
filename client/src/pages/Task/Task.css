@@ -27,13 +27,8 @@
     overflow: auto;
 }
 
-.title-div {
-    margin: 0 auto;
-    width: 55%;
-    text-align: center;
-}
-
 .creator-info-div {
+    color: #ccc;
     margin: -5px 0 30px 20px;
 }
 
@@ -43,6 +38,7 @@
 }
 
 .task-problem h4 {
+    color: #ccc;
     margin-top: 15px;
     margin-bottom: 5px;
     text-decoration: underline;
@@ -89,12 +85,11 @@
 }
 
 .sol-com-input-div input {
-    /* position: absolute;
-    bottom: 45px; */
+    margin: 15px 0;
 }
 
 .sol-com-input-div textarea {
-    height: 70%;
+    height: 80px;
 }
 
 .sol-com-input-div input:focus,
@@ -103,32 +98,45 @@
     outline: none;
 }
 
-.sol-com-input-div input::placeholder {
-    color: var(--solution-color);
+.sol-com-input-div input::placeholder,
+.sol-com-input-div textarea::placeholder  {
+    color: #00b5ad;
     letter-spacing: 1px;
-}
-
-.sol-com-input-div textarea::placeholder {
-    color: var(--comment-color);
 }
 
 .sol-com-input-div button {
     position: absolute;
     bottom: 10px;
-    left: 0;
     margin-top: 10px;
-    width: 100%;
-    padding: 5px;
+    width: 40%;
+    padding: 7px;
     border-radius: 3px;
-    border: 1px solid #ccc;
+    border: none;
+    background-color: #222;
     color:#ccc;
-    background-color: transparent;
+    font-weight: 500;
     letter-spacing: 2px;
-    transition: all 300ms ease-in-out;
+    transition: all 100ms ease-in-out;
+}
+
+.task-submit {
+    left: 0;
+}
+
+.task-clear {
+    right: 0;
+}
+
+.sol-com-input-div button:hover {
+    letter-spacing: 1px;
+    bottom: 15px;
+    box-shadow: 5px 5px 5px #000000ab;
+    cursor: pointer;
 }
 
 .sol-com-input-div button:active {
-    background-color: #222;
+    bottom: 10px;
+    box-shadow: none;
 }
 
 

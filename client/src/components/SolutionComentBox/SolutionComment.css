@@ -1,0 +1,33 @@
+.comment-box,
+.solution-box {
+    list-style-type: none;
+    border: 7px solid #6b4f00;
+    background-color: #946c00;
+    padding: 7px;
+    line-height: 20px;
+    margin: 10px 50px 10px 0px;
+}
+
+.solution-link {
+    color: #fff;
+}
+
+.solution-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.solution-link:hover .solution-box{
+    border: 7px solid #3b1616;
+    background-color: #5c1f1f;
+}
+
+.comment-box {
+    border: 7px solid #00474d;
+    background-color: #00646b;
+}
+
+.solution-box {
+    border: 7px solid #6b4f00;
+    background-color: #946c00;
+}

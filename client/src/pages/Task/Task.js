@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import TaskBox from '../../components/TaskBox';
+import SolutionCommentBox from '../../components/SolutionComentBox';
 import { Button, Grid } from 'semantic-ui-react';
 import './Task.css';
 import API from '../../utils/API';
@@ -74,19 +75,37 @@ export default class Task extends Component {
     }
 
     handleSubmit = () => {
-       console.log("comment: ", this.state.newComment);
-       console.log("solution: ", this.state.newSolutionLink);
-
-       this.setState({ newComment: "", newSolutionLink: "", newSolutionDes: ""})
+        const task = this.props.match.params.hash
+        if (this.state.toggler === "solutions") {
+            const text = this.state.newSolutionDes
+            const link = this.state.newSolutionLink
+            this.addSolution({task, text, link})
+        } else if (this.state.toggler === "comments") {
+            const ctext = this.state.newComment
+            this.addSolution({page: task, text: ctext})
+        }
     }
 
-    addSolution = task => {
-        API.createTask(task)
+    handleClear = () => {
+        this.setState({ newComment: "", newSolutionLink: "", newSolutionDes: ""})
+    }
+
+    addSolution = solution => {
+        API.createSolution(solution)
             .then(res => {
-                console.log(res);
-                window.location.pathname = `/task/${res.data}`
-            }
-            ).catch(err =>
+                this.handleClear()
+                this.getInfo()
+            }).catch(err =>
+                console.log(err)
+            );
+    }
+
+    addComment = comment => {
+        API.createComment(comment)
+            .then(res => {
+                this.handleClear()
+                this.getInfo()
+            }).catch(err =>
                 console.log(err)
             );
     }
@@ -113,7 +132,7 @@ export default class Task extends Component {
                         <Grid.Row columns={2}>
                             <Grid.Column>
                                 <div className="task-problem">
-                                    <h2 className="task-title">{task.title}</h2>
+                                    <h2>{task.title}</h2>
                                     <div className="creator-info-div">
                                         <p>Creator: {task.creator}</p>
                                         <p>Created: {task.time}</p>
@@ -130,19 +149,18 @@ export default class Task extends Component {
                             <Grid.Column>
                                 <div className="sol-col-show-div">
                                     <ul style={{ display: `${this.state.toggler === 'solutions' ? 'block' : 'none'}` }}>
-                                        {task.solutions.length !== 0 ? task.solutions.map((solution, i) => ( <li key={i}> <a href={solution.Entry.link}>{solution.Entry.text}</a> </li>)) : <p>There are currently no solutions</p>}
+                                        {task.solutions.length !== 0 ? task.solutions.map((solution, i) => ( <SolutionCommentBox solution={true} solutionText={solution.Entry.text} solutionLink={solution.Entry.link} key={i}/> )) : <p>There are currently no solutions</p>}
                                     </ul>
                                     <ul  style={{ display: `${this.state.toggler === 'comments' ? 'block' : 'none'}` }} >
-                                        {task.comments !== 0 ? task.comments.map((comment, i) => <li key={i}>{comment.Entry.text}</li>) : <p>There are currently no comments</p>}
+                                        {task.comments !== 0 ? task.comments.map((comment, i) => <SolutionCommentBox solution={false} commentText={comment.Entry.text} key={i}/> ) : <p>There are currently no comments</p>}
                                     </ul>
                                 </div>
                                 <div className="sol-com-input-div">
-                                    <label style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}>Description</label>
-                                    <input type="text" placeholder="Link description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
-                                    <label style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}>Link</label>
-                                    <input type="text" placeholder="Enter SOLUTION link here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
-                                    <textarea type="text" placeholder="Write your COMMENT here" name="newComment" value={this.state.newComment} onChange={this.handleChange} style={{display: `${this.state.toggler === "comments" ? "block" : "none"}`}}/>
-                                    <button onClick={this.handleSubmit}>Submit</button>
+                                    <input type="text" placeholder="Enter Solution description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
+                                    <input type="text" placeholder="Enter Solution link here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
+                                    <textarea type="text" placeholder="Write your comment here" name="newComment" value={this.state.newComment} onChange={this.handleChange} style={{display: `${this.state.toggler === "comments" ? "block" : "none"}`}}/>
+                                    <button className="task-submit" onClick={this.handleSubmit}>Submit</button>
+                                    <button className="task-clear" onClick={this.handleClear}>Clear</button>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
