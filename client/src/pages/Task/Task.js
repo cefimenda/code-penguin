@@ -77,9 +77,14 @@ export default class Task extends Component {
     handleSubmit = () => {
         const task = this.props.match.params.hash
         if (this.state.toggler === "solutions") {
-            const text = this.state.newSolutionDes
-            const link = this.state.newSolutionLink
-            this.addSolution({task, text, link})
+            if (this.state.newSolutionLink.includes("github") && this.state.newSolutionLink.includes(".com")) {
+                const text = this.state.newSolutionDes
+                const link = this.state.newSolutionLink
+                this.addSolution({task, text, link})
+            } else {
+                alert(`Please add a github link`)
+            }
+            
         } else if (this.state.toggler === "comments") {
             const ctext = this.state.newComment
             this.addSolution({page: task, text: ctext})
@@ -152,7 +157,7 @@ export default class Task extends Component {
                                         {task.solutions.length !== 0 ? task.solutions.map((solution, i) => ( <SolutionCommentBox solution={true} solutionText={solution.Entry.text} solutionLink={solution.Entry.link} key={i}/> )) : <p>There are currently no solutions</p>}
                                     </ul>
                                     <ul  style={{ display: `${this.state.toggler === 'comments' ? 'block' : 'none'}` }} >
-                                        {task.comments !== 0 ? task.comments.map((comment, i) => <SolutionCommentBox solution={false} commentText={comment.Entry.text} key={i}/> ) : <p>There are currently no comments</p>}
+                                        {task.comments.length !== 0 ? task.comments.map((comment, i) => <SolutionCommentBox solution={false} commentText={comment.Entry.text} key={i}/> ) : <p>There are currently no comments</p>}
                                     </ul>
                                 </div>
                                 <div className="sol-com-input-div">
