@@ -99,6 +99,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "login",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "createTask",
                     "CallingType": "json",
                     "Exposure": "public"
