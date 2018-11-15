@@ -30,6 +30,8 @@ table {
   border-collapse: collapse;
   width: 100%;
   background-color: rgb(123, 128, 139);
+  font-family: 'Cambria, Cochin, Georgia, Times, 'Times New Roman', serif';
+  letter-spacing: 2px;
 }
 
 td, th {
