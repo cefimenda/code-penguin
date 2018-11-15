@@ -26,6 +26,10 @@ export default {
 
   getTransactionHistory: function () {
     return axios.post("/fn/transactions/readUserTransactions");
+  }, 
+
+  getTransactionTitle: function (hash) {
+    return axios.post("/fn/transactions/readTransaction", "\"" + hash + "\"");
   },
 
 
