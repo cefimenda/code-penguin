@@ -10,11 +10,11 @@ export default {
 
   /* Get pebble count given a user or task hash*/
   getPebbles: function(hash) {
-    return axios.post("/fn/tasks/tabulate", "\"" + hash + "\"");
+    return axios.post("/fn/transactions/tabulate", "\"" + hash + "\"");
   },
 
   getTransactionHistory: function() {
-    return axios.post("/fn/tasks/getUserTransactions");
+    return axios.post("/fn/transactions/readUserTransactions");
   },
 
   setUserData: function(data) {

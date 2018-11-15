@@ -34,18 +34,6 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "transaction",
-                    "DataFormat": "json",
-                    "SchemaFile": "transaction.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "transaction_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -103,11 +91,34 @@
                     "Name": "backTask",
                     "CallingType": "json",
                     "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "transactions",
+            "Description": "keeps track of all pebble transactions",
+            "CodeFile": "transactions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "transaction",
+                    "DataFormat": "json",
+                    "SchemaFile": "transaction.json",
+                    "Sharing": "public"
                 },
                 {
+                    "Name": "transaction_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
                     "Name": "createTransaction",
-                    "CallingType": "json",
-                    "Exposure": "private"
+                    "CallingType": "json"
                 },
                 {
                     "Name": "readTransaction",
@@ -116,6 +127,11 @@
                 },
                 {
                     "Name": "readTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readUserTransactions",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
