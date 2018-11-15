@@ -9,6 +9,8 @@ export default {
   },
   
   setUserData: function (data) {
+    data.email = "";
+    data.password = "";
     return axios.post("/fn/users/setUserData", data);
   },
 
@@ -24,6 +26,10 @@ export default {
 
   getTransactionHistory: function () {
     return axios.post("/fn/transactions/readUserTransactions");
+  }, 
+
+  getTransactionTitle: function (hash) {
+    return axios.post("/fn/transactions/readTransaction", "\"" + hash + "\"");
   },
 
 

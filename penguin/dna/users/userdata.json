@@ -2,6 +2,12 @@
     "title": "userdata Schema",
     "type": "object",
     "properties": {
+        "email": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
         "github": {
             "type": "string"
         },
@@ -10,6 +16,8 @@
         }
     },
     "required": [
+        "email",
+        "password",
         "github",
         "time"
     ]
