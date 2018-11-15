@@ -76,20 +76,39 @@ export default class Profile extends Component {
   getTransactions = () => {
     API.getTransactionHistory()
       .then(res => {
-        let wdTitle = res.data.withdrawals.map( async wd => {
-          console.log(wd.Hash);
-          let title = await API.getTransactionTitle(wd.Hash);
-          console.log(title);
-          return { ...wd, title };
-        });
+        let arrayData = []
+        res.data.withdrawals.forEach( wd => {
+          arrayData.push({type:"widthdrawl", hash: wd.Hash})
+        })
+
+        res.data.deposits.forEach( dp => {
+          arrayData.push({type:"deposit", hash: dp.Hash})
+        })
         this.setState({
-          taskTitle: wdTitle,
+          // taskTitle: wdTitle,
           withdrawals: res.data.withdrawals,
           deposits: res.data.deposits
         });
+        return arrayData
+      })
+      .then(res => {
+        let arratitle = []
+        this.getTitle([res[2]])
       })
       .catch(err => console.log(err));
   };
+
+  getTitle = hash => {
+    hash.forEach( data => {
+      console.log(data.type);
+      API.getTransactionTitle(data.hash)
+      .then(result => {
+        console.log(result.data);
+      })
+    })
+  }
+
+
 
   handleInputChange = event => {
     let value = event.target.value;
@@ -111,7 +130,7 @@ export default class Profile extends Component {
   };
 
   render() {
-    console.log(this.state.taskTitle)
+    // console.log(this.state.taskTitle)
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);

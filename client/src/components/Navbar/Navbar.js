@@ -40,10 +40,10 @@ export default class Navbar extends Component {
                 avatar: res.data.avatar_url
               });
             })
-            .catch(err => console.log(err));
+            .catch(err => {}/*console.log(err)*/);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {}/*console.log(err)*/);
   };
 
   createli = () => {
