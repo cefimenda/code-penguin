@@ -4,13 +4,21 @@
 
 .show-div button{
     position: absolute;
-    right: 15px;
-    top: 50%;
-    margin-top: -7px;
+    right: 0px;
+    height: 100%;
     color: #14c714;
     border: none;
-    padding: 0;
+    padding: 10px;
     background-color: transparent;
+}
+
+.show-div button:hover{
+    color: #e6e6e6;
+    text-shadow: 3px 3px 3px #000;
+}
+
+.show-div button:focus{
+    outline: none;
 }
 
 .comment-box,

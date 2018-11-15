@@ -9,7 +9,7 @@ export default class HoverBox extends Component {
         if (name === "Signup") {
             window.location.pathname = "/profile"
         } else if (name === "Login"){
-            window.location.pathname = "/marketplace"
+            window.location.pathname = "/"
         }
     }
     
