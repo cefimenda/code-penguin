@@ -36,7 +36,6 @@ export default class Navbar extends Component {
           });
           API.getGithub(github)
             .then(res => {
-              console.log(res);
               this.setState({
                 avatar: res.data.avatar_url
               });
@@ -78,12 +77,12 @@ export default class Navbar extends Component {
           </li>
           <li key="2" className="float-right">
             <a href="/profile">
-            <img
-                  className="mini-avatar"
-                  width="30px"
-                  src={this.state.avatar}
-                  alt={this.state.creator}
-                />
+              <img
+                className="mini-avatar"
+                width="30px"
+                src={this.state.avatar}
+                alt={this.state.creator}
+              />
               <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
                 {this.state.userPebbles}
               </p>
