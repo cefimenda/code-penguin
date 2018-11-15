@@ -14,7 +14,8 @@ export default class Profile extends Component {
     pebbles: '',
     withdrawals: [],
     deposits: [],
-    hasGithub: false
+    hasGithub: false,
+    taskTitle: ''
   };
 
   componentDidMount = () => {
@@ -37,9 +38,9 @@ export default class Profile extends Component {
           });
           API.getGithub(github)
             .then(res => {
-              console.log(res);
+              // console.log(res);
               this.setState({
-                avatar: res.data.avatar_url,
+                avatar: res.data.avatar_url
               });
             })
             .catch(err => console.log(err));
@@ -48,26 +49,47 @@ export default class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  getTransactions = () => {
-    API.getTransactionHistory().then(res => {
-      console.log(res);
-      this.setState({
-        withdrawals: res.data.withdrawals,
-        deposits: res.data.deposits
-      });
-      // console.log(res.data.withdrawals)
-      // console.log(res.data.deposits)
-    });
-  };
+  // getTransactions = () => {
+  //   API.getTransactionHistory().then(async res => {
+  //     // let { hash } = res.data.withdrawals
+  //     // console.log(res.data.withdrawals)
+  //     let wdTitle = res.data.withdrawals.map(wd => {
+  // 	  console.log(wd.Hash)
+  //       let title = await API.getTransactionTitle(wd.Hash)
+  //       // console.log('title', title)
+  //         console.log(title)
+  //       return wd = {...wd, title}
+  //     })
 
-  // sortWithdrawals = () => {
-  //   let data = this.state.withdrawals;
-  //   data.sort((a, b) => {
-  //     return new Date(b.Entry.time).getTime() - new Date(a.Entry.time).getTime();
-  //   });
-  //   this.setState({ withdrawals: data });
-  //   console.log(data);
+  //     // console.log(wdTitle)
+  //     // let dTitle = res.data.deposits.map(async wd => {
+  //     //   let title = await API.getTransactionName(wd.Hash)
+  //     //   return wd = {...wd, title }
+  //     // })
+  //     this.setState({
+  //       withdrawals: res.data.withdrawals,
+  //       deposits: res.data.deposits
+  //     });
+  //   }).catch(err => console.log(err))
   // };
+
+  getTransactions = () => {
+    API.getTransactionHistory()
+      .then(res => {
+        let wdTitle = res.data.withdrawals.map( async wd => {
+          console.log(wd.Hash);
+          let title = await API.getTransactionTitle(wd.Hash);
+          console.log(title);
+          return { ...wd, title };
+        });
+        this.setState({
+          taskTitle: wdTitle,
+          withdrawals: res.data.withdrawals,
+          deposits: res.data.deposits
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   handleInputChange = event => {
     let value = event.target.value;
@@ -77,43 +99,52 @@ export default class Profile extends Component {
     });
   };
 
-
   handleFormSubmit = event => {
     event.preventDefault();
     API.setUserData({
-      "github": this.state.creator
-    }).then(res=>{
-      this.getHash();
-    }).catch(err=>{
-
-    });
-  }
+      github: this.state.creator
+    })
+      .then(res => {
+        this.getHash();
+      })
+      .catch(err => {});
+  };
 
   render() {
+    console.log(this.state.taskTitle)
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
-    let data = withdrawals.concat(deposits)
+    let data = withdrawals.concat(deposits);
     return (
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
           {/* <ProfileInfo prof={this.props.profSeed}/> */}
           <div className="input-div" style={{ margin: '10px 0' }}>
-            {this.state.hasGithub ? <div>
+            {this.state.hasGithub ? (
+              <div>
                 <div className="label">
                   <label>Hello, </label>
                 </div>
                 <span className="span-user">{this.state.creator.toUpperCase()}</span>
-              </div> :
+              </div>
+            ) : (
               <div>
                 <div className="label">
                   <label>Add your github username?</label>
                   <form onSubmit={this.state.handleFormSubmit}>
-                    <input value={this.state.creator} name="creator" type="text" onChange={this.handleInputChange} placeholder="username"/>
+                    <input
+                      value={this.state.creator}
+                      name="creator"
+                      type="text"
+                      onChange={this.handleInputChange}
+                      placeholder="username"
+                    />
                     <button onClick={this.handleFormSubmit}>Submit</button>
                   </form>
                 </div>
-              </div>}
+              </div>
+            )}
             {/* <span className="span-user">QmWtWoTu6qeSkiSBW7F7sKnrEYowfunci5BLHzpZDuxTjy</span> */}
             <img
               className="avatar"
@@ -125,13 +156,8 @@ export default class Profile extends Component {
           </div>
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
-          <div className="div-404">
-            <h2>Pebble Transaction History</h2>
-            <Table data={data} />
-
-          
-
-          </div>
+          <h2 className="table-header">Pebble Transaction History</h2>
+          <Table data={data} deposits={deposits} withdrawals={withdrawals} />
         </Container>
       </React.Fragment>
     );

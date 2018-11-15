@@ -30,6 +30,8 @@ table {
   border-collapse: collapse;
   width: 100%;
   background-color: rgb(123, 128, 139);
+  font-family: 'Cambria, Cochin, Georgia, Times, 'Times New Roman', serif';
+  letter-spacing: 2px;
 }
 
 td, th {
@@ -58,4 +60,11 @@ td {
 .tr-header {
   /* width: 100px; */
   background-color: #212f33;
+}
+
+.table-header {
+  padding-top: 10%;
+  text-align: center;
+  letter-spacing: 3px;
+  padding-bottom: 10px;
 }
