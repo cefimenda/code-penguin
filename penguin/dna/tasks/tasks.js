@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link", "userdata", "userdata_link"];
+  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "userdata", "userdata_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -253,102 +253,6 @@ function tabulate(hash) {
   return totalDeposits - totalWithdrawals;
 }
 
-// Solutions
-
-/*********************************************
- * SOLUTIONS
- * {
- *    task: (hash of the task it is a solution for)
- *    link: (github link or similar)
- *    text: (text to include if code is short or as a N.B. about the link)
- * }
- ********************************************/
-function createSolution(solution) {
-  solution = addTimestamp(solution);
-  var hash = commit('solution', solution);
-  var taskSolutionLink = commit('solution_link', {
-    Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
-  });
-  var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
-  });
-  return hash;
-}
-
-function readSolution(hash) {
-  var solution = get(hash);
-  return solution;
-}
-
-function readSolutions(hash) {
-  var solutions = getLinks(hash, "solutions", { Load: true });
-  return { solutions: solutions };
-}
-
-function rewardedSolution(hash){
-  return getLinks(hash, "rewarded_solution", { Load: true});
-}
-
-/**
- * 
- * @param {string} hash Hash of the solution to be rewarded
- */
-function reward(hash) {
-  var solution = get(hash);
-  var solutionTask = solution.task;
-  var solutionAuthor = getCreator(hash);
-  var pebbles = tabulate(solutionTask);
-  var rewardedSolutionLink = commit('solution_link', {
-    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution"}]
-  });
-  return createTransaction({
-    origin: solutionTask,
-    destination: solutionAuthor,
-    pebbles: pebbles
-  });
-}
-
-/*********************************************
- * COMMENTS
- * {
- *    page: (hash of the page to comment on -- task or agent or maybe even DNA for like a testimonials page??)
- *    text: (text of the comment)
- * }
- ********************************************/
-function createComment(comment) {
-  comment = addTimestamp(comment);
-  var hash = commit('comment', comment);
-  var pageCommentLink = commit('comment_link', {
-    Links: [{ Base: comment.page, Link: hash, Tag: "comments" }]
-  });
-
-  // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
-  // in which case the user hash would be the page
-  var authorCommentLink = commit('comment_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
-  });
-  return hash;
-}
-
-function readComment(hash) {
-  var comment = get(hash);
-  return comment;
-}
-
-// For reading comments from a page's hash
-function readComments(hash) {
-  var comments = getLinks(hash, "comments", { Load: true });
-  return { comments: comments };
-}
-
-// For reading comments made by a particular user from the agent hash
-function readMyComments(hash) {
-  var comments = getLinks(hash, "commentsMade", { Load: true });
-  return { comments: comments };
-}
-
-
-
 /*******************************************************************************
  * Required callbacks
  ******************************************************************************/
@@ -375,20 +279,20 @@ function genesis() {
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
     tags: ["holochain"],
-    pebbles: 2
+    pebbles: 1
   });
   createTask({
     title: "Need Holochain Help NOW",
     details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
     tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
-    pebbles: 3
+    pebbles: 2
   });
-  createSolution({
+  call("solutions", "createSolution", {
     task: taskHash,
     text: "try my solution",
     link: "https://www.google.com"
   });
-  createComment({
+  call("comments", "createComment", {
     page: taskHash,
     text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
   });
@@ -440,14 +344,6 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           (entry.pebbles > 0)
         )
       case "transaction_link":
-        return true
-      case "solution":
-        return true
-      case "solution_link":
-        return true
-      case "comment":
-        return true
-      case "comment_link":
         return true
       case "userdata":
         return true

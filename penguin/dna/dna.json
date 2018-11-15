@@ -46,30 +46,6 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "solution",
-                    "DataFormat": "json",
-                    "SchemaFile": "solution.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "solution_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "comment",
-                    "DataFormat": "json",
-                    "SchemaFile": "comment.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "comment_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -159,6 +135,35 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "distribute",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "solutions",
+            "Description": "creates a potential solution for a given task",
+            "CodeFile": "solutions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "solution",
+                    "DataFormat": "json",
+                    "SchemaFile": "solution.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "solution_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
                     "Name": "createSolution",
                     "CallingType": "json",
                     "Exposure": "public"
@@ -182,7 +187,31 @@
                     "Name": "reward",
                     "CallingType": "json",
                     "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "comments",
+            "Description": "allow hashes to be commented upon",
+            "CodeFile": "comments.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "comment",
+                    "DataFormat": "json",
+                    "SchemaFile": "comment.json",
+                    "Sharing": "public"
                 },
+                {
+                    "Name": "comment_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
                 {
                     "Name": "createComment",
                     "CallingType": "json",
@@ -200,11 +229,6 @@
                 },
                 {
                     "Name": "readMyComments",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "redistribute",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
