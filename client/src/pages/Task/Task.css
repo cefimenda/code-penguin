@@ -65,6 +65,7 @@
     height: 60%;
     background-color: #222;
     padding: 1px;
+    overflow: auto;
 }
 
 .sol-com-input-div {
@@ -81,11 +82,7 @@
     border: none;
     color: #fff;
     background-color: #222;
-    margin: 0;
-}
-
-.sol-com-input-div input {
-    margin: 15px 0;
+    margin: 5px 0;
 }
 
 .sol-com-input-div textarea {
@@ -137,6 +134,40 @@
 .sol-com-input-div button:active {
     bottom: 10px;
     box-shadow: none;
+}
+
+.sol-col-chosen {
+    height: 100%;
+    width: 100%;
+    background-color: #222;
+    padding: 10px;
+}
+
+.sol-col-chosen h4{
+    text-decoration: underline;
+}
+
+.sol-col-chosen a{
+    color: #fff;
+}
+
+.sol-col-chosen a:hover{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.sol-col-chosen a:hover div{
+    background-color: #3b1616;
+}
+
+.sol-col-chosen a div{
+    border: 7px solid #3b1616;
+    background-color: #5c1f1f;
+    padding: 7px;
+    line-height: 20px;
+    margin: 10px;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 
