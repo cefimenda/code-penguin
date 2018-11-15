@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import API from "../../utils/API";
 import './Navbar.css';
 
 export default class Navbar extends Component {
@@ -6,7 +7,8 @@ export default class Navbar extends Component {
         auth: false,
         slide: 0,
         lastScrollY: 0,
-        color: "transparent"
+        color: "transparent",
+        userPebbles: ""
     };
     
     componentWillMount() {
@@ -15,6 +17,19 @@ export default class Navbar extends Component {
     
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    componentDidMount = () => {
+        this.getHash();
+    }
+
+    getHash = () => {
+        API.getUser()
+            .then(res => {
+                this.setState({userPebbles: res.data.pebbles});
+            }).catch(err =>
+                console.log(err)
+            );
     }
 
     createli = () => {
@@ -26,7 +41,7 @@ export default class Navbar extends Component {
                     <li key="1"><a href="/"><h4 className="ui white"> Code Penguin</h4></a></li>
                     <li key="4" className="float-right"><a href="/landing"><p className="ui white">Log off</p></a></li>
                     <li key="3" className="float-right"><a href="/"><p className={this.props.page === "Marketplace" ? "ui white navbold" : "ui white"}>Marketplace</p></a></li>
-                    <li key="2" className="float-right"><a href="/profile"><p className={this.props.page === "Profile" ? "ui white navbold" : "ui white"}>Profile</p></a></li>
+                    <li key="2" className="float-right"><a href="/profile"><p className={this.props.page === "Profile" ? "ui white navbold" : "ui white"}>{this.state.userPebbles}</p><img className="nav-pebble-img" src='http://pluspng.com/img-png/circle-objects-png-object-256.png' alt="pebbles"/></a></li>
                 </React.Fragment>
             )
         }

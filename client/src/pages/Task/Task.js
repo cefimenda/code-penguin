@@ -113,7 +113,7 @@ export default class Task extends Component {
         API.reward(hash)
             .then(res => {
                 console.log(res);
-                this.getInfo()
+                this.getSolutionRewardInfo()
             }).catch(err =>
                 console.log(err)
             );
@@ -189,7 +189,7 @@ export default class Task extends Component {
                                 <div className="sol-com-input-div">
                                     <div style={{display: `${toggler === "solutions" && rewardHash === "" ? "block" : "none"}`}}> {/* If there is a chosen solution then on toggle solution this is gone*/}
                                         <input type="text" placeholder="Enter Solution description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleInputChange}/>
-                                        <input type="text" placeholder="Enter Solution link here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleInputChange}/>
+                                        <input type="text" placeholder="Enter Link to Github Repo here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleInputChange}/>
                                     </div>
                                     <div style={{display: `${toggler === "comments" ? "block" : "none"}`}}>
                                         <textarea type="text" placeholder="Write your comment here" name="newComment" value={this.state.newComment} onChange={this.handleInputChange} />
