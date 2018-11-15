@@ -279,13 +279,13 @@ function genesis() {
     title: "Holochain App Debug",
     details: "My holochain app isn't working!!",
     tags: ["holochain"],
-    pebbles: 2
+    pebbles: 1
   });
   createTask({
     title: "Need Holochain Help NOW",
     details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
     tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
-    pebbles: 3
+    pebbles: 2
   });
   call("solutions", "createSolution", {
     task: taskHash,
