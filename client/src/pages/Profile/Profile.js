@@ -66,11 +66,6 @@ export default class Profile extends Component {
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
       });
-      // API.getTransactionName(hash).then(res => {
-      //   console.log(res);
-      // });
-      // console.log(res.data.withdrawals)
-      // console.log(res.data.deposits)
     });
   };
 
