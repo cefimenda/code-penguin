@@ -51,17 +51,17 @@ export default class Profile extends Component {
   getTransactions = () => {
     API.getTransactionHistory().then(res => {
       // let { hash } = res.data.withdrawals
-      let newWithdrawals = res.data.withdrawals.map(async wd => {
-        let title =  await API.getTransactionName(wd.Entry.origin)
-        console.log('title', title)
-        return wd = {...wd, title}
-      })
+      // let newWithdrawals = res.data.withdrawals.map(async wd => {
+      //   let title =  await API.getTransactionName(wd.Entry.origin)
+      //   console.log('title', title)
+      //   return wd = {...wd, title}
+      // })
 
-      console.log(newWithdrawals)
-      let newDeposits = res.data.deposits.map(async wd => {
-        let title = await API.getTransactionName(wd.Entry.destination)
-        return wd = {...wd, title }
-      })
+      // console.log(newWithdrawals)
+      // let newDeposits = res.data.deposits.map(async wd => {
+      //   let title = await API.getTransactionName(wd.Entry.destination)
+      //   return wd = {...wd, title }
+      // })
       this.setState({
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
@@ -127,7 +127,7 @@ export default class Profile extends Component {
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
             <h2 className="table-header">Pebble Transaction History</h2>
-            <Table data={data} />
+            <Table data={data} deposits={deposits} withdrawals={withdrawals}/>
         </Container>
       </React.Fragment>
     );
