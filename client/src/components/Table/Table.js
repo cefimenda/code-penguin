@@ -6,6 +6,8 @@ export default class Table extends Component {
 
   renderTableInfo = () => {
 
+    if(!this.props.withdrawals && !this.props.deposits) return
+
     let newWithdrawals = this.props.withdrawals.map(wd => {
       return wd = {...wd, type: 'withdraw', style:'red'}
     })
