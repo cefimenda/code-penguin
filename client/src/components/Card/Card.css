@@ -105,6 +105,7 @@ hr.card-hr {
 .flip-card-btn {
   position: absolute;
   bottom: 15px;
+  height: 31px;
   background-color: #212f33;
   border: none;
   color: #fff;
@@ -116,12 +117,15 @@ hr.card-hr {
   left: 25px;
 }
 
+.card-arrow-img {
+  height: 100%;
+}
+
 .flip-card-btn{
   right: 15px;
 }
 
-.choose-card-btn:hover,
-.flip-card-btn:hover {
+.choose-card-btn:hover {
   text-shadow: 0 0 15px #aaa;
 }
 
