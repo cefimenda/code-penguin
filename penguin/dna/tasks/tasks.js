@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "comment", "comment_link", "userdata", "userdata_link"];
+  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "userdata", "userdata_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -308,47 +308,6 @@ function reward(hash) {
   });
 }
 
-/*********************************************
- * COMMENTS
- * {
- *    page: (hash of the page to comment on -- task or agent or maybe even DNA for like a testimonials page??)
- *    text: (text of the comment)
- * }
- ********************************************/
-function createComment(comment) {
-  comment = addTimestamp(comment);
-  var hash = commit('comment', comment);
-  var pageCommentLink = commit('comment_link', {
-    Links: [{ Base: comment.page, Link: hash, Tag: "comments" }]
-  });
-
-  // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
-  // in which case the user hash would be the page
-  var authorCommentLink = commit('comment_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
-  });
-  return hash;
-}
-
-function readComment(hash) {
-  var comment = get(hash);
-  return comment;
-}
-
-// For reading comments from a page's hash
-function readComments(hash) {
-  var comments = getLinks(hash, "comments", { Load: true });
-  return { comments: comments };
-}
-
-// For reading comments made by a particular user from the agent hash
-function readMyComments(hash) {
-  var comments = getLinks(hash, "commentsMade", { Load: true });
-  return { comments: comments };
-}
-
-
-
 /*******************************************************************************
  * Required callbacks
  ******************************************************************************/
@@ -388,7 +347,7 @@ function genesis() {
     text: "try my solution",
     link: "https://www.google.com"
   });
-  createComment({
+  call("comments", "createComment", {
     page: taskHash,
     text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
   });
@@ -444,10 +403,6 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "solution":
         return true
       case "solution_link":
-        return true
-      case "comment":
-        return true
-      case "comment_link":
         return true
       case "userdata":
         return true
