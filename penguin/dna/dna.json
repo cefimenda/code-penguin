@@ -46,18 +46,6 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "solution",
-                    "DataFormat": "json",
-                    "SchemaFile": "solution.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "solution_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -147,6 +135,35 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "distribute",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "solutions",
+            "Description": "creates a potential solution for a given task",
+            "CodeFile": "solutions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "solution",
+                    "DataFormat": "json",
+                    "SchemaFile": "solution.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "solution_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
                     "Name": "createSolution",
                     "CallingType": "json",
                     "Exposure": "public"
@@ -168,11 +185,6 @@
                 },
                 {
                     "Name": "reward",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "distribute",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

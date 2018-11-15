@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "solution", "solution_link", "userdata", "userdata_link"];
+  var entryTypes = ["task", "task_link", "transaction", "transaction_link", "userdata", "userdata_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -253,61 +253,6 @@ function tabulate(hash) {
   return totalDeposits - totalWithdrawals;
 }
 
-// Solutions
-
-/*********************************************
- * SOLUTIONS
- * {
- *    task: (hash of the task it is a solution for)
- *    link: (github link or similar)
- *    text: (text to include if code is short or as a N.B. about the link)
- * }
- ********************************************/
-function createSolution(solution) {
-  solution = addTimestamp(solution);
-  var hash = commit('solution', solution);
-  var taskSolutionLink = commit('solution_link', {
-    Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
-  });
-  var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
-  });
-  return hash;
-}
-
-function readSolution(hash) {
-  var solution = get(hash);
-  return solution;
-}
-
-function readSolutions(hash) {
-  var solutions = getLinks(hash, "solutions", { Load: true });
-  return { solutions: solutions };
-}
-
-function rewardedSolution(hash){
-  return getLinks(hash, "rewarded_solution", { Load: true});
-}
-
-/**
- * 
- * @param {string} hash Hash of the solution to be rewarded
- */
-function reward(hash) {
-  var solution = get(hash);
-  var solutionTask = solution.task;
-  var solutionAuthor = getCreator(hash);
-  var pebbles = tabulate(solutionTask);
-  var rewardedSolutionLink = commit('solution_link', {
-    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution"}]
-  });
-  return createTransaction({
-    origin: solutionTask,
-    destination: solutionAuthor,
-    pebbles: pebbles
-  });
-}
-
 /*******************************************************************************
  * Required callbacks
  ******************************************************************************/
@@ -342,7 +287,7 @@ function genesis() {
     tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
     pebbles: 3
   });
-  createSolution({
+  call("solutions", "createSolution", {
     task: taskHash,
     text: "try my solution",
     link: "https://www.google.com"
@@ -399,10 +344,6 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           (entry.pebbles > 0)
         )
       case "transaction_link":
-        return true
-      case "solution":
-        return true
-      case "solution_link":
         return true
       case "userdata":
         return true

@@ -59,12 +59,12 @@ export default {
 
   /* Get all solutions linked with one hash (either task or user) */
   getSolutions: function(hash){
-    return axios.post("/fn/tasks/readSolutions", "\"" + hash + "\"");
+    return axios.post("/fn/solutions/readSolutions", "\"" + hash + "\"");
   },
 
   /* Get the solution at one specific hash */
   getSolution: function(hash){
-    return axios.post("/fn/tasks/readSolution", "\"" + hash + "\"");
+    return axios.post("/fn/solutions/readSolution", "\"" + hash + "\"");
   },
 
   /* solution: {
@@ -73,34 +73,34 @@ export default {
       text: (text to include if code is short or as a N.B. about the link)
      } */
   createSolution: function(solution){
-    return axios.post("/fn/tasks/createSolution", solution);
+    return axios.post("/fn/solutions/createSolution", solution);
   },
 
   /* Get the rewarded solution via the task hash */
   rewardedSolution: function(hash){
-    return axios.post("/fn/tasks/rewardedSolution", "\"" + hash + "\"");
+    return axios.post("/fn/solutions/rewardedSolution", "\"" + hash + "\"");
   },
 
   /* Reward the solution at one specific hash */
   reward: function(hash){
-    return axios.post("/fn/tasks/reward", "\"" + hash + "\"");
+    return axios.post("/fn/solutions/reward", "\"" + hash + "\"");
   },
 
   //COMMENTS
 
   /* Get all the comments linekd with one hash (any entry can theoretically be commented on.)*/
   getComments: function(hash){
-    return axios.post("/fn/tasks/readComments", "\"" + hash + "\"");
+    return axios.post("/fn/comments/readComments", "\"" + hash + "\"");
   },
 
   /* Get all the comments made by a specific user (given in hash)*/
   getMyComments: function(hash){
-    return axios.post("/fn/tasks/readMyComments", "\"" + hash + "\"");
+    return axios.post("/fn/comments/readMyComments", "\"" + hash + "\"");
   },
 
   /* Get the comment at one specific hash */
   getComment: function(hash){
-    return axios.post("/fn/tasks/readComment", "\"" + hash + "\"");
+    return axios.post("/fn/comments/readComment", "\"" + hash + "\"");
   },
 
   /* comment: {
@@ -108,7 +108,7 @@ export default {
       text: (text of the comment)
      } */
   createComment: function(comment){
-    return axios.post("/fn/tasks/createComment", comment);
+    return axios.post("/fn/comments/createComment", comment);
   }
 
 };
