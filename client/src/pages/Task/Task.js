@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import TaskBox from '../../components/TaskBox';
-import SolutionCommentBox from '../../components/SolutionComentBox';
+import SolutionCommentBox from '../../components/SolutionCommentBox';
 import { Button, Grid } from 'semantic-ui-react';
 import './Task.css';
 import API from '../../utils/API';
@@ -22,34 +22,27 @@ export default class Task extends Component {
         toggler: 'solutions',
         newComment: '',
         newSolutionLink: '',
-        newSolutionDes: ''
+        newSolutionDes: '',
+        user: '',
+        rewardHash: '',
+        rewarded: {
+            link: '',
+            text: '',
+            task: '',
+            time: '',
+        }
     };
 
     componentDidMount = () => {
         this.getInfo();
+        this.getSolutionRewardInfo();
+        this.getUserHash();
     };
 
     getInfo = () => {
         API.getTask(this.props.match.params.hash)
             .then(res => {
                 let rawdata = res.data
-                // let date = new Date(rawdata.time)
-                // let dd = date.getDate()
-                // let mm = date.getMonth()+1
-                // let hh = date.getHours()
-                // let min = date.getMinutes()
-                // let AMPM = "AM"
-                // const yyyy = date.getFullYear()
-                // const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-                // if(dd < 10) { dd=`0${dd}`}
-                // if(mm < 10) { mm=`0${mm}`}
-                // if(min < 10) { min=`0${min}`}
-                // if(hh === 0) { hh = 12}
-                // if(hh > 12) {
-                //     hh = hh-12
-                //     AMPM = "PM"
-                // }
-                // rawdata.time = `${months[mm]} ${dd}, ${yyyy} ${hh}:${min} ${AMPM}`
                 let date = new Date(res.data.time)
                 rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`
                 this.setState({ task: rawdata });
@@ -57,7 +50,28 @@ export default class Task extends Component {
             .catch(err => {
                 console.log(err);
             });
+
+
     };
+
+    getSolutionRewardInfo = () => {
+        API.rewardedSolution(this.props.match.params.hash)
+        .then(res => {
+            this.setState({rewardHash: res.data[0].Hash, rewarded: res.data[0].Entry})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    getUserHash = () => {
+        API.getUser()
+            .then(res => {
+                this.setState({user: res.data.hash});
+            }).catch(err =>
+                console.log(err)
+            );
+    }
 
     handleToggle = event => {
         this.setState({ toggler: event.target.name }, () => {
@@ -69,7 +83,7 @@ export default class Task extends Component {
         });
     };
 
-    handleChange = event => {
+    handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
@@ -87,12 +101,22 @@ export default class Task extends Component {
             
         } else if (this.state.toggler === "comments") {
             const ctext = this.state.newComment
-            this.addSolution({page: task, text: ctext})
+            this.addComment({page: task, text: ctext})
         }
     }
 
     handleClear = () => {
         this.setState({ newComment: "", newSolutionLink: "", newSolutionDes: ""})
+    }
+
+    handleReward = hash => {
+        API.reward(hash)
+            .then(res => {
+                console.log(res);
+                this.getSolutionRewardInfo()
+            }).catch(err =>
+                console.log(err)
+            );
     }
 
     addSolution = solution => {
@@ -115,8 +139,10 @@ export default class Task extends Component {
             );
     }
 
+
+
     render() {
-        var { task } = this.state;
+        var { task, user, rewardHash, toggler } = this.state;
         return (
         <React.Fragment>
             <Navbar />
@@ -128,9 +154,9 @@ export default class Task extends Component {
                 </div>
                     <div className="sol-com-btn-div">
                         <Button.Group size="mini" compact>
-                            <Button name="solutions" onClick={this.handleToggle} color={this.state.toggler === 'solutions' ? 'teal' : 'grey'}> Solutions </Button>
+                            <Button name="solutions" onClick={this.handleToggle} color={toggler === 'solutions' ? 'teal' : 'grey'}> Solutions </Button>
                             <Button.Or />
-                            <Button name="comments" onClick={this.handleToggle} color={this.state.toggler === 'comments' ? 'teal' : 'grey'} > Comments </Button>
+                            <Button name="comments" onClick={this.handleToggle} color={toggler === 'comments' ? 'teal' : 'grey'} > Comments </Button>
                         </Button.Group>
                     </div>
                     <Grid divided="vertically">
@@ -153,19 +179,33 @@ export default class Task extends Component {
                             </Grid.Column>
                             <Grid.Column>
                                 <div className="sol-col-show-div">
-                                    <ul style={{ display: `${this.state.toggler === 'solutions' ? 'block' : 'none'}` }}>
-                                        {task.solutions.length !== 0 ? task.solutions.map((solution, i) => ( <SolutionCommentBox solution={true} solutionText={solution.Entry.text} solutionLink={solution.Entry.link} key={i}/> )) : <p>There are currently no solutions</p>}
+                                    <ul style={{ display: `${toggler === 'solutions' ? 'block' : 'none'}` }}>
+                                        {task.solutions.length !== 0 ? task.solutions.map((solution, i) => ( <SolutionCommentBox solution={true} solutionInfo={solution.Entry} solHash={solution.Hash} key={i} isCreator={task.creator === user ? true : false} reward={this.handleReward} rewardHash={this.state.rewardHash}/> )) : <p>There are currently no solutions</p>}
                                     </ul>
-                                    <ul  style={{ display: `${this.state.toggler === 'comments' ? 'block' : 'none'}` }} >
+                                    <ul  style={{ display: `${toggler === 'comments' ? 'block' : 'none'}` }} >
                                         {task.comments.length !== 0 ? task.comments.map((comment, i) => <SolutionCommentBox solution={false} commentText={comment.Entry.text} key={i}/> ) : <p>There are currently no comments</p>}
                                     </ul>
                                 </div>
                                 <div className="sol-com-input-div">
-                                    <input type="text" placeholder="Enter Solution description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
-                                    <input type="text" placeholder="Enter Solution link here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleChange} style={{display: `${this.state.toggler === "solutions" ? "block" : "none"}`}}/>
-                                    <textarea type="text" placeholder="Write your comment here" name="newComment" value={this.state.newComment} onChange={this.handleChange} style={{display: `${this.state.toggler === "comments" ? "block" : "none"}`}}/>
-                                    <button className="task-submit" onClick={this.handleSubmit}>Submit</button>
-                                    <button className="task-clear" onClick={this.handleClear}>Clear</button>
+                                    <div style={{display: `${toggler === "solutions" && rewardHash === "" ? "block" : "none"}`}}> {/* If there is a chosen solution then on toggle solution this is gone*/}
+                                        <input type="text" placeholder="Enter Solution description" name="newSolutionDes" value={this.state.newSolutionDes} onChange={this.handleInputChange}/>
+                                        <input type="text" placeholder="Enter Link to Github Repo here" name="newSolutionLink" value={this.state.newSolutionLink} onChange={this.handleInputChange}/>
+                                    </div>
+                                    <div style={{display: `${toggler === "comments" ? "block" : "none"}`}}>
+                                        <textarea type="text" placeholder="Write your comment here" name="newComment" value={this.state.newComment} onChange={this.handleInputChange} />
+                                    </div>
+                                    <div style={{display: `${rewardHash !== "" && toggler === "solutions" ? "none" : "block"}`}}>{/* If there is a chosen solution then on toggle solution this is gone*/}
+                                        <button className="task-submit" onClick={this.handleSubmit}>Submit</button>
+                                        <button className="task-clear" onClick={this.handleClear}>Clear</button>
+                                    </div>
+                                    <div className="sol-col-chosen" style={{display: `${rewardHash !== "" && toggler === "solutions" ? "block" : "none"}`}}>{/* If there is a chosen solution then on toggle solution this SHOWS*/}
+                                        <h4>Winning Solution:</h4>
+                                        <a href={this.state.rewarded.link.includes("http") ? this.state.rewarded.link : `https://${this.state.rewarded.link}`} target="_blank" rel="noopener noreferrer" >
+                                            <div>
+                                                {this.state.rewarded.text}
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>

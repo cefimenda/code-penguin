@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["task", "task_link"];
+  var entryTypes = ["solution", "solution_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -37,91 +37,57 @@ function addTimestamp(object) {
   return object;
 }
 
+// Solutions
+
 /*********************************************
- * TASKS
- * (the task object that we receive from the UI should look like the following)
+ * SOLUTIONS
  * {
- *    title: (title of the task)
- *    details: (description of the task)
- *    tags: (array of tags)
- *    pebbles (how many pebbles the creator throws down initially)
+ *    task: (hash of the task it is a solution for)
+ *    link: (github link or similar)
+ *    text: (text to include if code is short or as a N.B. about the link)
  * }
  ********************************************/
-function createTask(task) {
-  var pebbles = task.pebbles || 0;
-  if (pebbles === 0) return;
-  task = addTimestamp(task);
-  task.creator = App.Key.Hash;
-  task.title = task.title || "";
-  task.details = task.details || "";
-  task.tags = task.tags || [];
-  var hash = commit('task', task);
-  var transactionHash = backTask({
-    task: hash,
-    pebbles: pebbles
+function createSolution(solution) {
+  solution = addTimestamp(solution);
+  var hash = commit('solution', solution);
+  var taskSolutionLink = commit('solution_link', {
+    Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
   });
-  var tasksLink = commit('task_link', {
-    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
-  });
-  var myTasksLink = commit('task_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
+  var authorSolutionLink = commit('solution_link', {
+    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
   });
   return hash;
 }
 
-function readTask(hash) {
-  var task = get(hash);
-  task.pebbles = call("transactions", "tabulate", "\"" + hash + "\"");
-  task.solutions = getLinks(hash, "solutions", { Load: true });
-  task.comments = getLinks(hash, "comments", { Load: true });
-  return task;
+function readSolution(hash) {
+  var solution = get(hash);
+  return solution;
 }
 
-function readAllTasks() {
-  var links = getLinks(App.DNA.Hash, "tasks", { Load: true });
-  links.forEach(function (link) {
-    var pebbles = call("transactions", "tabulate", "\"" + link.Hash + "\"");
-    link.Entry.pebbles = pebbles;
-  });
-  return { links: links };
+function readSolutions(hash) {
+  var solutions = getLinks(hash, "solutions", { Load: true });
+  return { solutions: solutions };
 }
 
-function readMyTasks(userHash) {
-  var links = getLinks(userHash || App.Key.Hash, "tasks", { Load: true });
-  return { links: links };
-}
-
-function deleteTask(hash) {
-  console.log(hash)
-  //remove the task entry
-  remove(hash, "this task is deleted");
-  //mark the task link on the DNA as deleted
-  commit("task_link", {
-    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks", LinkAction: HC.LinkAction.Del }]
-  })
-  //mark the task link on the agent as deleted
-  //?? Unsure what happens if this link doesn't exist on this particular user's agent hash
-  commit("task_link", {
-    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks", LinkAction: HC.LinkAction.Del }]
-  })
-  return true
+function rewardedSolution(hash){
+  return getLinks(hash, "rewarded_solution", { Load: true});
 }
 
 /**
  * 
- * @param {object} back Object representing the pledge to back a task
- * {
- *    task: (hash of task to back)
- *    pebbles: (amount of pebbles to be transfered)
- * }
+ * @param {string} hash Hash of the solution to be rewarded
  */
-function backTask(back) {
-  var backer = App.Key.Hash;
-  var task = back.task;
-  var pebbles = back.pebbles;
-  return call("transactions", "createTransaction", {
-    origin: backer,
-    destination: task,
+function reward(hash) {
+  var solution = get(hash);
+  var solutionTask = solution.task;
+  var solutionAuthor = getCreator(hash);
+  var pebbles = tabulate(solutionTask);
+  var rewardedSolutionLink = commit('solution_link', {
+    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution"}]
+  });
+  return createTransaction({
+    origin: solutionTask,
+    destination: solutionAuthor,
     pebbles: pebbles
   });
 }
@@ -142,33 +108,6 @@ function backTask(back) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
-  call("transactions", "createTransaction", {
-    origin: App.DNA.Hash,
-    destination: App.DNA.Hash,
-    pebbles: 500
-  });
-  call("transactions", "distribute", "");
-  var taskHash = createTask({
-    title: "Holochain App Debug",
-    details: "My holochain app isn't working!!",
-    tags: ["holochain"],
-    pebbles: 1
-  });
-  createTask({
-    title: "Need Holochain Help NOW",
-    details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
-    tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
-    pebbles: 2
-  });
-  call("solutions", "createSolution", {
-    task: taskHash,
-    text: "try my solution",
-    link: "https://www.google.com"
-  });
-  call("comments", "createComment", {
-    page: taskHash,
-    text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
-  });
   return true;
 }
 
@@ -188,15 +127,9 @@ function genesis() {
 function validateCommit(entryType, entry, header, pkg, sources) {
   if (isValidEntryType(entryType)) {
     switch (entryType) {
-      case "task":
-        return (
-          //the creator of the task must have equal or more pebbles than what is specified in the transaction
-          (call("transactions", "tabulate", "\"" + sources[0] + "\"") >= entry.pebbles) &&
-
-          //negative pebbles not allowed
-          (entry.pebbles > 0)
-        )
-      case "task_link":
+      case "solution":
+        return true
+      case "solution_link":
         return true
     }
   }

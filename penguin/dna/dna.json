@@ -32,77 +32,9 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
-                },
-                {
-                    "Name": "transaction",
-                    "DataFormat": "json",
-                    "SchemaFile": "transaction.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "transaction_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "solution",
-                    "DataFormat": "json",
-                    "SchemaFile": "solution.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "solution_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "comment",
-                    "DataFormat": "json",
-                    "SchemaFile": "comment.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "comment_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "userdata",
-                    "DataFormat": "json",
-                    "SchemaFile": "userdata.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "userdata_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
                 }
             ],
             "Functions": [
-                {
-                    "Name": "getUser",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "getUserTransactions",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "setUserData",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "login",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
                 {
                     "Name": "createTask",
                     "CallingType": "json",
@@ -132,11 +64,73 @@
                     "Name": "backTask",
                     "CallingType": "json",
                     "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "users",
+            "Description": "provides user data functionality",
+            "CodeFile": "users.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "login",
+                    "CallingType": "json",
+                    "Exposure": "public"
                 },
                 {
-                    "Name": "createTransaction",
+                    "Name": "userdata",
+                    "DataFormat": "json",
+                    "SchemaFile": "userdata.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "userdata_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
+                    "Name": "getUser",
                     "CallingType": "json",
-                    "Exposure": "private"
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "setUserData",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "transactions",
+            "Description": "keeps track of all pebble transactions",
+            "CodeFile": "transactions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "transaction",
+                    "DataFormat": "json",
+                    "SchemaFile": "transaction.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "transaction_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
+                    "Name": "createTransaction",
+                    "CallingType": "json"
                 },
                 {
                     "Name": "readTransaction",
@@ -145,6 +139,11 @@
                 },
                 {
                     "Name": "readTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readUserTransactions",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
@@ -164,6 +163,34 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "distribute",
+                    "CallingType": "json"
+                }
+            ]
+        },
+        {
+            "Name": "solutions",
+            "Description": "creates a potential solution for a given task",
+            "CodeFile": "solutions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "solution",
+                    "DataFormat": "json",
+                    "SchemaFile": "solution.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "solution_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
                     "Name": "createSolution",
                     "CallingType": "json",
                     "Exposure": "public"
@@ -179,10 +206,39 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "reward",
+                    "Name": "rewardedSolution",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
+                {
+                    "Name": "reward",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "comments",
+            "Description": "allow hashes to be commented upon",
+            "CodeFile": "comments.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "comment",
+                    "DataFormat": "json",
+                    "SchemaFile": "comment.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "comment_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
                 {
                     "Name": "createComment",
                     "CallingType": "json",
@@ -200,11 +256,6 @@
                 },
                 {
                     "Name": "readMyComments",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "redistribute",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
