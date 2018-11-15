@@ -9,6 +9,8 @@ export default {
   },
   
   setUserData: function (data) {
+    data.email = "";
+    data.password = "";
     return axios.post("/fn/users/setUserData", data);
   },
 

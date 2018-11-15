@@ -49,6 +49,8 @@ function getUser() {
 }
 
 /* data: {
+            email: (email address),
+            password: (password),
             github: (github username)
          } */
 function setUserData(data) {
@@ -57,8 +59,42 @@ function setUserData(data) {
   var userdataLink = commit('userdata_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "userdata" }]
   });
+  var userdataDNALink = commit('userdata_link', {
+    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "userdata" }]
+  });
   return hash;
 }
+
+function login(login) {
+  var allUsers = getLinks(App.DNA.Hash, "userdata", { Load: true })
+  var result;
+  allUsers.forEach(function (link) {
+    var user = link.Entry
+    if (login.email === user.email && login.password === user.password) {
+      var userdataDNALink = commit('userdata_link', {
+        Links: [{ Base: App.Key.Hash, Link: link.Hash, Tag: "userdata" }]
+      });
+      result = getUser()
+    } else {
+      result = "This email/password combination that you have tried does not exist in this DHT"
+    }
+  })
+  return result
+}
+
+/*
+User flow:
+ 
+- create user
+  -create a user entry with email,password,github
+  -link the user entry to the current agent/key hash
+- login
+  -auto login based on agent/key hash
+    -if current agent/key has isn't attached to a userdata, then ask email/password and create userdata_link
+    -validate userdata_link by checking email/password information with the same on the dht
+  -can't login to a different account with the same agent/key hash
+ 
+*/
 
 /*******************************************************************************
  * Required callbacks
