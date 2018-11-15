@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Grid } from 'semantic-ui-react'
 import './HoverBox.css';
 
 export default class HoverBox extends Component {
@@ -95,20 +94,6 @@ export default class HoverBox extends Component {
         const { activeItem } = this.state
         return (
             <div className="mark-info">
-                {/* <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={5}>
-                            <img src={this.props.prof.img} className="ui verysmall circular image" alt="profile_image"></img>
-                        </Grid.Column>
-                        <Grid.Column width={11}>
-                            <div className="mark-p">
-                                <p>{this.props.prof.name}</p>
-                                <p><a href={this.props.prof.url} target="_blank" rel="noopener noreferrer" >{this.props.prof.user}</a></p>
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid> */}
-
                 <div className='filtersort-div'>
                     <h3>Filter</h3>
                     <div className='mini-menu'>

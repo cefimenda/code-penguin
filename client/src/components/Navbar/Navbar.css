@@ -41,7 +41,7 @@
 	height: 20px;
 	position: absolute;
 	top: 0;
-	right: -10px;
+	/* right: -10px; */
 }
 
 .navbar-inner {
