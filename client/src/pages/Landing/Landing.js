@@ -8,12 +8,6 @@ import LandingInfo from "../../components/HoverBox/LandingInfo";
 import './Landing.css';
 
 export default class App extends Component {
-    ////////////////////////////////////////////////////////
-    // TODO: Need to figure out to to log in with Github ///
-    // IDEA: https://www.npmjs.com/package/passport-github /
-    // For now it is to get to marketplace and portfolio ///
-    //////////////////////////////a//////////////////////////
-  
     render() {
         const focus = "right"
         return (

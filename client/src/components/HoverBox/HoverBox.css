@@ -26,13 +26,11 @@
 	line-height: 8px;
 }
 
-.prof-info a,
-.mark-info a {
+.prof-info a {
 	color: #fff;
 }
 
-.prof-info a:hover,
-.mark-info a:hover {
+.prof-info a:hover {
 	letter-spacing: 1px;
 	color: #fff;
 	text-decoration: underline;
@@ -45,14 +43,6 @@
 .ui.verysmall{
 	width: 60px;
 	height: auto;
-}
-
-.mark-p {
-	margin-top: 12px;
-}
-
-.mark-info p {
-	line-height: 8px;
 }
 
 
@@ -85,24 +75,54 @@
 
 
 
-/* ///////////////////////////////////// */
-/* Force adjustments to Marketplace Menu */
-/* ///////////////////////////////////// */
-.ui.vertical.secondary.menu .item:not(.dropdown)>.menu {
-	margin: 2px 2px;
-	cursor: pointer;
+/* ///////////////// */
+/*  Marketplace Menu */
+/* ///////////////// */
+.filtersort-div h3 {
+	letter-spacing: 3px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	text-align: center;
+}
+
+.mini-menu {
+	letter-spacing: 1px;
+}
+
+.filt-item {
+	margin-bottom: 8px;
+}
+
+.mini-menu p {
+	margin-bottom: 2px;
+	font-size: 12px;
 }
 
 .mini-menu p:hover {
 	cursor: pointer;
+	text-decoration: underline;
 }
 
 .inner-item input {
 	padding: 5px;
-	margin-top: 5px;
+	margin-bottom: 8px;
 	border: none;
-	background-color: #444;
-	color: #fff;
+	background-color: transparent;
+	border-bottom: 1px solid #00b5ad;
+	border-radius: 5px;
+	color: #ccc;
+	font-size: 10px;
+	width: 100%;
+}
+
+.inner-item input::placeholder {
+	font-size: 10px;
+	color: #ccc;
+}
+
+.inner-item input:focus {
+	outline: none;
+	border-radius: 0px;
 }
 
 .inner-item {
@@ -114,9 +134,17 @@
 }
 
 .sort-div {
-	padding: 5px;
-	margin-top: 5px;
-	margin-left: 10px;
+	margin-left: 15px;
+}
+
+.sort-div p {
+	text-decoration: none;
+}
+
+.sort-div p:hover {
+	letter-spacing: 2px;
+	text-decoration: none;
+	color: #00b5ad;
 }
 
 .clear-btn {
@@ -145,8 +173,4 @@
 .clear-btn:hover {
 	color: #fff;
 	border-bottom: 2px solid #fff;
-}
-
-@media (max-width: 720px) {
-
 }
