@@ -126,13 +126,8 @@ export default class Profile extends Component {
           </div>
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
-          <div className="div-404">
-            <h2>Pebble Transaction History</h2>
+            <h2 className="table-header">Pebble Transaction History</h2>
             <Table data={data} />
-
-          
-
-          </div>
         </Container>
       </React.Fragment>
     );

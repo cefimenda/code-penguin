@@ -59,3 +59,10 @@ td {
   /* width: 100px; */
   background-color: #212f33;
 }
+
+.table-header {
+  padding-top: 10%;
+  text-align: center;
+  letter-spacing: 3px;
+  padding-bottom: 10px;
+}
