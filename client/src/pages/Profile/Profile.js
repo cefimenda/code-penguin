@@ -51,22 +51,23 @@ export default class Profile extends Component {
   getTransactions = () => {
     API.getTransactionHistory().then(res => {
       // let { hash } = res.data.withdrawals
-      // let newWithdrawals = res.data.withdrawals.map(async wd => {
-      //   let title =  await API.getTransactionName(wd.Entry.origin)
-      //   console.log('title', title)
-      //   return wd = {...wd, title}
-      // })
+      let newWithdrawals = res.data.withdrawals.map(async wd => {
+        let title =  await API.getTransactionTitle(wd.Entry.origin)
+        console.log('title', title)
+        return wd = {...wd, title}
+      })
 
-      // console.log(newWithdrawals)
+      // console.log(newWithdrawals)a
       // let newDeposits = res.data.deposits.map(async wd => {
       //   let title = await API.getTransactionName(wd.Entry.destination)
       //   return wd = {...wd, title }
       // })
+      console.log(res)
       this.setState({
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
       });
-    });
+    }).catch(err => console.log(err))
   };
 
 

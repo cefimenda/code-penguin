@@ -58,6 +58,12 @@
 	font-size: 14px;
 }
 
+.mini-avatar {
+	position: absolute;
+	right: 30px;
+	border-radius: 5px;
+}
+
 @media only screen and (max-width: 1024px) {
 	.navbar-inner {
 		height:60px;
