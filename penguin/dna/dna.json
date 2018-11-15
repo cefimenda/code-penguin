@@ -32,48 +32,9 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
-                },
-                {
-                    "Name": "transaction",
-                    "DataFormat": "json",
-                    "SchemaFile": "transaction.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "transaction_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "userdata",
-                    "DataFormat": "json",
-                    "SchemaFile": "userdata.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "userdata_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
                 }
             ],
             "Functions": [
-                {
-                    "Name": "getUser",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "getUserTransactions",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "setUserData",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
                 {
                     "Name": "createTask",
                     "CallingType": "json",
@@ -103,11 +64,68 @@
                     "Name": "backTask",
                     "CallingType": "json",
                     "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "users",
+            "Description": "provides user data functionality",
+            "CodeFile": "users.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "userdata",
+                    "DataFormat": "json",
+                    "SchemaFile": "userdata.json",
+                    "Sharing": "public"
                 },
                 {
-                    "Name": "createTransaction",
+                    "Name": "userdata_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
+                    "Name": "getUser",
                     "CallingType": "json",
-                    "Exposure": "private"
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "setUserData",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                }
+            ]
+        },
+        {
+            "Name": "transactions",
+            "Description": "keeps track of all pebble transactions",
+            "CodeFile": "transactions.js",
+            "RibosomeType": "js",
+            "BridgeFuncs": null,
+            "Config": null,
+            "Entries": [
+                {
+                    "Name": "transaction",
+                    "DataFormat": "json",
+                    "SchemaFile": "transaction.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "transaction_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                }
+            ],
+            "Functions": [
+                {
+                    "Name": "createTransaction",
+                    "CallingType": "json"
                 },
                 {
                     "Name": "readTransaction",
@@ -116,6 +134,11 @@
                 },
                 {
                     "Name": "readTransactions",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readUserTransactions",
                     "CallingType": "json",
                     "Exposure": "public"
                 },

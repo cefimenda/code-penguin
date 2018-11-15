@@ -26,7 +26,7 @@ export default class Profile extends Component {
   getHash = () => {
     API.getUser()
       .then(res => {
-        let { github } = res.data.userdata[0].Entry;
+        let { github } = res.data.userdata[0].Entry || null;
         this.setState({
           creator: github || res.data.hash,
           pebbles: res.data.pebbles
