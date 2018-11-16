@@ -14,8 +14,7 @@ export default class Profile extends Component {
     pebbles: '',
     withdrawals: [],
     deposits: [],
-    hasGithub: false,
-    taskTitle: ''
+    hasGithub: false
   };
 
   componentDidMount = () => {
@@ -59,13 +58,13 @@ export default class Profile extends Component {
       // })
 
       // console.log(wdTitle)
-      let dTitle = res.data.deposits.map(wd => {
-        let title = API.getTransactionTitle(wd.Hash).then(console.log)
-        return {...wd, title }
+      let dpTitle = res.data.deposits.map(dp => {
+        let title = API.getTransactionTitle(dp.Hash)
+        return {...dp, title }
       })
       this.setState({
         withdrawals: res.data.withdrawals,
-        deposits: dTitle
+        deposits: dpTitle
       });
     }).catch(err => console.log(err))
   };
@@ -148,7 +147,7 @@ export default class Profile extends Component {
   render() {
     console.log(this.state.taskTitle)
     const focus = 'left';
-    let { withdrawals, deposits, taskTitle } = this.state;
+    let { withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);
     return (
       <React.Fragment>
@@ -192,7 +191,7 @@ export default class Profile extends Component {
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <h2 className="table-header">Pebble Transaction History</h2>
-          <Table data={data} deposits={deposits} withdrawals={withdrawals} taskTitle={taskTitle} getTitle={this.getTitle.bind(this)}/>
+          <Table data={data} deposits={deposits} withdrawals={withdrawals}/>
         </Container>
       </React.Fragment>
     );
