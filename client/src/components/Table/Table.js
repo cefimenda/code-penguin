@@ -22,6 +22,7 @@ export default class Table extends Component {
       return wd = {...wd, type: 'withdraw', hash: wd.Hash, style:'red'}
     })
 
+
     let newDeposits = this.props.deposits.map(dp => {
       return dp = {...dp, type: 'deposit', hash: dp.Hash, style:'green'}
     })
