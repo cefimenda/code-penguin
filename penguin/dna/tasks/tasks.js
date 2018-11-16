@@ -70,6 +70,7 @@ function createTask(task) {
 }
 
 function readTask(hash) {
+  console.log(hash)
   var task = get(hash);
   task.pebbles = call("transactions", "tabulate", "\"" + hash + "\"");
   task.solutions = getLinks(hash, "solutions", { Load: true });
