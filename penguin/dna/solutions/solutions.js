@@ -128,6 +128,11 @@ function validateCommit(entryType, entry, header, pkg, sources) {
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "solution":
+        /**
+         * This validation will be necessary to implement when we actually deploy, because we don't want users 
+         * creating solutions to their own problems. (Then if they get backers, they might be able to give themselves extra pebbles)
+         */
+        //return sources[0] != getCreator(entry.task);
         return true
       case "solution_link":
         return true
