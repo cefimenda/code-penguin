@@ -58,13 +58,13 @@ export default class Profile extends Component {
       // })
 
       // console.log(wdTitle)
-      let dpTitle = res.data.deposits.map(dp => {
-        let title = API.getTransactionTitle(dp.Hash)
-        return {...dp, title }
-      })
+      // let dpTitle = res.data.deposits.map(dp => {
+      //   let title = API.getTransactionTitle(dp.Hash)
+      //   return {...dp, title }
+      // })
       this.setState({
         withdrawals: res.data.withdrawals,
-        deposits: dpTitle
+        deposits: res.data.deposits
       });
     }).catch(err => console.log(err))
   };
