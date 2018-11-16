@@ -19,19 +19,20 @@ export default class Table extends Component {
     if(!this.props.withdrawals && !this.props.deposits) return
 
     let newWithdrawals = this.props.withdrawals.map(wd => {
-      return wd = {...wd, type: 'withdraw', style:'red'}
+      return wd = {...wd, type: 'withdraw', hash: wd.Hash, style:'red'}
     })
 
-    let newDeposits = this.props.deposits.map(d => {
-      return d = {...d, type: 'deposit', style:'green'}
+    let newDeposits = this.props.deposits.map(dp => {
+      return dp = {...dp, type: 'deposit', hash: dp.Hash, style:'green'}
     })
     
     const total = newWithdrawals.concat(newDeposits)
-
+    console.log(total)
     return total.map(data => (
       <tr className="tr-row" key={data.Hash}>
         <td key={data.Entry.time}>{new Date(data.Entry.time).toLocaleDateString()}</td>
-        <td className="shortHash" key={data.Entry.origin}>{data.Entry.origin} {data.title}</td>
+        {/* <td className="shortHash" key={data.Entry.origin}>{data.Entry.origin} {data.taskTitle} ~ {data.hash}</td> */}
+        <td className="shortHash" key={data.Entry.origin}>{data.Entry.origin} {data.taskTitle}</td>
         <td key={data.Entry.pebbles} style={{color: data.style}}>{data.type} {data.Entry.pebbles}</td>
       </tr>
     ));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid } from 'semantic-ui-react'
+// import { Grid } from 'semantic-ui-react'
 import './HoverBox.css';
 
 export default class HoverBox extends Component {
