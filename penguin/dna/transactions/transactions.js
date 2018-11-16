@@ -103,6 +103,12 @@ function readTransaction(hash) {
 function readTransactions(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
+  var getTitles = function(transaction){
+    var updatedTransaction = readTransaction(transaction.Hash);
+    transaction.Entry.taskTitle = updatedTransaction.taskTitle;
+  }
+  deposits.forEach(getTitles);
+  withdrawals.forEach(getTitles);
   return {
     deposits: deposits,
     withdrawals: withdrawals
