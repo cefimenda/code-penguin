@@ -93,7 +93,7 @@ function createTransaction(transaction) {
 function readTransaction(hash) {
   var transaction = get(hash);
   if (transaction.origin !== App.DNA.Hash) {
-    transaction.taskTitle = call("tasks", "readTask", transaction.origin).title || call("tasks", "readTask", transaction.destination).title;
+    transaction.taskTitle = JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.origin))).title || JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.destination))).title;
   } else {
     transaction.taskTitle = "Active Reward"
   }
