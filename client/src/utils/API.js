@@ -4,7 +4,10 @@ export default {
   //USER
 
   /* Get current user object, has hash and pebbles */
-  getUser: function () {
+  getUser: function (hash) {
+    if(hash){
+      return axios.post("fn/users/getUserData", "\"" + hash + "\"");
+    }
     return axios.post("/fn/users/getUser");
   },
   
@@ -109,6 +112,14 @@ export default {
   /* Get the comment at one specific hash */
   getComment: function (hash) {
     return axios.post("/fn/comments/readComment", "\"" + hash + "\"");
+  },
+
+  getTestimonials: function() {
+    return axios.post("/fn/comments/testimonials");
+  },
+
+  createTestimonial: function(testimonial) {
+    return axios.post("/fn/comments/createTestimonial", "\"" + testimonial + "\"");
   },
 
   /* comment: {

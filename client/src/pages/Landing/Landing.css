@@ -5,3 +5,115 @@
 .github-h1 {
     line-height: 100px;
 }
+
+.steps-box {
+	margin: 10px;
+	padding: 25px;
+	/* border: 1px solid #444; */
+	letter-spacing: 1px;
+	font-size: 15px;
+}
+
+.steps-box span{
+	color: #00b5ad;
+	font-size: 18px;
+}
+
+.steps-box span:hover {
+	color: #03ebdf;
+	border-bottom: 1px solid #03ebdf;
+	cursor: pointer;
+}
+
+.steps-box span.active {
+	text-shadow: 3px 3px 4px #000000af;
+	font-weight: bolder;
+}
+
+.steps-box hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #444;
+    margin: 25px 10px 10px 10px;
+    padding: 5px; 
+}
+
+
+.testimonial-div {
+	width: 100%;
+}
+
+.testimonial-div input {
+	width: 75%;
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid #00b5ad;
+    color: #fff;
+    background-color: transparent;
+	border-radius: 5px;
+	margin-right: 20px;
+	letter-spacing: 1px;
+}
+
+.testimonial-div button {
+	width: 20%;
+	border-radius: 5px;
+	padding: 10px 15px;
+	border: 2px solid #ccc;
+	background-color: transparent;
+	color: #ccc;
+	letter-spacing: 1px;
+	font-size: 15px;
+	font-weight: bold;
+	transition: all 150ms linear;
+}
+
+.testamonial-div button:hover {
+	text-shadow: 2px 2px 2px #7575759a;
+	border: 2px solid #00b5ad;
+	color: #00b5ad;
+	cursor: pointer;
+}
+.testimonial-div button:active {
+	font-size: 12px;
+}
+
+.testimonial-div input::placeholder {
+	letter-spacing: 1px;
+	font-size: 15px;
+}
+
+.testimonial-div input:focus,
+.testimonial-div button:focus {
+	outline: none;
+}
+
+.test-quote {
+	width: 300px;
+	position: relative;
+	padding-bottom: 30px;
+}
+
+.test-quote img {
+	position: absolute;
+	left: -40px;
+	top: -2px;
+	width: 30px;
+}
+
+.test-data {
+
+}
+
+.test-author {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	color: #dac25b;
+}
+
+.add-info-ul li {
+	line-height: 50px;
+	letter-spacing: 1px;
+}

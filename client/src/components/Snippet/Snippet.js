@@ -5,7 +5,7 @@ import './Snippet.css';
 export default class Snippet extends Component {
   render() {
     return (
-      <div className="snippet-container" style={{ width: `${this.props.width ? this.props.width : "100%"}`, height: `${this.props.height ? this.props.height : "auto"}`}}>
+      <div className="snippet-container" style={{ padding: `${this.props.padding ? this.props.padding : "0"}`, width: `${this.props.width ? this.props.width : "100%"}`, height: `${this.props.height ? this.props.height : "auto"}`}}>
         <Grid divided='vertically'>
           <Grid.Row columns={2}>
             <Grid.Column>

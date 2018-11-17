@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Image, Button } from 'semantic-ui-react';
 import './HoverBox.css';
 
 export default class HoverBox extends Component {
@@ -12,17 +11,31 @@ export default class HoverBox extends Component {
             window.location.pathname = "/"
         }
     }
-    
+
+    gotoInfo = () => {
+        this.props.handle("info")
+    }
+
+    gotoTestimonial = () => {
+        this.props.handle("testimonial")
+    }
+
+    gotoAdditional = () => {
+        this.props.handle("additional")
+    }
+
     render() {
+        const { currState } = this.props
         return (
             <React.Fragment>
-                <h1 className="github-h1">Login with Github</h1>
-                <Image src="https://magentys.io/wp-content/uploads/2017/04/github-logo-1.png" size="small" centered />
-                <Button.Group fluid>
-                    <Button name="Signup" onClick={this.handleButton}>Sign Up</Button>
-                    <Button.Or />
-                    <Button name="Login" onClick={this.handleButton} color='teal'>Login</Button>
-                </Button.Group>
+                <h1 className="github-h1">App Info</h1>
+                <div className="steps-box">
+                    <span onClick={this.gotoInfo} className={`${currState === "info" ? "active" : ""}`}>Information</span>
+                    <hr />
+                    <span onClick={this.gotoTestimonial} className={`${currState === "testimonial" ? "active" : ""}`}>Testamonials</span>
+                    <hr />
+                    <span onClick={this.gotoAdditional} className={`${currState === "additional" ? "active" : ""}`}>Additional Resources</span>
+                </div>
             </React.Fragment>
         )
     }

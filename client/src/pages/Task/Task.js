@@ -19,11 +19,13 @@ export default class Task extends Component {
             creator: '',
             time: ''
         },
+        user: '',
+        maxPebbles: '',
+        pebbles: '',
         toggler: 'solutions',
         newComment: '',
         newSolutionLink: '',
         newSolutionDes: '',
-        user: '',
         rewardHash: '',
         rewarded: {
             link: '',
@@ -50,24 +52,25 @@ export default class Task extends Component {
             .catch(err => {
                 console.log(err);
             });
-
-
     };
 
     getSolutionRewardInfo = () => {
         API.rewardedSolution(this.props.match.params.hash)
-        .then(res => {
-            this.setState({rewardHash: res.data[0].Hash, rewarded: res.data[0].Entry})
-        })
-        .catch(err => {
-            console.log(err);
-        });
+            .then(res => {
+                this.setState({rewardHash: res.data[0].Hash, rewarded: res.data[0].Entry})
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     getUserHash = () => {
         API.getUser()
             .then(res => {
-                this.setState({user: res.data.hash});
+                this.setState({
+                    user: res.data.hash,
+                    maxPebbles: res.data.pebbles
+                });
             }).catch(err =>
                 console.log(err)
             );
@@ -104,6 +107,25 @@ export default class Task extends Component {
             this.addComment({page: task, text: ctext})
         }
     }
+
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+    /// what is the function to add pebbles to task ///
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+    handlePebble = () => {
+        const { pebbles, maxPebbles, user } = this.state
+        if (pebbles <= maxPebbles) {
+            console.log("user: ", user);
+            console.log("pebbles user have: ", maxPebbles);
+            console.log("pebbles donated: ", pebbles);
+            this.setState({ pebbles: "" })
+        }
+    }
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
 
     handleClear = () => {
         this.setState({ newComment: "", newSolutionLink: "", newSolutionDes: ""})
@@ -168,12 +190,17 @@ export default class Task extends Component {
                                         <p>Creator: {task.creator}</p>
                                         <p>Created: {task.time}</p>
                                     </div>
-                                    <div className="div-blue-box">
+                                    <div className="div-blue-box" style={{height: "60px"}}>
                                         <p style={{wordSpacing: "7px"}}>{task.tags.map(tag => '#' + tag).join(' ')}</p>
                                     </div>
                                     <h4>Details:</h4>
-                                    <div className="div-blue-box" style={{minHeight: "50%"}}>
+                                    <div className="div-blue-box" style={{height: "40%"}}>
                                         <p>{task.details}</p>
+                                    </div>
+                                    <div className="task-add-pebb">
+                                        <label>Add your pebbles: </label>
+                                        <input type="number" name="pebbles" placeholder={`( ${this.state.maxPebbles} max )`} onChange={this.handleInputChange} value={this.state.pebbles} required />
+                                        <button onClick={this.handlePebble}>Add</button>
                                     </div>
                                 </div>
                             </Grid.Column>

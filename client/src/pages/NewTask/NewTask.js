@@ -48,10 +48,6 @@ export default class Profile extends Component {
         this.setState({ [name]: value });
     }
 
-    // handleKeyPress = (event) => {
-    //     console.log(event.key);
-    // }
-
     handleSubmit = e => {
         e.preventDefault();
         let { pebbles, title, details, tags } = this.state
@@ -90,7 +86,7 @@ export default class Profile extends Component {
                                     <div className="label-div">
                                         <label>Pebbles:</label>
                                     </div>
-                                    <input type="number" name="pebbles" placeholder={`(${this.state.maxPebbles} max)`} onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles} required />
+                                    <input type="number" name="pebbles" placeholder={`( ${this.state.maxPebbles} max )`} onChange={this.handleChange} style={{ width: "100px" }} value={this.state.pebbles} required />
                                 </div>
                                 <div className="input-div">
                                     <div className="label-div">

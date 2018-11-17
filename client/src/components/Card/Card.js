@@ -49,7 +49,7 @@ export default class Card extends Component {
         return(
             <React.Fragment>
                 <div className={chosen ? `marg marketcard` : 'marketcard'} style={{ zIndex: `${chosen ? "99" : this.props.zIndex}` }}>
-                    <div className={chosen ? `backactive front-card` : 'front-card'} style={{transform: `${this.state.cardflip && chosen ? "perspective(600px) rotateY( 0deg)" : ""}`}}>
+                    <div className={chosen ? `backactive front-card` : 'front-card'} onClick={chosen ? this.handleFlip : this.props.click} style={{transform: `${this.state.cardflip && chosen ? "perspective(600px) rotateY( 0deg)" : ""}`}}>
                         {chosen ? 
                             <div className="fixed-para-length">
                                 <p id={id} >{this.props.info.details}</p>
@@ -60,7 +60,7 @@ export default class Card extends Component {
                         <button className="choose-card-btn" onClick={this.handleChoose}>View</button>
                         <button className="flip-card-btn" onClick={this.handleFlip}><img className="card-arrow-img" src={Arrow} alt="arrow-img"></img></button>
                     </div>
-                    <div id={id} className={chosen ? `isactive front-card` : 'front-card'} onClick={this.props.click} style={{transform: `${chosen ? this.state.cardflip ? "" : "perspective(600px) rotateY( -180deg)" : ""}`}}>
+                    <div id={id} className={chosen ? `isactive front-card` : 'front-card'} onClick={chosen ? this.handleFlip : this.props.click} style={{transform: `${chosen ? this.state.cardflip ? "" : "perspective(600px) rotateY( -180deg)" : ""}`}}>
                         <h3 id={id} >{this.props.info.title}</h3>
                         <span className="card-pebbles">{this.props.info.pebbles} </span>
                         <img className="card-pebble-img" src='http://pluspng.com/img-png/circle-objects-png-object-256.png' alt="pebbles"/>
