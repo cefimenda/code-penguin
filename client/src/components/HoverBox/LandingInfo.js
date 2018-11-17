@@ -32,7 +32,7 @@ export default class HoverBox extends Component {
                 <div className="steps-box">
                     <span onClick={this.gotoInfo} className={`${currState === "info" ? "active" : ""}`}>Information</span>
                     <hr />
-                    <span onClick={this.gotoTestamonial} className={`${currState === "testamonial" ? "active" : ""}`}>Testamonials</span>
+                    <span onClick={this.gotoTestimonial} className={`${currState === "testimonial" ? "active" : ""}`}>Testamonials</span>
                     <hr />
                     <span onClick={this.gotoAdditional} className={`${currState === "additional" ? "active" : ""}`}>Additional Resources</span>
                 </div>
