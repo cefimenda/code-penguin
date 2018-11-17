@@ -17,12 +17,12 @@ export default class Table extends Component {
     })
     
     const total = newWithdrawals.concat(newDeposits)
-    console.log(total)
+    // console.log(total)
     return total.map(data => (
       <tr className="tr-row" key={data.Hash}>
         <td>{new Date(data.Entry.time).toLocaleDateString()}</td>
         <td className="shortHash"><a href={data.Entry.taskTitle === "Active Reward" ? "/landing" : `/task/${data.type==="withdraw" ? data.Entry.destination : data.Entry.origin}`}>{data.Entry.taskTitle}</a></td>
-        <td style={{color: data.style, textAlign: "right"}}><b>{data.type === "withdraw" ? "-" : ""} {data.Entry.pebbles}</b></td>
+        <td style={{color: data.style}}><b>{data.type === "withdraw" ? "-" : ""} {data.Entry.pebbles}</b></td>
       </tr>
     ));
   };
@@ -31,7 +31,7 @@ export default class Table extends Component {
     return (
       <table>
         <tbody>
-          <tr className="tr-header" style={{ width: '100px' }}>
+          <tr className="tr-header" style={{ width: '100px'}}>
             <th>Date</th>
             <th>Task Name</th>
             <th>Pebbles</th>

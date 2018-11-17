@@ -51,9 +51,9 @@ export default class Profile extends Component {
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
       });
-    }).catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
   };
-
 
 
   handleInputChange = event => {
@@ -75,6 +75,7 @@ export default class Profile extends Component {
       .catch(err => {});
   };
 
+  
   render() {
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
