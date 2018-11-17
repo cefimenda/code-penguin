@@ -55,7 +55,6 @@ export default class Profile extends Component {
     .catch(err => console.log(err))
   };
 
-
   handleInputChange = event => {
     let value = event.target.value;
     const name = event.target.name;
@@ -84,7 +83,7 @@ export default class Profile extends Component {
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
-          <div className="input-div" style={{ margin: '10px 0' }}>
+          <div className="profile-div" style={{ margin: '10px 0' }}>
             {this.state.hasGithub ? (
               <div>
                 <div className="label">
