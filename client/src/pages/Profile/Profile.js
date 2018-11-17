@@ -3,7 +3,6 @@ import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
-// import ProfileInfo from '../../components/HoverBox/ProfileInfo';
 import API from '../../utils/API';
 import './Profile.css';
 
@@ -36,7 +35,6 @@ export default class Profile extends Component {
           });
           API.getGithub(github)
             .then(res => {
-              // console.log(res);
               this.setState({
                 avatar: res.data.avatar_url
               });
@@ -49,91 +47,12 @@ export default class Profile extends Component {
 
   getTransactions = () => {
     API.getTransactionHistory().then(res => {
-      // let wdTitle = res.data.withdrawals.map(wd => {
-  	  // console.log(wd.Hash)
-      //   let title = await API.getTransactionTitle(wd.Hash)
-      //   // console.log('title', title)
-      //     console.log(title)
-      //   return wd = {...wd, title}
-      // })
-
-      // console.log(wdTitle)
-      // let dpTitle = res.data.deposits.map(dp => {
-      //   let title = API.getTransactionTitle(dp.Hash)
-      //   return {...dp, title }
-      // })
       this.setState({
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
       });
     }).catch(err => console.log(err))
   };
-
-  // getTransactions = () => {
-  //   API.getTransactionHistory()
-  //     .then(res => {
-  //       let wdTitle = res.data.withdrawals.map(async wd => {
-  //         console.log(wd.Hash);
-  //         let title = await API.getTransactionTitle(wd.Hash);
-  //         console.log(title);
-  //         return { ...wd, title };
-  //       });
-  //       this.setState({
-  //         taskTitle: wdTitle,
-  //         withdrawals: res.data.withdrawals,
-  //         deposits: res.data.deposits
-  //       });
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-
-
-  // getTransactions = () => {
-  //   API.getTransactionHistory()
-  //     .then(res => {
-  //       let arrayData = []
-  //       res.data.withdrawals.forEach( wd => {
-  //         arrayData.push({type:"withdraw", hash: wd.Hash})
-  //       })
-
-  //       res.data.deposits.forEach( dp => {
-  //         arrayData.push({type:"deposit", hash: dp.Hash})
-  //       })
-  //       this.setState({
-  //         withdrawals: res.data.withdrawals,
-  //         deposits: res.data.deposits
-  //       });
-  //       return arrayData
-  //     })
-  //     .then(res => {
-  //       console.log(res)
-  //       this.getTitle(res)
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-
-  getTitle = hash => {
-    hash.forEach( data => {
-      // console.log(data.type);
-      API.getTransactionTitle(data.hash)
-      .then(res => {
-        console.log(res.data.taskTitle);
-        this.setState({
-          taskTitle: res.data.taskTitle
-        })
-      })
-    })
-  }
-
-  getTitle = hash => {
-    hash.forEach( data => {
-      console.log(data.type);
-      API.getTransactionTitle(data.hash)
-      .then(result => {
-        console.log(result.data);
-      })
-    })
-  }
 
 
 
@@ -157,7 +76,6 @@ export default class Profile extends Component {
   };
 
   render() {
-    // console.log(this.state.taskTitle)
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);
@@ -165,7 +83,6 @@ export default class Profile extends Component {
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
-          {/* <ProfileInfo prof={this.props.profSeed}/> */}
           <div className="input-div" style={{ margin: '10px 0' }}>
             {this.state.hasGithub ? (
               <div>
@@ -191,7 +108,6 @@ export default class Profile extends Component {
                 </div>
               </div>
             )}
-            {/* <span className="span-user">QmWtWoTu6qeSkiSBW7F7sKnrEYowfunci5BLHzpZDuxTjy</span> */}
             <img
               className="avatar"
               width="150px"
@@ -209,44 +125,3 @@ export default class Profile extends Component {
     );
   }
 }
-
-// res.data.deposits/withdrawals.Entry.time/pebbles/origin
-// {
-//   "deposits": [
-//     {
-//       "Entry": {
-//         "destination": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "origin": "QmTHhcNysEfNUyAczp9j9ACJW1jMho4yYnEzUinAMSqFg6",
-//         "pebbles": 1000,
-//         "time": 1542075242085
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmbAa5qeHUFRJ49PcnwGWj8px7EbhFyUrAaNaw31cq4dHd",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     }
-//   ],
-//   "withdrawals": [
-//     {
-//       "Entry": {
-//         "destination": "QmdgL2Vcuyg9aoCp5E1f8pTq9W11YWkBp2pRT4resVwjsU",
-//         "origin": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "pebbles": 25,
-//         "time": 1542075242136
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmWZJsc9FhvmKJEjnXo3ro1LQ7oQHEew4MapuCwfXgPc2n",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     },
-//     {
-//       "Entry": {
-//         "destination": "QmbmgjGku2sQRtKF849ZtWWfhFHhacjracUMPU9AWVauyi",
-//         "origin": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "pebbles": 200,
-//         "time": 1542075242244
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmRbPRJYK2aQq949BHohRxLy2fXuzQPViUEEDnHX3iwNqy",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     }
-//   ]
-// }

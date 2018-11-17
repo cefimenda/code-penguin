@@ -3,17 +3,6 @@ import './Table.css';
 
 
 export default class Table extends Component {
-  // renderTableInfo = () => {
-  //   return this.props.data.map(data => (
-  //     <tr className="tr-row" key={data.Entry.time}>
-  //       <td key={data.Entry.time}>{new Date(data.Entry.time).toLocaleDateString()}</td>
-  //       <td className="shortHash" key={data.Entry.origin}>
-  //         {data.Entry.origin}
-  //       </td>
-  //       <td key={data.Entry.pebbles}>{data.Entry.pebbles}</td>
-  //     </tr>
-  //   ));
-
   renderTableInfo = () => {
 
     if(!this.props.withdrawals && !this.props.deposits) return
