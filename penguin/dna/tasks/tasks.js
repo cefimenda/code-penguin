@@ -56,11 +56,10 @@ function createTask(task) {
   task.details = task.details || "";
   task.tags = task.tags || [];
   var hash = commit('task', task);
-  console.log(hash);
-  // var transactionHash = backTask({
-  //   task: hash,
-  //   pebbles: pebbles
-  // });
+  var transactionHash = backTask({
+    task: hash,
+    pebbles: pebbles
+  });
   var tasksLink = commit('task_link', {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
@@ -93,7 +92,6 @@ function readMyTasks(userHash) {
 }
 
 function deleteTask(hash) {
-  console.log(hash)
   //remove the task entry
   remove(hash, "this task is deleted");
   //mark the task link on the DNA as deleted
@@ -161,11 +159,6 @@ function genesis() {
     tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
     pebbles: 2
   });
-  call("solutions", "createSolution", {
-    task: taskHash,
-    text: "try my solution",
-    link: "https://www.google.com"
-  });
   call("comments", "createComment", {
     page: taskHash,
     text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
@@ -192,7 +185,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "task":
         return (
           //the creator of the task must have equal or more pebbles than what is specified in the transaction
-          (call("transactions", "tabulate", "\"" + entry.creator + "\"") >= entry.pebbles) &&
+          (call("transactions", "tabulate", "\"" + sources[0] + "\"") >= entry.pebbles) &&
 
           //negative pebbles not allowed
           (entry.pebbles > 0)
