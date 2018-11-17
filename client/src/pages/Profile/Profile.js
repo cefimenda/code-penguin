@@ -13,8 +13,7 @@ export default class Profile extends Component {
     pebbles: '',
     withdrawals: [],
     deposits: [],
-    hasGithub: false,
-    taskTitle: ''
+    hasGithub: false
   };
 
   componentDidMount = () => {
@@ -58,7 +57,6 @@ export default class Profile extends Component {
     .catch(err => console.log(err))
   };
 
-
   getTitle = hash => {
     hash.forEach( data => {
       console.log(data.type);
@@ -68,8 +66,6 @@ export default class Profile extends Component {
       })
     })
   }
-
-
 
   handleInputChange = event => {
     let value = event.target.value;
@@ -99,7 +95,7 @@ export default class Profile extends Component {
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
-          <div className="input-div" style={{ margin: '10px 0' }}>
+          <div className="profile-div" style={{ margin: '10px 0' }}>
             {this.state.hasGithub ? (
               <div>
                 <div className="label">

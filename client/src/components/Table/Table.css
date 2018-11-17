@@ -8,3 +8,11 @@ td, th {
   word-wrap: break-word;
 }
 
+.tr-row a {
+  color: gold;
+}
+
+.tr-row a:hover {
+  color: gold;
+  border-bottom: 1px solid gold;
+}

@@ -1,4 +1,4 @@
-.input-div {
+.profile-div {
   text-align: center;
 }
 
@@ -67,4 +67,39 @@ td {
   text-align: center;
   letter-spacing: 3px;
   padding-bottom: 10px;
+}
+
+/* .profile-div span {
+  margin: 0 auto;
+} */
+
+.profile-div input {
+  padding: 5px;
+  width: 80%;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-align: center;
+  background-color: #212f33;
+  display: block;
+  margin: 0 auto;
+  border: none;
+}
+
+.profile-div input::placeholder {
+  color: white;
+}
+
+.profile-div button {
+  margin: 0 auto;
+  margin-top: 5px;
+  display: block;
+  border-radius: 5px;
+  border: 2px solid #00b5ad;
+  background-color: transparent;
+  color: #00b5ad;
+  letter-spacing: 2px;
+  font-size: 16px;
+  padding: 6px 15px;
 }
