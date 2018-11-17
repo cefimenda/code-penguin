@@ -103,7 +103,7 @@ function readTransaction(hash) {
 function readTransactions(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  var getTitles = function(transaction){
+  var getTitles = function (transaction) {
     var updatedTransaction = readTransaction(transaction.Hash);
     transaction.Entry.taskTitle = updatedTransaction.taskTitle;
   }
@@ -130,6 +130,7 @@ function readDeposits(hash) {
 }
 
 function tabulate(hash) {
+  console.log("tabulating this: " + hash);
   var deposits = getLinks(hash, "deposits", { Load: true });
   var totalDeposits = 0;
   deposits.forEach(function (deposit) {

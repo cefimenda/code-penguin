@@ -11,6 +11,9 @@
 		"time": {
 			"type": "integer"
 		},
+		"pebbles": {
+			"type": "integer"
+		},
 		"tags": {
 			"type": "array"
 		}
@@ -18,6 +21,8 @@
 	"required": [
 		"title",
 		"details",
-		"time"
+		"time",
+		"pebbles",
+		"tags"
 	]
 }
