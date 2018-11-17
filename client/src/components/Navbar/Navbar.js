@@ -90,7 +90,7 @@ export default class Navbar extends Component {
                   </li>
                   <li key="4" className="float-right">
                     <a href="/landing">
-                      <p className={this.props.page === 'Landing' ? 'ui white navbold' : 'ui white'}>Landing</p>
+                      <p className={this.props.page === 'Landing' ? 'ui white navbold' : 'ui white'}>About</p>
                     </a>
                   </li>
                   <li key="3" className="float-right">

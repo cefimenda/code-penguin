@@ -3,7 +3,6 @@ import './Table.css';
 
 
 export default class Table extends Component {
-
   renderTableInfo = () => {
 
     if(!this.props.withdrawals && !this.props.deposits) return
