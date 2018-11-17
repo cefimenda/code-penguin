@@ -14,14 +14,12 @@ export default class Profile extends Component {
     pebbles: '',
     withdrawals: [],
     deposits: [],
-    hasGithub: false,
-    taskTitle: ''
+    hasGithub: false
   };
 
   componentDidMount = () => {
     this.getHash();
     this.getTransactions();
-    // this.sortWithdrawals()
   };
 
   getHash = () => {
@@ -49,54 +47,83 @@ export default class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  // getTransactions = () => {
-  //   API.getTransactionHistory().then(async res => {
-  //     // let { hash } = res.data.withdrawals
-  //     // console.log(res.data.withdrawals)
-  //     let wdTitle = res.data.withdrawals.map(wd => {
-  // 	  console.log(wd.Hash)
-  //       let title = await API.getTransactionTitle(wd.Hash)
-  //       // console.log('title', title)
-  //         console.log(title)
-  //       return wd = {...wd, title}
-  //     })
+  getTransactions = () => {
+    API.getTransactionHistory().then(res => {
+      // let wdTitle = res.data.withdrawals.map(wd => {
+  	  // console.log(wd.Hash)
+      //   let title = await API.getTransactionTitle(wd.Hash)
+      //   // console.log('title', title)
+      //     console.log(title)
+      //   return wd = {...wd, title}
+      // })
 
-  //     // console.log(wdTitle)
-  //     // let dTitle = res.data.deposits.map(async wd => {
-  //     //   let title = await API.getTransactionName(wd.Hash)
-  //     //   return wd = {...wd, title }
-  //     // })
-  //     this.setState({
-  //       withdrawals: res.data.withdrawals,
-  //       deposits: res.data.deposits
-  //     });
-  //   }).catch(err => console.log(err))
+      // console.log(wdTitle)
+      // let dpTitle = res.data.deposits.map(dp => {
+      //   let title = API.getTransactionTitle(dp.Hash)
+      //   return {...dp, title }
+      // })
+      this.setState({
+        withdrawals: res.data.withdrawals,
+        deposits: res.data.deposits
+      });
+    }).catch(err => console.log(err))
+  };
+
+  // getTransactions = () => {
+  //   API.getTransactionHistory()
+  //     .then(res => {
+  //       let wdTitle = res.data.withdrawals.map(async wd => {
+  //         console.log(wd.Hash);
+  //         let title = await API.getTransactionTitle(wd.Hash);
+  //         console.log(title);
+  //         return { ...wd, title };
+  //       });
+  //       this.setState({
+  //         taskTitle: wdTitle,
+  //         withdrawals: res.data.withdrawals,
+  //         deposits: res.data.deposits
+  //       });
+  //     })
+  //     .catch(err => console.log(err));
   // };
 
-  getTransactions = () => {
-    API.getTransactionHistory()
-      .then(res => {
-        let arrayData = []
-        res.data.withdrawals.forEach( wd => {
-          arrayData.push({type:"widthdrawl", hash: wd.Hash})
-        })
 
-        res.data.deposits.forEach( dp => {
-          arrayData.push({type:"deposit", hash: dp.Hash})
-        })
-        this.setState({
-          // taskTitle: wdTitle,
-          withdrawals: res.data.withdrawals,
-          deposits: res.data.deposits
-        });
-        return arrayData
-      })
+  // getTransactions = () => {
+  //   API.getTransactionHistory()
+  //     .then(res => {
+  //       let arrayData = []
+  //       res.data.withdrawals.forEach( wd => {
+  //         arrayData.push({type:"withdraw", hash: wd.Hash})
+  //       })
+
+  //       res.data.deposits.forEach( dp => {
+  //         arrayData.push({type:"deposit", hash: dp.Hash})
+  //       })
+  //       this.setState({
+  //         withdrawals: res.data.withdrawals,
+  //         deposits: res.data.deposits
+  //       });
+  //       return arrayData
+  //     })
+  //     .then(res => {
+  //       console.log(res)
+  //       this.getTitle(res)
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+
+  getTitle = hash => {
+    hash.forEach( data => {
+      // console.log(data.type);
+      API.getTransactionTitle(data.hash)
       .then(res => {
-        let arratitle = []
-        this.getTitle([res[2]])
+        console.log(res.data.taskTitle);
+        this.setState({
+          taskTitle: res.data.taskTitle
+        })
       })
-      .catch(err => console.log(err));
-  };
+    })
+  }
 
   getTitle = hash => {
     hash.forEach( data => {
@@ -176,7 +203,7 @@ export default class Profile extends Component {
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <h2 className="table-header">Pebble Transaction History</h2>
-          <Table data={data} deposits={deposits} withdrawals={withdrawals} />
+          <Table data={data} deposits={deposits} withdrawals={withdrawals}/>
         </Container>
       </React.Fragment>
     );

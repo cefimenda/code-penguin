@@ -93,7 +93,7 @@ function createTransaction(transaction) {
 function readTransaction(hash) {
   var transaction = get(hash);
   if (transaction.origin !== App.DNA.Hash) {
-    transaction.taskTitle = call("tasks", "readTask", transaction.origin).title || call("tasks", "readTask", transaction.destination).title;
+    transaction.taskTitle = JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.origin))).title || JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.destination))).title;
   } else {
     transaction.taskTitle = "Active Reward"
   }
@@ -103,6 +103,12 @@ function readTransaction(hash) {
 function readTransactions(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   var withdrawals = getLinks(hash, "withdrawals", { Load: true });
+  var getTitles = function(transaction){
+    var updatedTransaction = readTransaction(transaction.Hash);
+    transaction.Entry.taskTitle = updatedTransaction.taskTitle;
+  }
+  deposits.forEach(getTitles);
+  withdrawals.forEach(getTitles);
   return {
     deposits: deposits,
     withdrawals: withdrawals

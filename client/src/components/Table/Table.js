@@ -22,17 +22,18 @@ export default class Table extends Component {
       return wd = {...wd, type: 'withdraw', style:'red'}
     })
 
-    let newDeposits = this.props.deposits.map(d => {
-      return d = {...d, type: 'deposit', style:'green'}
+
+    let newDeposits = this.props.deposits.map(dp => {
+      return dp = {...dp, type: 'deposit', style:'green'}
     })
     
     const total = newWithdrawals.concat(newDeposits)
-
+    console.log(total)
     return total.map(data => (
       <tr className="tr-row" key={data.Hash}>
-        <td key={data.Entry.time}>{new Date(data.Entry.time).toLocaleDateString()}</td>
-        <td className="shortHash" key={data.Entry.origin}>{data.Entry.origin} {data.title}</td>
-        <td key={data.Entry.pebbles} style={{color: data.style}}>{data.type} {data.Entry.pebbles}</td>
+        <td>{new Date(data.Entry.time).toLocaleDateString()}</td>
+        <td className="shortHash"><a href={data.Entry.taskTitle === "Active Reward" ? "/landing" : `/task/${data.type==="withdraw" ? data.Entry.destination : data.Entry.origin}`}>{data.Entry.taskTitle}</a></td>
+        <td style={{color: data.style, textAlign: "right"}}><b>{data.type === "withdraw" ? "-" : ""} {data.Entry.pebbles}</b></td>
       </tr>
     ));
   };
