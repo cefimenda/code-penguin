@@ -21,10 +21,9 @@
     position: relative;
     height: 95%;
     padding: 15px;
-    overflow: auto;
+    /* overflow: auto; */
     background-color: #333;
     margin-left: 14px;
-    overflow: auto;
 }
 
 .creator-info-div {
@@ -50,6 +49,53 @@
     padding: 5px 8px;
     margin: 8px 5px 8px 0px;
     font-family: 'Cutive Mono', monospace;
+    overflow: auto;
+}
+
+.task-add-pebb {
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.task-add-pebb label {
+    letter-spacing: 2px;
+}
+
+.task-add-pebb input {
+    width: 85px;
+    margin-left: 10px;
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid #00b5ad;
+    color: #fff;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.task-add-pebb input:focus {
+    outline: none;
+    border-radius: 0px;
+}
+
+.task-add-pebb input::placeholder {
+    color: #888;
+    letter-spacing: .5px;
+}
+
+.task-add-pebb button {
+    margin-left: 10px;
+    border: none;
+    padding: 7px 20px;
+    border-radius: 3px;
+    border: none;
+    background-color: #222;
+    color:#ccc;
+    letter-spacing: 1px;
+}
+
+.task-add-pebb button:hover {
+    cursor: pointer;
 }
 
 
@@ -91,7 +137,8 @@
 
 .sol-com-input-div input:focus,
 .sol-com-input-div textarea:focus,
-.sol-com-input-div button:focus {
+.sol-com-input-div button:focus,
+.task-add-pebb button:focus {
     outline: none;
 }
 

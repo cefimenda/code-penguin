@@ -30,11 +30,11 @@ export default class HoverBox extends Component {
             <React.Fragment>
                 <h1 className="github-h1">App Info</h1>
                 <div className="steps-box">
-                    <span onClick={this.gotoInfo} style={{ fontWeight: `${currState === "info" ? "bolder" : "normal"}`}}>Information</span>
+                    <span onClick={this.gotoInfo} className={`${currState === "info" ? "active" : ""}`}>Information</span>
                     <hr />
-                    <span onClick={this.gotoTestamonial} style={{ fontWeight: `${currState === "testamonial" ? "bolder" : "normal"}`}}>Testamonials</span>
+                    <span onClick={this.gotoTestamonial} className={`${currState === "testamonial" ? "active" : ""}`}>Testamonials</span>
                     <hr />
-                    <span onClick={this.gotoAdditional} style={{ fontWeight: `${currState === "additional" ? "bolder" : "normal"}`}}>Additional Resources</span>
+                    <span onClick={this.gotoAdditional} className={`${currState === "additional" ? "active" : ""}`}>Additional Resources</span>
                 </div>
             </React.Fragment>
         )

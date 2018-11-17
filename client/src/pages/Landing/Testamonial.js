@@ -23,24 +23,15 @@ export default class Main extends Component {
         let testamonal = []
         for (let i = 0; i < array.length; i++) {
             testamonal.push(
-                <Snippet width="100%" textSide={i % 2 === 0 ? "left" : "right"}>
+                <Snippet width="100%" textSide={i % 2 === 0 ? "left" : "right"} key={`snipit-${i}`}>
                     <div className="test-quote">
                         <img src={Quote} alt="quote mark" />
                         <p className="test-data">{array[i].testamonial}</p>
-                        <p className="test-author">--{array[i].author}</p>
+                        <p className="test-author">-- {array[i].author}</p>
                     </div>
                 </Snippet>
             )
         }
-        // array.forEach(data => {
-        //     testamonal.push(
-        //             <div className="test-quote">
-        //                 <img src={Quote} alt="quote mark" />
-        //                 <p className="test-data">{data.testamonial}</p>
-        //                 <p className="test-author">--{data.author}</p>
-        //             </div>
-        //     )
-        // })
         return testamonal
     }
 
