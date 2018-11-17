@@ -28,11 +28,11 @@ export default class HoverBox extends Component {
         const { currState } = this.props
         return (
             <React.Fragment>
-                <h1 className="github-h1">App Info</h1>
+                <h1 className="github-h1">Code Penguin</h1>
                 <div className="steps-box">
                     <span onClick={this.gotoInfo} className={`${currState === "info" ? "active" : ""}`}>Information</span>
                     <hr />
-                    <span onClick={this.gotoTestimonial} className={`${currState === "testimonial" ? "active" : ""}`}>Testamonials</span>
+                    <span onClick={this.gotoTestimonial} className={`${currState === "testimonial" ? "active" : ""}`}>Testimonials</span>
                     <hr />
                     <span onClick={this.gotoAdditional} className={`${currState === "additional" ? "active" : ""}`}>Additional Resources</span>
                 </div>

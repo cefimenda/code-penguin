@@ -27,7 +27,8 @@ export default class Marketplace extends Component {
         if (res.data.length === 0) {
           return;
         }
-        this.setState({ dataList: res.data.links, fullList: res.data.links });
+        console.log(res.data);
+        this.setState({ dataList: res.data.tasks, fullList: res.data.tasks });
       })
       .catch(err => console.log(err));
   };
@@ -139,13 +140,18 @@ export default class Marketplace extends Component {
 
     // Logic for getting the current card data
     const { dataList, currentPage, perPage } = this.state;
-    const indexOfLast = currentPage * perPage;
-    const indexOfFirst = indexOfLast - perPage;
-    const currentList = dataList.slice(indexOfFirst, indexOfLast);
+    let currentList = [];
+    let dataListLength = 0;
+    if (dataList){
+      const indexOfLast = currentPage * perPage;
+      const indexOfFirst = indexOfLast - perPage;
+      currentList = dataList.slice(indexOfFirst, indexOfLast);
+      dataListLength = dataList.length;
+    }
 
     // Logic for displaying page numbers
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataList.length / perPage); i++) {
+    for (let i = 1; i <= Math.ceil(dataListLength / perPage); i++) {
       pageNumbers.push(i);
     }
 
