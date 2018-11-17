@@ -48,6 +48,14 @@ function getUser() {
   };
 }
 
+function getUserData(hash){
+  return {
+    hash: hash,
+    pebbles: call("transactions", "tabulate", "\"" + hash + "\"") || 0,
+    userdata: getLinks(hash, "userdata", { Load: true }) || {}
+  };
+}
+
 /* data: {
             email: (email address),
             password: (password),

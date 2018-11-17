@@ -16,8 +16,8 @@ export default class HoverBox extends Component {
         this.props.handle("info")
     }
 
-    gotoTestamonial = () => {
-        this.props.handle("testamonial")
+    gotoTestimonial = () => {
+        this.props.handle("testimonial")
     }
 
     gotoAdditional = () => {
