@@ -17,7 +17,6 @@ export default class Table extends Component {
     })
     
     const total = newWithdrawals.concat(newDeposits)
-    // console.log(total)
     return total.map(data => (
       <tr className="tr-row" key={data.Hash}>
         <td>{new Date(data.Entry.time).toLocaleDateString()}</td>
