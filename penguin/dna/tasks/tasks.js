@@ -57,10 +57,10 @@ function createTask(task) {
   task.tags = task.tags || [];
   var hash = commit('task', task);
   console.log(hash);
-  // var transactionHash = backTask({
-  //   task: hash,
-  //   pebbles: pebbles
-  // });
+  var transactionHash = backTask({
+    task: hash,
+    pebbles: pebbles
+  });
   var tasksLink = commit('task_link', {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });

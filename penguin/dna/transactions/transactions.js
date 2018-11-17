@@ -181,23 +181,22 @@ function validateCommit(entryType, entry, header, pkg, sources) {
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "transaction":
-        // return (
+        return (
         //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
-        //   ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
+          ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
 
         //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
-        //   ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate()) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
+          // ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate()) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
 
         //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
-        //   (tabulate(entry.origin) >= entry.pebbles) &&
+          (tabulate(entry.origin) >= entry.pebbles) &&
 
         //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
-        //   (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
+          (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
 
         //   //negative pebbles not allowed
-        //   (entry.pebbles > 0)
-        // )
-        return true
+          (entry.pebbles > 0)
+        )
       case "transaction_link":
         return true
     }
