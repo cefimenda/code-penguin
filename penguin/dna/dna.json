@@ -76,11 +76,6 @@
             "Config": null,
             "Entries": [
                 {
-                    "Name": "login",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -106,6 +101,11 @@
                 },
                 {
                     "Name": "setUserData",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "login",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
