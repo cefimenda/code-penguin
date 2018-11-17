@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Container from "../../components/Container";
 import Snippet from "../../components/Snippet";
-import TestSeed from "../../testimonialSeed.json"
 import Quote from "../../images/quotation-open.png";
 import API from "../../utils/API";
 import './Landing.css';
@@ -19,13 +18,27 @@ export default class Main extends Component {
     getTestimonials = () => {
         API.getTestimonials()
             .then(res=>{
-                console.log(res.data);
-                this.setState({testimonials: res.data.comments});
+                res.data.comments.forEach(comment => {
+                    API.getUser(comment.Source)
+                        .then(user=>{
+                            try{
+                                comment.Source = user.data.userdata[0].Entry.github
+                            }
+                            catch(err){
+                                comment.Source = comment.Source.substring(0,20) + "...";
+                            } 
+                            this.setState({testimonials: res.data.comments});
+                        })
+                        .catch(err=>{
+
+                        });
+                });
             })
             .catch(err=>{
                 console.log(err);
             });
     }
+
 
     handleChange = event => {
         const { name, value } = event.target;
