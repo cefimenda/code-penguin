@@ -5,7 +5,7 @@ import Container from "../../components/Container";
 import HoverBox from "../../components/HoverBox/HoverBox";
 import LandingInfo from "../../components/HoverBox/LandingInfo";
 import Main from "./Main"
-import Testamonial from "./Testamonial"
+import Testimonial from "./Testimonial"
 import Additional from "./Additional"
 import './Landing.css';
 
@@ -27,7 +27,7 @@ export default class App extends Component {
             <HoverBox side={focus}> 
                 <LandingInfo handle={this.handleState} currState={this.state.page} />
             </HoverBox>
-            {this.state.page === "testamonial" ? <Testamonial side={focus}/> : this.state.page === "additional" ? <Additional side={focus}/> : <Main side={focus}/> }
+            {this.state.page === "testimonial" ? <Testimonial side={focus}/> : this.state.page === "additional" ? <Additional side={focus}/> : <Main side={focus}/> }
             <Container bgcolor="#111">
                 <p>&copy; 2018 By Coding Penguins</p>
             </Container>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Container from "../../components/Container";
 import Snippet from "../../components/Snippet";
-import TestSeed from "../../testamonialSeed.json"
+import TestSeed from "../../testimonialSeed.json"
 import Quote from "../../images/quotation-open.png";
 import './Landing.css';
 
 export default class Main extends Component {
     state = {
-        testamonial: ""
+        testimonial: ""
     }
 
     handleChange = event => {
@@ -16,17 +16,17 @@ export default class Main extends Component {
     }
 
     handleSubmit = () => {
-        console.log(this.state.testamonial);
+        console.log(this.state.testimonial);
     }
 
-    createTestamonial = array => {
+    createTestimonial = array => {
         let testamonal = []
         for (let i = 0; i < array.length; i++) {
             testamonal.push(
                 <Snippet width="100%" textSide={i % 2 === 0 ? "left" : "right"}>
                     <div className="test-quote">
                         <img src={Quote} alt="quote mark" />
-                        <p className="test-data">{array[i].testamonial}</p>
+                        <p className="test-data">{array[i].testimonial}</p>
                         <p className="test-author">--{array[i].author}</p>
                     </div>
                 </Snippet>
@@ -36,7 +36,7 @@ export default class Main extends Component {
         //     testamonal.push(
         //             <div className="test-quote">
         //                 <img src={Quote} alt="quote mark" />
-        //                 <p className="test-data">{data.testamonial}</p>
+        //                 <p className="test-data">{data.testimonial}</p>
         //                 <p className="test-author">--{data.author}</p>
         //             </div>
         //     )
@@ -49,13 +49,13 @@ export default class Main extends Component {
         return (
         <React.Fragment>
             <Container padding={focus} bgcolor="#111">
-                <div className="testamonial-div">
-                    <input name="testamonial" onChange={this.handleChange} placeholder='Enter testamonal here' value={this.state.testamonial} />
+                <div className="testimonial-div">
+                    <input name="testimonial" onChange={this.handleChange} placeholder='Enter testamonal here' value={this.state.testimonial} />
                     <button onClick={this.handleSubmit}>Submit</button>
                 </div>
             </Container>
             <Container padding={focus} bgcolor="rgb(32,32,32)">
-                {this.createTestamonial(TestSeed)}
+                {this.createTestimonial(TestSeed)}
             </Container>
         </React.Fragment>
         );

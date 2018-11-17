@@ -16,8 +16,8 @@ export default class HoverBox extends Component {
         this.props.handle("info")
     }
 
-    gotoTestamonial = () => {
-        this.props.handle("testamonial")
+    gotoTestimonial = () => {
+        this.props.handle("testimonial")
     }
 
     gotoAdditional = () => {
@@ -32,7 +32,7 @@ export default class HoverBox extends Component {
                 <div className="steps-box">
                     <span onClick={this.gotoInfo} style={{ fontWeight: `${currState === "info" ? "bolder" : "normal"}`}}>Information</span>
                     <hr />
-                    <span onClick={this.gotoTestamonial} style={{ fontWeight: `${currState === "testamonial" ? "bolder" : "normal"}`}}>Testamonials</span>
+                    <span onClick={this.gotoTestimonial} style={{ fontWeight: `${currState === "testimonial" ? "bolder" : "normal"}`}}>Testimonials</span>
                     <hr />
                     <span onClick={this.gotoAdditional} style={{ fontWeight: `${currState === "additional" ? "bolder" : "normal"}`}}>Additional Resources</span>
                 </div>
