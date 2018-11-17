@@ -76,6 +76,15 @@ function readMyComments(hash) {
   return { comments: comments };
 }
 
+// App testimonials are saved as comments on the DNA hash
+function testimonials() {
+  return readComments(App.DNA.Hash);
+}
+
+function createTestimonial(testimonial){
+  return createComment({page: App.DNA.Hash, text: testimonial});
+}
+
 
 
 /*******************************************************************************
@@ -94,6 +103,7 @@ function readMyComments(hash) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
+  createTestimonial("This is the greatest and best app in the world.");
   return true;
 }
 

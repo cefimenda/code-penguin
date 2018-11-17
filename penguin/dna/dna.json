@@ -100,6 +100,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "getUserData",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "setUserData",
                     "CallingType": "json",
                     "Exposure": "public"
@@ -256,6 +261,16 @@
                 },
                 {
                     "Name": "readMyComments",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "testimonials",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createTestimonial",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
