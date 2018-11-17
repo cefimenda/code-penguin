@@ -35,7 +35,6 @@ export default class Profile extends Component {
           });
           API.getGithub(github)
             .then(res => {
-              // console.log(res);
               this.setState({
                 avatar: res.data.avatar_url
               });
@@ -48,7 +47,6 @@ export default class Profile extends Component {
 
   getTransactions = () => {
     API.getTransactionHistory().then(res => {
-      // console.log(res)
       this.setState({
         withdrawals: res.data.withdrawals,
         deposits: res.data.deposits
@@ -56,16 +54,6 @@ export default class Profile extends Component {
     })
     .catch(err => console.log(err))
   };
-
-  getTitle = hash => {
-    hash.forEach( data => {
-      console.log(data.type);
-      API.getTransactionTitle(data.hash)
-      .then(result => {
-        console.log(result.data);
-      })
-    })
-  }
 
   handleInputChange = event => {
     let value = event.target.value;
@@ -137,44 +125,3 @@ export default class Profile extends Component {
     );
   }
 }
-
-// res.data.deposits/withdrawals.Entry.time/pebbles/origin
-// {
-//   "deposits": [
-//     {
-//       "Entry": {
-//         "destination": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "origin": "QmTHhcNysEfNUyAczp9j9ACJW1jMho4yYnEzUinAMSqFg6",
-//         "pebbles": 1000,
-//         "time": 1542075242085
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmbAa5qeHUFRJ49PcnwGWj8px7EbhFyUrAaNaw31cq4dHd",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     }
-//   ],
-//   "withdrawals": [
-//     {
-//       "Entry": {
-//         "destination": "QmdgL2Vcuyg9aoCp5E1f8pTq9W11YWkBp2pRT4resVwjsU",
-//         "origin": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "pebbles": 25,
-//         "time": 1542075242136
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmWZJsc9FhvmKJEjnXo3ro1LQ7oQHEew4MapuCwfXgPc2n",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     },
-//     {
-//       "Entry": {
-//         "destination": "QmbmgjGku2sQRtKF849ZtWWfhFHhacjracUMPU9AWVauyi",
-//         "origin": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX",
-//         "pebbles": 200,
-//         "time": 1542075242244
-//       },
-//       "EntryType": "transaction",
-//       "Hash": "QmRbPRJYK2aQq949BHohRxLy2fXuzQPViUEEDnHX3iwNqy",
-//       "Source": "QmXNJrCDFCpqFVRcWQ3Tr6uZ7N6GZ5ssQfKcMUzqQTiJaX"
-//     }
-//   ]
-// }
