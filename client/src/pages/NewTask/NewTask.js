@@ -48,10 +48,6 @@ export default class Profile extends Component {
         this.setState({ [name]: value });
     }
 
-    // handleKeyPress = (event) => {
-    //     console.log(event.key);
-    // }
-
     handleSubmit = e => {
         e.preventDefault();
         let { pebbles, title, details, tags } = this.state
