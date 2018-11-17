@@ -37,8 +37,8 @@ function addTimestamp(object) {
   return object;
 }
 
-function getLastRedistributionDate() {
-  var deposits = getLinks(App.Key.Hash, "deposits", { Load: true });
+function getLastRedistributionDate(hash) {
+  var deposits = getLinks(hash, "deposits", { Load: true });
   var date = 0
   //find the latest redistribution transaction from DNA to this particular agent's key
   deposits.forEach(function (deposit) {
@@ -130,7 +130,6 @@ function readDeposits(hash) {
 }
 
 function tabulate(hash) {
-  console.log("tabulating this: " + hash);
   var deposits = getLinks(hash, "deposits", { Load: true });
   var totalDeposits = 0;
   deposits.forEach(function (deposit) {
@@ -141,7 +140,6 @@ function tabulate(hash) {
   withdrawals.forEach(function (withdrawal) {
     totalWithdrawals += withdrawal.Entry.pebbles;
   });
-  console.log(totalDeposits - totalWithdrawals);
   return totalDeposits - totalWithdrawals;
 }
 
@@ -186,7 +184,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
 
         //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
-          // ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate()) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
+          ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
 
         //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
           (tabulate(entry.origin) >= entry.pebbles) &&

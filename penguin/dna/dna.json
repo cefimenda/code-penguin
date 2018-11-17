@@ -169,7 +169,8 @@
                 },
                 {
                     "Name": "distribute",
-                    "CallingType": "json"
+                    "CallingType": "json",
+                    "Exposure": "public"
                 }
             ]
         },
