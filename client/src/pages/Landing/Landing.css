@@ -5,3 +5,102 @@
 .github-h1 {
     line-height: 100px;
 }
+
+.steps-box {
+	margin: 10px;
+	padding: 30px;
+	border: 1px solid #444;
+	letter-spacing: 1px;
+	font-size: 15px;
+}
+
+.steps-box span{
+	color: #00b5ad;
+}
+
+.steps-box span:hover {
+	color: #03ebdf;
+	border-bottom: 1px solid #03ebdf;
+	cursor: pointer;
+}
+
+.steps-box hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #444;
+    margin: 25px 10px 10px 10px;
+    padding: 5px; 
+}
+
+
+.testamonial-div {
+	width: 100%;
+}
+
+.testamonial-div input {
+	width: 75%;
+    padding: 5px;
+    border: none;
+    border-bottom: 2px solid #00b5ad;
+    color: #fff;
+    background-color: transparent;
+	border-radius: 5px;
+	margin-right: 20px;
+	letter-spacing: 1px;
+}
+
+.testamonial-div button {
+	width: 20%;
+	border-radius: 5px;
+	padding: 10px 15px;
+	border: 1px solid #00b5ad;
+	background-color: transparent;
+	color: #fff;
+	letter-spacing: 1px;
+}
+
+.testamonial-div button:hover {
+	text-shadow: 0 0 5px #fff;
+}
+.testamonial-div button:active {
+	font-size: 12px;
+}
+
+.testamonial-div input::placeholder {
+	letter-spacing: 1px;
+}
+
+.testamonial-div input:focus,
+.testamonial-div button:focus {
+	outline: none;
+}
+
+.test-quote {
+	width: 300px;
+	position: relative;
+	padding-bottom: 30px;
+}
+
+.test-quote img {
+	position: absolute;
+	left: -40px;
+	top: -2px;
+	width: 30px;
+}
+
+.test-data {
+
+}
+
+.test-author {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	color: #dac25b;
+}
+
+.add-info-ul li {
+	line-height: 50px;
+	letter-spacing: 1px;
+}

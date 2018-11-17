@@ -125,6 +125,18 @@ export default class Profile extends Component {
     })
   }
 
+  getTitle = hash => {
+    hash.forEach( data => {
+      console.log(data.type);
+      API.getTransactionTitle(data.hash)
+      .then(result => {
+        console.log(result.data);
+      })
+    })
+  }
+
+
+
   handleInputChange = event => {
     let value = event.target.value;
     const name = event.target.name;
@@ -145,7 +157,7 @@ export default class Profile extends Component {
   };
 
   render() {
-    console.log(this.state.taskTitle)
+    // console.log(this.state.taskTitle)
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);

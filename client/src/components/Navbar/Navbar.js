@@ -40,62 +40,10 @@ export default class Navbar extends Component {
                 avatar: res.data.avatar_url
               });
             })
-            .catch(err => console.log(err));
+            .catch(err => {}/*console.log(err)*/);
         }
       })
-      .catch(err => console.log(err));
-  };
-
-  createli = () => {
-    if (this.props.landing === 'true') {
-      return (
-        <li key="1">
-          <a href="/">
-            <h4 className="ui white"> Code Penguin</h4>
-          </a>
-        </li>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          <li key="1">
-            <a href="/">
-              <h4 className="ui white"> Code Penguin</h4>
-            </a>
-          </li>
-          <li key="4" className="float-right">
-            <a href="/landing">
-              <p className="ui white">Log off</p>
-            </a>
-          </li>
-          <li key="3" className="float-right">
-            <a href="/">
-              <p className={this.props.page === 'Marketplace' ? 'ui white navbold' : 'ui white'}>
-                Marketplace
-              </p>
-            </a>
-          </li>
-          <li key="2" className="float-right">
-            <a href="/profile">
-              <img
-                className="mini-avatar"
-                width="30px"
-                src={this.state.avatar}
-                alt={this.state.creator}
-              />
-              <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                {this.state.userPebbles}
-              </p>
-              <img
-                className="nav-pebble-img"
-                src="http://pluspng.com/img-png/circle-objects-png-object-256.png"
-                alt="pebbles"
-              />
-            </a>
-          </li>
-        </React.Fragment>
-      );
-    }
+      .catch(err => {}/*console.log(err)*/);
   };
 
   handleScroll = () => {
@@ -134,7 +82,43 @@ export default class Navbar extends Component {
           >
             <div className="container">
               <nav>
-                <ul className="nav">{this.createli()}</ul>
+                <ul className="nav">
+                  <li key="1">
+                    <a href="/">
+                      <h4 className="ui white"> Code Penguin</h4>
+                    </a>
+                  </li>
+                  <li key="4" className="float-right">
+                    <a href="/landing">
+                      <p className={this.props.page === 'Landing' ? 'ui white navbold' : 'ui white'}>Landing</p>
+                    </a>
+                  </li>
+                  <li key="3" className="float-right">
+                    <a href="/">
+                      <p className={this.props.page === 'Marketplace' ? 'ui white navbold' : 'ui white'}>
+                        Marketplace
+                      </p>
+                    </a>
+                  </li>
+                  <li key="2" className="float-right">
+                    <a href="/profile">
+                      <img
+                        className="mini-avatar"
+                        width="30px"
+                        src={this.state.avatar}
+                        alt={this.state.creator}
+                      />
+                      <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
+                        {this.state.userPebbles}
+                      </p>
+                      <img
+                        className="nav-pebble-img"
+                        src="http://pluspng.com/img-png/circle-objects-png-object-256.png"
+                        alt="pebbles"
+                      />
+                    </a>
+                  </li>
+                </ul>
               </nav>
             </div>
           </div>
