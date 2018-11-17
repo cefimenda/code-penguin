@@ -45,7 +45,9 @@ export default class Main extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit = () => {
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if(this.state.testimonial.trim()==="") return;
         API.createTestimonial(this.state.testimonial)
             .then(res=>{
                 this.setState({testimonial: ""});
@@ -69,15 +71,6 @@ export default class Main extends Component {
                 </Snippet>
             )
         }
-        // array.forEach(data => {
-        //     testimonial.push(
-        //             <div className="test-quote">
-        //                 <img src={Quote} alt="quote mark" />
-        //                 <p className="test-data">{data.testimonial}</p>
-        //                 <p className="test-author">--{data.author}</p>
-        //             </div>
-        //     )
-        // })
         return testimonial
     }
 
@@ -86,10 +79,10 @@ export default class Main extends Component {
         return (
         <React.Fragment>
             <Container padding={focus} bgcolor="#111">
-                <div className="testimonial-div">
+                <form className="testimonial-div" onSubmit={this.handleSubmit}>
                     <input name="testimonial" onChange={this.handleChange} placeholder='Enter testimonial here' value={this.state.testimonial} />
-                    <button onClick={this.handleSubmit}>Submit</button>
-                </div>
+                    <button type="button" onClick={this.handleSubmit}>Submit</button>
+                </form>
             </Container>
             <Container padding={focus} bgcolor="rgb(32,32,32)">
                 {this.createTestimonial(this.state.testimonials)}
