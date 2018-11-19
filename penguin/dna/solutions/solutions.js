@@ -54,7 +54,7 @@ function createSolution(solution) {
     Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
   });
   var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "solutions" }]
+    Links: [{ Base: JSON.parse(call("users", "readLoggedInId","")), Link: hash, Tag: "solutions" }]
   });
   return hash;
 }

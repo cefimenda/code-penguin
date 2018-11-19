@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["userdata", "userdata_link"];
+  var entryTypes = ["userdata", "userdata_link", "identity", "identity_link", "update", "update_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -26,6 +26,19 @@ function getCreator(hash) {
   return get(hash, { GetMask: HC.GetMask.Sources })[0];
 }
 
+function recentUpdate(id) {
+  var updates = getLinks(id, "update", { Load: true })
+  var mostRecent;
+  var date = 0
+  updates.forEach(function (update) {
+    if (update.Entry.time > date) {
+      date = update.Entry.time;
+      mostRecent = update.Entry;
+    }
+  })
+  return mostRecent;
+}
+
 /**
  * Returns an object, plus a timestamp.
  * 
@@ -37,8 +50,45 @@ function addTimestamp(object) {
   return object;
 }
 
+function removeAlias(key) {
+  var key = key || App.Key.Hash;
+  var identity = readIdentity();
+  if (identity.aliases.indexOf(key) > -1) {
+    identity.aliases.pop(key)
+  };
+  createUpdate(identity);
+}
+
+function connectUser(id) {
+  //If already connected to an identity log out
+  if (getLinks(App.Key.Hash, 'identity') > 0) { logOut() }
+  //create new connection to the account that the user is logging in to
+  var idLinkKey = commit('identity_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
+  });
+  //add this agent's key to the aliases in the identity
+  var identity = readIdentity();
+  if (identity.aliases.indexOf(App.Key.Hash) === -1) {
+    identity.aliases.push(App.Key.Hash)
+    createUpdate(identity)
+  }
+  return getUser();
+}
+
+//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
+function isAuthorized(key) {
+  var identity = readIdentity();
+  if (identity.aliases.indexOf(key) > -1) {
+    return true
+  } else {
+    logOut();
+    return false
+  }
+}
+
+
 /****************************************
- * USER
+ * USER Functions with endpoints
  */
 
 /* identity: {
@@ -52,11 +102,11 @@ function createIdentity(data) {
   var id = commit('identity', data);
 
   //add this identity as a link to DNA
-  var idLink = commit('identity_link', {
+  var idLinkDNA = commit('identity_link', {
     Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'identity' }]
   });
   //add this identity as a link to Key
-  var idLink = commit('identity_link', {
+  var idLinkKey = commit('identity_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
   });
 
@@ -64,32 +114,59 @@ function createIdentity(data) {
   var firstUpdate = data;
   firstUpdate.aliases = [App.Key.Hash];
   var updateHash = commit('update', firstUpdate);
+
   var updateLink = commit('update_link', {
-    Links: [{ Base: id, Link: firstUpdate, Tag: 'update' }]
+    Links: [{ Base: id, Link: updateHash, Tag: 'update' }]
   });
 
   return id
 }
-
-function createUpdate(update) {
-  //find the related user identity -- Links don't carry a built in timestamp and we can't use the timestamp in the Entry to sort because that would only give us the time of account creation. 
-        //We can make it so that a key can only be associated with one account at a time by forcing the user to log out at which point we delete the link between the key and account...
-  
-  //find the latest update on this identity -- sort by the timestamp on the update entry
-
+//returns most recent identity information
+function readIdentity(id) {
+  var id = id || readLoggedInId()
+  return recentUpdate(id)
+}
+//returns id hash
+function readLoggedInId() {
+  return getLinks(App.Key.Hash, 'identity')[0].Hash
 }
 
+function createUpdate(update) {
+  addTimestamp(update)
 
+  //find the related user identity -- Links don't carry a built in timestamp and we can't use the timestamp in the Entry to sort because that would only give us the time of account creation. 
+  //We can make it so that a key can only be associated with one account at a time by forcing the user to log out at which point we delete the link between the key and account...
+  var id = getLinks(App.Key.Hash, 'identity', { Load: true })[0].Hash
 
+  //find the latest update on this identity -- sort by the timestamp on the update entry
+  var mostRecent = recentUpdate(id)
 
-/****************************************
- * USER
- */
+  //replace additions in update
+  Object.keys(update).forEach(function (key) {
+    mostRecent[key] = update[key]
+  })
+
+  var newUpdate = commit('update', mostRecent);
+  var updateLink = commit('update_link', {
+    Links: [{ Base: id, Link: newUpdate, Tag: 'update' }]
+  })
+  return newUpdate
+}
+
+function logOut() {
+  var id = readLoggedInId()
+  commit("identity_link", {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity', LinkAction: HC.LinkAction.Del }]
+  })
+  return true
+}
+
 function getUser() {
+  var id = readLoggedInId()
   return {
-    hash: App.Key.Hash,
-    pebbles: call("transactions", "tabulate", "\"" + App.Key.Hash + "\"") || 0,
-    userdata: getLinks(App.Key.Hash, "identity", { Load: true }) || {}
+    hash: id,
+    pebbles: call("transactions", "tabulate", "\"" + id + "\"") || 0,
+    userdata: readIdentity(id) || {}
   };
 }
 
@@ -101,39 +178,34 @@ function getUserData(hash) {
   };
 }
 
-/* data: {
-            email: (email address),
-            password: (password),
-            github: (github username)
-         } */
-function setUserData(data) {
-  data = addTimestamp(data);
-  var hash = commit('identity', data);
-  var userdataLink = commit('identity_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "userdata" }]
+
+function login(token, alias) {
+  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
+  var result = "The token you have provided does not match any on the DHT";
+  allUsers.forEach(function (link) {
+    var user = link.Entry;
+    //TODO link.Hash is not the id hash it is the hash of the last update on the id... need to get the hash of the original object..
+    //also check if we have the same problem elsewhere... 
+    if (link.Hash === token || user.github === token) {
+      result = connectUser(link.Hash);
+      return
+    };
   });
-  var userdataDNALink = commit('userdata_link', {
-    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "userdata" }]
-  });
-  return hash;
+  return result;
 }
 
-function login(login) {
-  var allUsers = getLinks(App.DNA.Hash, "userdata", { Load: true })
-  var result;
+function getAliasMatches() {
+  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
+  var matches = []
   allUsers.forEach(function (link) {
     var user = link.Entry
-    if (login.email === user.email && login.password === user.password) {
-      var userdataDNALink = commit('userdata_link', {
-        Links: [{ Base: App.Key.Hash, Link: link.Hash, Tag: "userdata" }]
-      });
-      result = getUser()
-    } else {
-      result = "This email/password combination that you have tried does not exist in this DHT"
+    if (user.aliases.indexOf(App.Key.Hash) > -1) { 
+      matches.append(link.Hash)
     }
   })
-  return result
 }
+
+
 
 /*
 User flow:
@@ -187,6 +259,17 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "userdata":
         return true
       case "userdata_link":
+        return true
+      case "identity":
+        return true
+      case "identity_link":
+        return (
+          //Each Key can only be logged into one identity at a time. If you want to log into another identity you must first log out.
+          ((entry.Links[0].Base === App.Key.Hash) ? ((getLinks(App.Key.Hash, "identity").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true)
+        )
+      case "update":
+        return true
+      case "update_link":
         return true
     }
   }
@@ -257,8 +340,14 @@ function validateDel(entryType, hash, pkg, sources) {
     && getCreator(hash) === sources[0];
 }
 
-function validateLink() {
-  return true;
+function validateLink(entryType, entry, header, pkg, sources) {
+  switch (entryType) {
+    case "identity_link":
+
+    case "update_link":
+      return true;
+  }
+  return false;
 }
 
 /**

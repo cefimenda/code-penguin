@@ -92,7 +92,8 @@
                     "DataFormat": "json",
                     "SchemaFile": "update.json",
                     "Sharing": "public"
-                },                {
+                },
+                {
                     "Name": "update_link",
                     "DataFormat": "links",
                     "Required": true,
@@ -100,6 +101,31 @@
                 }
             ],
             "Functions": [
+                {
+                    "Name": "createIdentity",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readIdentity",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readLoggedInId",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createUpdate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "logOut",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
                 {
                     "Name": "getUser",
                     "CallingType": "json",
@@ -120,7 +146,6 @@
                     "CallingType": "json",
                     "Exposure": "public"
                 }
-
             ]
         },
         {

@@ -48,6 +48,16 @@ function getLastRedistributionDate(hash) {
   })
   return date;
 }
+//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
+function isAuthorized(key) {
+  var identity = JSON.parse(call("users", "readIdentity", ""));
+  if (identity.aliases.indexOf(key) > -1) {
+    return true
+  } else {
+    call("users", "logOut", "");
+    return false
+  }
+}
 
 /*******************************************************************************
  * Set Ups
@@ -58,9 +68,10 @@ function getLastRedistributionDate(hash) {
 //right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
 //in order to avoid a situation where people just build a mini app that sends a post request to /distribute every 24 hrs automatically.
 function distribute() {
+  console.log(call("users","readLoggedInId",""))
   var hash = createTransaction({
     origin: App.DNA.Hash,
-    destination: App.Key.Hash,
+    destination:JSON.parse(call("users", "readLoggedInId","")),
     pebbles: 5
   })
   return hash
@@ -116,7 +127,7 @@ function readTransactions(hash) {
 }
 
 function readUserTransactions() {
-  return readTransactions(App.Key.Hash);
+  return readTransactions(JSON.parse(call("users", "readLoggedInId","")));
 }
 
 function readWithdrawals(hash) {
@@ -176,7 +187,7 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType)) {
+  if (isValidEntryType(entryType) && isAuthorized(sources[0])) {
     switch (entryType) {
       case "transaction":
         return (

@@ -54,7 +54,7 @@ function createComment(comment) {
   // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
   // in which case the user hash would be the page
   var authorCommentLink = commit('comment_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
+    Links: [{ Base: JSON.parse(call("users", "readLoggedInId","")), Link: hash, Tag: "commentsMade" }]
   });
   return hash;
 }
