@@ -40,19 +40,63 @@ function addTimestamp(object) {
 /****************************************
  * USER
  */
+
+/* identity: {
+            username: (username),
+            github: (github oAuth token) - Optional
+         } */
+function createIdentity(data) {
+  //create new identity
+  data.origin = App.Key.Hash;
+  addTimestamp(data)
+  var id = commit('identity', data);
+
+  //add this identity as a link to DNA
+  var idLink = commit('identity_link', {
+    Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'identity' }]
+  });
+  //add this identity as a link to Key
+  var idLink = commit('identity_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
+  });
+
+  //create an update linked to this identity to store first key
+  var firstUpdate = data;
+  firstUpdate.aliases = [App.Key.Hash];
+  var updateHash = commit('update', firstUpdate);
+  var updateLink = commit('update_link', {
+    Links: [{ Base: id, Link: firstUpdate, Tag: 'update' }]
+  });
+
+  return id
+}
+
+function createUpdate(update) {
+  //find the related user identity -- Do links carry a built in timestamp? Can we just getLinks and then sort them according to this timestamp?
+  //find the latest update on this identity -- sort by the timestamp on the update entry
+  //
+
+}
+
+
+
+
+/****************************************
+ * USER
+ */
 function getUser() {
   return {
     hash: App.Key.Hash,
     pebbles: call("transactions", "tabulate", "\"" + App.Key.Hash + "\"") || 0,
-    userdata: getLinks(App.Key.Hash, "userdata", { Load: true }) || {}
+    userdata: getLinks(App.Key.Hash, "identity", { Load: true }) || {}
   };
 }
 
-function getUserData(hash){
+function getUserData(hash) {
   return {
     hash: hash,
     pebbles: call("transactions", "tabulate", "\"" + hash + "\"") || 0,
-    userdata: getLinks(hash, "userdata", { Load: true }) || {}
+    userdata: getLinks(hash, "identity", { Load: true }) || {}
   };
 }
 
@@ -63,8 +107,8 @@ function getUserData(hash){
          } */
 function setUserData(data) {
   data = addTimestamp(data);
-  var hash = commit('userdata', data);
-  var userdataLink = commit('userdata_link', {
+  var hash = commit('identity', data);
+  var userdataLink = commit('identity_link', {
     Links: [{ Base: App.Key.Hash, Link: hash, Tag: "userdata" }]
   });
   var userdataDNALink = commit('userdata_link', {

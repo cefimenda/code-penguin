@@ -1,0 +1,29 @@
+{
+    "title": "userdata Schema",
+    "type": "object",
+    "properties": {
+        "aliases": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "origin": {
+            "type": "string"
+        },
+        "github": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        },
+        "time": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "keys",
+        "username",
+        "time"
+    ]
+}

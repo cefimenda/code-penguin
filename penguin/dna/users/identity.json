@@ -1,14 +1,14 @@
 {
-    "title": "userdata Schema",
+    "title": "identity Schema",
     "type": "object",
     "properties": {
-        "email": {
-            "type": "string"
-        },
-        "password": {
+        "origin": {
             "type": "string"
         },
         "github": {
+            "type": "string"
+        },
+        "username": {
             "type": "string"
         },
         "time": {
@@ -16,9 +16,8 @@
         }
     },
     "required": [
-        "email",
-        "password",
-        "github",
+        "key",
+        "username",
         "time"
     ]
 }

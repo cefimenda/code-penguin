@@ -76,13 +76,24 @@
             "Config": null,
             "Entries": [
                 {
-                    "Name": "userdata",
+                    "Name": "identity",
                     "DataFormat": "json",
-                    "SchemaFile": "userdata.json",
+                    "SchemaFile": "identity.json",
                     "Sharing": "public"
                 },
                 {
-                    "Name": "userdata_link",
+                    "Name": "identity_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "update",
+                    "DataFormat": "json",
+                    "SchemaFile": "update.json",
+                    "Sharing": "public"
+                },                {
+                    "Name": "update_link",
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
@@ -109,6 +120,7 @@
                     "CallingType": "json",
                     "Exposure": "public"
                 }
+
             ]
         },
         {
