@@ -1,11 +1,14 @@
 {
-	"title": "solution Schema",
+	"title": "signature Schema",
 	"type": "object",
 	"properties": {
-		"link": {
+		"signature": {
 			"type": "string"
 		},
-		"text": {
+		"signatory": {
+			"type": "string"
+		},
+		"hash": {
 			"type": "string"
 		},
 		"time": {
@@ -13,7 +16,9 @@
 		}
 	},
 	"required": [
-		"link",
+		"signature",
+		"signatory",
+		"hash",
 		"time"
 	]
 }
