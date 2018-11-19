@@ -72,9 +72,10 @@ function createIdentity(data) {
 }
 
 function createUpdate(update) {
-  //find the related user identity -- Do links carry a built in timestamp? Can we just getLinks and then sort them according to this timestamp?
+  //find the related user identity -- Links don't carry a built in timestamp and we can't use the timestamp in the Entry to sort because that would only give us the time of account creation. 
+        //We can make it so that a key can only be associated with one account at a time by forcing the user to log out at which point we delete the link between the key and account...
+  
   //find the latest update on this identity -- sort by the timestamp on the update entry
-  //
 
 }
 
