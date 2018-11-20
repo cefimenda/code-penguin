@@ -83,7 +83,6 @@ function copySignature(signature){
     return signatureHash;
   }
   return HC.HashNotFound;
-  return "hello";
 }
 
 function readSignature(hash) {

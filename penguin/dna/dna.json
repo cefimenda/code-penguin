@@ -112,50 +112,6 @@
             ]
         },
         {
-            "Name": "signatures",
-            "Description": "creates cryptographic signatures for added security during migrations",
-            "CodeFile": "signatures.js",
-            "RibosomeType": "js",
-            "BridgeFuncs": null,
-            "Config": null,
-            "Entries": [
-                {
-                    "Name": "signature",
-                    "DataFormat": "json",
-                    "SchemaFile": "signature.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "signature_link",
-                    "DataFormat": "links",
-                    "Required": true,
-                    "Sharing": "public"
-                }
-            ],
-            "Functions": [
-                {
-                    "Name": "createSignature",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "copySignature",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "readSignature",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "readSignatures",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                }
-            ]
-        },
-        {
             "Name": "transactions",
             "Description": "keeps track of all pebble transactions",
             "CodeFile": "transactions.js",
