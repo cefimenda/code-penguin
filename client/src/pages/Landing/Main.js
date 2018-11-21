@@ -18,7 +18,7 @@ export default class Main extends Component {
                     </p>
                 </Snippet>
 
-                <Snippet width="100%" textSide="right" simg="https://i.gifer.com/4m3b.gif" sizing="small" padding="15px">
+                <Snippet width="100%" textSide="right" simg="/images/4m3b.gif" sizing="small" padding="15px">
                     <h3>What are Pebbles?</h3>
                     <p>
                         The "currency" of Code Penguin is the pebble. Pebbles are earned by submitting solutions to others' problems. Pebbles 
@@ -27,7 +27,7 @@ export default class Main extends Component {
                     </p>
                 </Snippet>
 
-                <Snippet width="100%" textSide="left" simg="https://techflourish.com/images/clear-background-pumpkin-spice-latte-clipart-8.png" sizing="medium" padding="15px">
+                <Snippet width="100%" textSide="left" simg="/images/clear-background-pumpkin-spice-latte-clipart-8.png" sizing="medium" padding="15px">
                     <h3>Problems</h3>
                     <p>
                         Problems penguins pose range from simple tasks to full-fledged projects. The key to a good Code Penguin problem is that it be 

@@ -9,7 +9,7 @@ import './Profile.css';
 export default class Profile extends Component {
   state = {
     creator: '',
-    avatar: 'https://via.placeholder.com/150',
+    avatar: '/images/penguin.png',
     pebbles: '',
     withdrawals: [],
     deposits: [],
