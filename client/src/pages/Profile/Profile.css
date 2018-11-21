@@ -58,7 +58,6 @@ td {
 }
 
 .tr-header {
-  /* width: 100px; */
   background-color: #212f33;
 }
 
@@ -68,10 +67,6 @@ td {
   letter-spacing: 3px;
   padding-bottom: 10px;
 }
-
-/* .profile-div span {
-  margin: 0 auto;
-} */
 
 .profile-div input {
   padding: 5px;
