@@ -76,7 +76,9 @@ function distribute() {
  ********************************************/
 function createTransaction(transaction) {
   transaction = addTimestamp(transaction);
+  console.log(JSON.stringify(transaction));
   var hash = commit('transaction', transaction);
+  console.log(hash);
   //if DNA is sending itself pebbles, then we want it to be a deposit but not a withdrawal so that the total sum of pebbles in the system will increase
   if (transaction.destination !== App.DNA.Hash || transaction.origin !== App.DNA.Hash) {
     var withdrawalsLink = commit('transaction_link', {
@@ -176,9 +178,11 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
+  console.log("VALIDATION");
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "transaction":
+        console.log(JSON.stringify(entry));
         return (
         //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
           ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
@@ -187,7 +191,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
 
         //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
-          (tabulate(entry.origin) >= entry.pebbles) &&
+          // (tabulate(entry.origin) >= entry.pebbles) &&
 
         //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
           (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
