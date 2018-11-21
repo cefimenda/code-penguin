@@ -57,7 +57,9 @@ export default class Task extends Component {
     getSolutionRewardInfo = () => {
         API.rewardedSolution(this.props.match.params.hash)
             .then(res => {
-                this.setState({rewardHash: res.data[0].Hash, rewarded: res.data[0].Entry})
+                if(res.data[0]){
+                    this.setState({rewardHash: res.data[0].Hash, rewarded: res.data[0].Entry});
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -108,24 +110,27 @@ export default class Task extends Component {
         }
     }
 
-    ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    /// what is the function to add pebbles to task ///
-    ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    handlePebble = () => {
+    handleBackTask = () => {
         const { pebbles, maxPebbles, user } = this.state
         if (pebbles <= maxPebbles) {
             console.log("user: ", user);
             console.log("pebbles user have: ", maxPebbles);
             console.log("pebbles donated: ", pebbles);
-            this.setState({ pebbles: "" })
+            API.backTask({
+                task: this.props.match.params.hash,
+                pebbles: parseInt(pebbles)
+            })
+                .then(res=>{
+                    console.log(res);
+                    this.setState({ pebbles: "" })
+                    this.getInfo()
+                })
+                .catch(err=>{
+                    console.log(err);
+                });
+            
         }
     }
-    ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////
 
     handleClear = () => {
         this.setState({ newComment: "", newSolutionLink: "", newSolutionDes: ""})
@@ -200,7 +205,7 @@ export default class Task extends Component {
                                     <div className="task-add-pebb">
                                         <label>Add your pebbles: </label>
                                         <input type="number" name="pebbles" placeholder={`( ${this.state.maxPebbles} max )`} onChange={this.handleInputChange} value={this.state.pebbles} required />
-                                        <button onClick={this.handlePebble}>Add</button>
+                                        <button onClick={this.handleBackTask}>Add</button>
                                     </div>
                                 </div>
                             </Grid.Column>

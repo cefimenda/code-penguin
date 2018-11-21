@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Container from "../../components/Container";
 import Snippet from "../../components/Snippet";
-import Quote from "../../images/quotation-open.png";
 import API from "../../utils/API";
 import './Landing.css';
 
@@ -64,7 +63,7 @@ export default class Main extends Component {
             testimonial.push(
                 <Snippet key={i} width="100%" textSide={i % 2 === 0 ? "left" : "right"}>
                     <div className="test-quote">
-                        <img src={Quote} alt="quote mark" />
+                        <img src="/images/quotation-open.png" alt="quote mark" />
                         <p className="test-data">{array[i].Entry.text}</p>
                         <p className="test-author">--{array[i].Source}</p>
                     </div>

@@ -10,7 +10,7 @@ export default class Navbar extends Component {
     color: 'transparent',
     userPebbles: '',
     creator: '',
-    avatar: 'https://via.placeholder.com/150'
+    avatar: '/images/penguin.png'
   };
 
   componentWillMount() {
@@ -28,8 +28,10 @@ export default class Navbar extends Component {
   getHash = () => {
     API.getUser()
       .then(res => {
+        console.log(res);
+        this.setState({ userPebbles: res.data.pebbles});
         let { github } = res.data.userdata[0].Entry || null;
-        this.setState({ userPebbles: res.data.pebbles, creator: github || res.data.hash });
+        this.setState({ creator: github || res.data.hash });
         if (github) {
           this.setState({
             hasGithub: true
@@ -69,6 +71,7 @@ export default class Navbar extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <React.Fragment>
         <div

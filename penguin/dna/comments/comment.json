@@ -1,5 +1,5 @@
 {
-    "title": "transaction Schema",
+    "title": "comment Schema",
     "type": "object",
     "properties": {
         "text": {

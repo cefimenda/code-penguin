@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["transaction", "transaction_link"];
+  var entryTypes = ["signature", "signature_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -37,115 +37,64 @@ function addTimestamp(object) {
   return object;
 }
 
-function getLastRedistributionDate(hash) {
-  var deposits = getLinks(hash, "deposits", { Load: true });
-  var date = 0
-  //find the latest redistribution transaction from DNA to this particular agent's key
-  deposits.forEach(function (deposit) {
-    if ((deposit.Entry.origin === App.DNA.Hash) && (deposit.Entry.time > date)) {
-      date = deposit.Entry.time;
-    };
-  })
-  return date;
-}
-
-
-
-
-/*******************************************************************************
- * Set Ups
- ******************************************************************************/
-//New User added ==> Redistribution mechanics for pebbles
-//CONSTANT: (total pebbles in the system)/(total users in the system) = 500
-
-//right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
-//in order to avoid a situation where people just build a mini app that sends a post request to /distribute every 24 hrs automatically.
-function distribute() {
-  var hash = createTransaction({
-    origin: App.DNA.Hash,
-    destination: JSON.parse(call("users", "readLoggedInId", "")),
-    pebbles: 5
-  })
-  return hash
-}
+// Signatures
 
 /*********************************************
- * TRANSACTIONS
+ * Signatures
  * {
- *    origin: (origin of the funds)
- *    destination: (destination of the funds)
- *    pebbles: (amount of pebbles to be transfered)
+ *    hash: (hash of data to be signed)
  * }
  ********************************************/
-function createTransaction(transaction) {
-  transaction = addTimestamp(transaction);
-  console.log(JSON.stringify(transaction));
-  var hash = commit('transaction', transaction);
-  console.log(hash);
-  //if DNA is sending itself pebbles, then we want it to be a deposit but not a withdrawal so that the total sum of pebbles in the system will increase
-  if (transaction.destination !== App.DNA.Hash || transaction.origin !== App.DNA.Hash) {
-    var withdrawalsLink = commit('transaction_link', {
-      Links: [{ Base: transaction.origin, Link: hash, Tag: "withdrawals" }]
+function createSignature(hash) {
+  var signature = {};
+  signature.hash = hash;
+  var data = get(hash);
+  if(data===HC.HashNotFound){
+    return "bad";
+  }
+  signature.signature = sign(JSON.stringify(data));
+  signature.signatory = App.Key.Hash;
+  signature = addTimestamp(signature);
+  var signatureHash = commit('signature', signature);
+  var signatureLink = commit('signature_link', {
+    Links: [{ Base: hash, Link: signatureHash, Tag: "signatures" }]
+  });
+  return signatureHash;
+}
+
+/***************
+ * Signatures
+ * {
+ *  signature:
+ *  signatory:
+ *  hash:
+ *  time:
+ * }
+ */
+function copySignature(signature){
+  var data = get(signature.hash);
+  var v = verifySignature(signature.signature, JSON.stringify(data), signature.signatory);
+  console.log(v);
+  if(verifySignature(signature.signature, JSON.stringify(data), signature.signatory)){
+    var signatureHash = commit('signature', signature);
+    var signatureLink = commit('signature_link', {
+      Links: [{ Base: hash, Link: signatureHash, Tag: "signatures" }]
     });
+    return signatureHash;
   }
-  var depositsLink = commit('transaction_link', {
-    Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
-  });
-  return hash;
+  return HC.HashNotFound;
 }
 
-function readTransaction(hash) {
-  var transaction = get(hash);
-  if (transaction.origin !== App.DNA.Hash) {
-    transaction.taskTitle = JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.origin))).title || JSON.parse(call("tasks", "readTask", JSON.stringify(transaction.destination))).title;
-  } else {
-    transaction.taskTitle = "Active Reward"
-  }
-  return transaction;
+function readSignature(hash) {
+  var signature = get(hash);
+  return signature;
 }
 
-function readTransactions(hash) {
-  var deposits = getLinks(hash, "deposits", { Load: true });
-  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  var getTitles = function (transaction) {
-    var updatedTransaction = readTransaction(transaction.Hash);
-    transaction.Entry.taskTitle = updatedTransaction.taskTitle;
-  }
-  deposits.forEach(getTitles);
-  withdrawals.forEach(getTitles);
-  return {
-    deposits: deposits,
-    withdrawals: withdrawals
-  }
+function readSignatures(hash) {
+  var signatures = getLinks(hash, "signatures", { Load: true });
+  return { signatures: signatures };
 }
 
-function readUserTransactions() {
-  return readTransactions(JSON.parse(call("users", "readLoggedInId", "")));
-}
-
-function readWithdrawals(hash) {
-  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  return { withdrawals: withdrawals };
-}
-
-function readDeposits(hash) {
-  var deposits = getLinks(hash, "deposits", { Load: true });
-  return { deposits: deposits };
-}
-
-function tabulate(hash) {
-  var deposits = getLinks(hash, "deposits", { Load: true });
-  var totalDeposits = 0;
-  deposits.forEach(function (deposit) {
-    totalDeposits += deposit.Entry.pebbles;
-  });
-  var withdrawals = getLinks(hash, "withdrawals", { Load: true });
-  var totalWithdrawals = 0;
-  withdrawals.forEach(function (withdrawal) {
-    totalWithdrawals += withdrawal.Entry.pebbles;
-  });
-  return totalDeposits - totalWithdrawals;
-}
 
 /*******************************************************************************
  * Required callbacks
@@ -180,31 +129,11 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  console.log("VALIDATION");
   if (isValidEntryType(entryType)) {
     switch (entryType) {
-      case "transaction":
-        console.log(JSON.stringify(entry));
-        return (
-          //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
-          ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
-
-          //  // must be authorized to make transaction --> making sure that this is a valid login and not some id pretending that they have logged in
-          call("users", "isAuthorized", JSON.stringify(sources[0])) &&
-
-          //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
-          ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
-
-          //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
-          (tabulate(entry.origin) >= entry.pebbles) &&
-
-          //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
-          (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
-
-          //   //negative pebbles not allowed
-          (entry.pebbles > 0)
-        )
-      case "transaction_link":
+      case "signature":
+        return true
+      case "signature_link":
         return true
     }
   }
