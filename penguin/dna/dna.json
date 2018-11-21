@@ -88,19 +88,29 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "update",
+                    "Name": "userdata",
                     "DataFormat": "json",
-                    "SchemaFile": "update.json",
+                    "SchemaFile": "userdata.json",
                     "Sharing": "public"
                 },
                 {
-                    "Name": "update_link",
+                    "Name": "userdata_link",
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
                 }
             ],
             "Functions": [
+                {
+                    "Name": "test",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "isAuthorized",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
                 {
                     "Name": "createIdentity",
                     "CallingType": "json",
@@ -132,17 +142,37 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "getUserData",
+                    "Name": "getData",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "setUserData",
+                    "Name": "createUserdata",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
                     "Name": "login",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "autoLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeLoggable",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeAlias",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "getLoggables",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

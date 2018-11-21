@@ -37,6 +37,8 @@ function addTimestamp(object) {
   return object;
 }
 
+
+
 // Solutions
 
 /*********************************************
@@ -54,7 +56,7 @@ function createSolution(solution) {
     Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
   });
   var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: JSON.parse(call("users", "readLoggedInId","")), Link: hash, Tag: "solutions" }]
+    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "solutions" }]
   });
   return hash;
 }
@@ -69,8 +71,8 @@ function readSolutions(hash) {
   return { solutions: solutions };
 }
 
-function rewardedSolution(hash){
-  return getLinks(hash, "rewarded_solution", { Load: true});
+function rewardedSolution(hash) {
+  return getLinks(hash, "rewarded_solution", { Load: true });
 }
 
 /**
@@ -83,7 +85,7 @@ function reward(hash) {
   var solutionAuthor = getCreator(hash);
   var pebbles = tabulate(solutionTask);
   var rewardedSolutionLink = commit('solution_link', {
-    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution"}]
+    Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution" }]
   });
   return createTransaction({
     origin: solutionTask,
@@ -125,7 +127,7 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType)) {
+  if (isValidEntryType(entryType) && call("users", "isAuthorized", JSON.stringify(sources[0]))) {
     switch (entryType) {
       case "solution":
         /**

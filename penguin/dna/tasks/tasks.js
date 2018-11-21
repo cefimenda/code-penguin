@@ -36,16 +36,7 @@ function addTimestamp(object) {
   object.time = Date.now();
   return object;
 }
-//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
-function isAuthorized(key) {
-  var identity = JSON.parse(call("users", "readIdentity", ""));
-  if (identity.aliases.indexOf(key) > -1) {
-    return true
-  } else {
-    call("users", "logOut", "");
-    return false
-  }
-}
+
 
 /*********************************************
  * TASKS
@@ -62,7 +53,6 @@ function createTask(task) {
   if (pebbles === 0) return;
   task = addTimestamp(task);
   task.creator = JSON.parse(call("users", "readLoggedInId", ""));
-  console.log(task.creator)
   task.title = task.title || "";
   task.details = task.details || "";
   task.tags = task.tags || [];
@@ -152,7 +142,9 @@ function backTask(back) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
-  call("users", "createIdentity", JSON.stringify({ username: "cefimenda" }))
+  if (!JSON.parse(call("users", "autoLogin", ""))) {
+    call("users", "createIdentity", JSON.stringify({ username: "cefimenda" }))
+  };
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,
     destination: App.DNA.Hash,
@@ -192,7 +184,7 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType) && isAuthorized(sources[0])) {
+  if (isValidEntryType(entryType) && call("users", "isAuthorized", JSON.stringify(sources[0]))) {
     switch (entryType) {
       case "task":
         return (

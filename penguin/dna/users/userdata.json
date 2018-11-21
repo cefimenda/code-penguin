@@ -2,19 +2,10 @@
     "title": "userdata Schema",
     "type": "object",
     "properties": {
-        "aliases": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "origin": {
+        "type": {
             "type": "string"
         },
-        "github": {
-            "type": "string"
-        },
-        "username": {
+        "data": {
             "type": "string"
         },
         "time": {
@@ -22,6 +13,8 @@
         }
     },
     "required": [
+        "type",
+        "data",
         "time"
     ]
 }

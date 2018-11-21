@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["userdata", "userdata_link", "identity", "identity_link", "update", "update_link"];
+  var entryTypes = ["identity", "identity_link", "userdata", "userdata_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -26,19 +26,6 @@ function getCreator(hash) {
   return get(hash, { GetMask: HC.GetMask.Sources })[0];
 }
 
-function recentUpdate(id) {
-  var updates = getLinks(id, "update", { Load: true })
-  var mostRecent;
-  var date = 0
-  updates.forEach(function (update) {
-    if (update.Entry.time > date) {
-      date = update.Entry.time;
-      mostRecent = update.Entry;
-    }
-  })
-  return mostRecent;
-}
-
 /**
  * Returns an object, plus a timestamp.
  * 
@@ -50,176 +37,228 @@ function addTimestamp(object) {
   return object;
 }
 
-function removeAlias(key) {
-  var key = key || App.Key.Hash;
-  var identity = readIdentity();
-  if (identity.aliases.indexOf(key) > -1) {
-    identity.aliases.pop(key)
-  };
-  createUpdate(identity);
-}
-
 function connectUser(id) {
   //If already connected to an identity log out
   if (getLinks(App.Key.Hash, 'identity') > 0) { logOut() }
   //create new connection to the account that the user is logging in to
-  var idLinkKey = commit('identity_link', {
+
+  //link to get to logged in account
+  var loggedInLink = commit('identity_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
   });
-  //add this agent's key to the aliases in the identity
-  var identity = readIdentity();
-  if (identity.aliases.indexOf(App.Key.Hash) === -1) {
-    identity.aliases.push(App.Key.Hash)
-    createUpdate(identity)
-  }
-  return getUser();
-}
+  //link to get to all keys that are logged into an account
+  var loggedInKeysLink = commit('identity_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'identity' }]
+  });
 
-//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
-function isAuthorized(key) {
-  var identity = readIdentity();
-  if (identity.aliases.indexOf(key) > -1) {
-    return true
-  } else {
-    logOut();
-    return false
-  }
+  //link to get to all accounts that a key can log in to
+  var loggableLink = commit('identity_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
+  });
+  //link to get to all keys that can log into an account
+  var aliasLink = commit('identity_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
+  });
+
+  return getUser();
 }
 
 
 /****************************************
- * USER Functions with endpoints
- */
+ * USER Functions With Endpoints
+****************************************/
 
-/* identity: {
+//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
+
+function isAuthorized(key) {
+  var id = readLoggedInId(key)
+  var aliases = getLoggables(id)
+  var result;
+  aliases.forEach(function (alias) {
+    if (alias.Hash === key) {
+      result = true;
+    }
+  });
+  if (result) {
+    return result;
+  } else {
+    console.log("INVALID LOGIN SPOTTED __ LOGGING OUT")
+    logOut()
+    return false;
+  }
+}
+
+/******************
+ identity:  {
             username: (username),
             github: (github oAuth token) - Optional
-         } */
+            } 
+******************/
+
+//returns id hash
 function createIdentity(data) {
   //create new identity
   data.origin = App.Key.Hash;
   addTimestamp(data)
   var id = commit('identity', data);
 
-  //add this identity as a link to DNA
+  //add this id as a link to DNA
   var idLinkDNA = commit('identity_link', {
     Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'identity' }]
   });
-  //add this identity as a link to Key
-  var idLinkKey = commit('identity_link', {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
-  });
-
-  //create an update linked to this identity to store first key
-  var firstUpdate = data;
-  firstUpdate.aliases = [App.Key.Hash];
-  var updateHash = commit('update', firstUpdate);
-
-  var updateLink = commit('update_link', {
-    Links: [{ Base: id, Link: updateHash, Tag: 'update' }]
-  });
-
+  //connect user to create loggable and identity links
+  connectUser(id);
+  console.log("MY ID: " + id)
   return id
 }
-//returns most recent identity information
-function readIdentity(id) {
-  var id = id || readLoggedInId()
-  return recentUpdate(id)
-}
+
 //returns id hash
-function readLoggedInId() {
-  return getLinks(App.Key.Hash, 'identity')[0].Hash
+function readLoggedInId(key) {
+  var key = key || App.Key.Hash
+  return getLinks(key, 'identity')[0].Hash
 }
 
-function createUpdate(update) {
-  addTimestamp(update)
 
-  //find the related user identity -- Links don't carry a built in timestamp and we can't use the timestamp in the Entry to sort because that would only give us the time of account creation. 
-  //We can make it so that a key can only be associated with one account at a time by forcing the user to log out at which point we delete the link between the key and account...
-  var id = getLinks(App.Key.Hash, 'identity', { Load: true })[0].Hash
-
-  //find the latest update on this identity -- sort by the timestamp on the update entry
-  var mostRecent = recentUpdate(id)
-
-  //replace additions in update
-  Object.keys(update).forEach(function (key) {
-    mostRecent[key] = update[key]
-  })
-
-  var newUpdate = commit('update', mostRecent);
-  var updateLink = commit('update_link', {
-    Links: [{ Base: id, Link: newUpdate, Tag: 'update' }]
-  })
-  return newUpdate
-}
-
-function logOut() {
-  var id = readLoggedInId()
+/******************
+loggable:   {
+            base: (the base hash that the loggable link is committed on),
+            target: (the hash that you want to remove from the base)
+             }
+******************/
+//can be used to remove any type of loggables
+function removeLoggable(loggable) {
   commit("identity_link", {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity', LinkAction: HC.LinkAction.Del }]
+    Links: [{ Base: loggable.base, Link: loggable.target, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
+  });
+  return true
+}
+//removes current key from the currently logged in id by default. Also can be used to remove any other key from the logged in id.
+function removeAlias(key) {
+  var key = key || App.Key.Hash;
+  var id = readLoggedInId();
+  commit("identity_link", {
+    Links: [{ Base: id, Link: key, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
   })
   return true
 }
 
-function getUser() {
+//returns list of loggables
+function getLoggables(token) {
+  return getLinks(token, "loggable")
+}
+
+//returns identity with most up to date information
+function getData(id) {
+  var id = id || readLoggedInId();
+  var userdatas = getLinks(id, "userdata", { Load: true })
+
+  //sort userdatas according to date of Entry
+  userdatas.sort(function (a, b) {
+    return a.Entry.time - b.Entry.time
+  });
+  var sorted = userdatas
+
+  //start from the first identity and apply all changes on userdatas
+  var identity = get(id)
+  sorted.forEach(function (data) {
+    var entry = data.Entry
+    identity[entry.type] = entry.data
+  })
+
+  return identity
+}
+
+/******************
+userdata: {
+            type: (github,username, etc.),
+            data: (github oAuth token, some username, etc.)
+          } 
+******************/
+function createUserdata(userdata) {
+  addTimestamp(userdata)
   var id = readLoggedInId()
-  return {
-    hash: id,
-    pebbles: call("transactions", "tabulate", "\"" + id + "\"") || 0,
-    userdata: readIdentity(id) || {}
-  };
+
+  var newUserdata = commit('userdata', userdata);
+  var userdataLink = commit('userdata_link', {
+    Links: [{ Base: id, Link: newUserdata, Tag: 'userdata' }]
+  });
+
+  return getData();
 }
 
-function getUserData(hash) {
-  return {
-    hash: hash,
-    pebbles: call("transactions", "tabulate", "\"" + hash + "\"") || 0,
-    userdata: getLinks(hash, "identity", { Load: true }) || {}
-  };
+function logOut() {
+  try {
+    var id = readLoggedInId()
+    commit("identity_link", {
+      Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity', LinkAction: HC.LinkAction.Del }]
+    });
+    console.log("logging out")
+    return true
+  } catch (err) {
+    console.log(err)
+    return "You need to be logged in to log out."
+  }
 }
 
+function getUser(id) {
+  var id;
+  if (id) {
+    id = id
+  } else {
+    try {
+      id = readLoggedInId()
+    } catch (err) {
+      console.log(err)
+      return "You are not logged in."
+    }
+  }
+  try {
+    return {
+      hash: id,
+      aliases: getLoggables(id),
+      pebbles: call("transactions", "tabulate", "\"" + id + "\"") || 0,
+      userdata: getData(id) || {}
+    };
+  } catch (err) {
+    console.log(err);
+    return "Error occured, check consoles for details. If you are passing an ID in, make sure that the id is a valid hash"
+  }
+}
 
-function login(token, alias) {
+function login(token) {
   var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
-    var user = link.Entry;
-    //TODO link.Hash is not the id hash it is the hash of the last update on the id... need to get the hash of the original object..
-    //also check if we have the same problem elsewhere... 
+    var user = getData(link.Hash)
     if (link.Hash === token || user.github === token) {
       result = connectUser(link.Hash);
+      console.log("logging in to: "+ link.Hash)
       return
     };
   });
   return result;
 }
 
-function getAliasMatches() {
-  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
-  var matches = []
-  allUsers.forEach(function (link) {
-    var user = link.Entry
-    if (user.aliases.indexOf(App.Key.Hash) > -1) { 
-      matches.append(link.Hash)
-    }
-  })
+function autoLogin() {
+  var loggables = getLoggables(App.Key.Hash);
+  if (loggables.length === 1 && ((getLoggables(loggables[0].Hash)).map(function (item) { return item.Hash }).indexOf(App.Key.Hash) > -1)) {
+    return login(loggables[0].Hash);
+  }
+  else {
+    return false
+  }
 }
+function test() {
+  console.log(createIdentity({ username: "cefimenda" }))
+  console.log(logOut())
+  return autoLogin()
+}
+/*******************************************************************************
+ * Private Entries
+ ******************************************************************************/
 
 
 
-/*
-User flow:
- 
-- create user
-  -create a user entry with email,password,github
-  -link the user entry to the current agent/key hash
-- login
-  -auto login based on agent/key hash
-    -if current agent/key has isn't attached to a userdata, then ask email/password and create userdata_link
-    -validate userdata_link by checking email/password information with the same on the dht
-  -can't login to a different account with the same agent/key hash
- 
-*/
 
 /*******************************************************************************
  * Required callbacks
@@ -265,11 +304,11 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "identity_link":
         return (
           //Each Key can only be logged into one identity at a time. If you want to log into another identity you must first log out.
-          ((entry.Links[0].Base === App.Key.Hash) ? ((getLinks(App.Key.Hash, "identity").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true)
+          (entry.Links[0].Tag === "identity") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "identity").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
         )
-      case "update":
+      case "userdata":
         return true
-      case "update_link":
+      case "userdata_link":
         return true
     }
   }
@@ -343,8 +382,8 @@ function validateDel(entryType, hash, pkg, sources) {
 function validateLink(entryType, entry, header, pkg, sources) {
   switch (entryType) {
     case "identity_link":
-
-    case "update_link":
+      return true;
+    case "userdata_link":
       return true;
   }
   return false;

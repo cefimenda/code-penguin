@@ -16,7 +16,7 @@
         }
     },
     "required": [
-        "key",
+        "origin",
         "username",
         "time"
     ]

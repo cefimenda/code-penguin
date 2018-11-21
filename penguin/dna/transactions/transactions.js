@@ -48,16 +48,9 @@ function getLastRedistributionDate(hash) {
   })
   return date;
 }
-//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
-function isAuthorized(key) {
-  var identity = JSON.parse(call("users", "readIdentity", ""));
-  if (identity.aliases.indexOf(key) > -1) {
-    return true
-  } else {
-    call("users", "logOut", "");
-    return false
-  }
-}
+
+
+
 
 /*******************************************************************************
  * Set Ups
@@ -68,10 +61,9 @@ function isAuthorized(key) {
 //right now the function below is public and can be called every 24 hours, but we should make it so that this function is private and is called automatically when a user is active
 //in order to avoid a situation where people just build a mini app that sends a post request to /distribute every 24 hrs automatically.
 function distribute() {
-  console.log(call("users","readLoggedInId",""))
   var hash = createTransaction({
     origin: App.DNA.Hash,
-    destination:JSON.parse(call("users", "readLoggedInId","")),
+    destination: JSON.parse(call("users", "readLoggedInId", "")),
     pebbles: 5
   })
   return hash
@@ -97,7 +89,6 @@ function createTransaction(transaction) {
   var depositsLink = commit('transaction_link', {
     Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
   });
-
   return hash;
 }
 
@@ -127,7 +118,7 @@ function readTransactions(hash) {
 }
 
 function readUserTransactions() {
-  return readTransactions(JSON.parse(call("users", "readLoggedInId","")));
+  return readTransactions(JSON.parse(call("users", "readLoggedInId", "")));
 }
 
 function readWithdrawals(hash) {
@@ -187,23 +178,26 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType) && isAuthorized(sources[0])) {
+  if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "transaction":
         return (
-        //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
+          //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
           ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
 
-        //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
+          //  // must be authorized to make transaction --> making sure that this is a valid login and not some id pretending that they have logged in
+          call("users", "isAuthorized", JSON.stringify(sources[0])) &&
+
+          //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
           ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
 
-        //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
+          //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
           (tabulate(entry.origin) >= entry.pebbles) &&
 
-        //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
+          //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
           (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
 
-        //   //negative pebbles not allowed
+          //   //negative pebbles not allowed
           (entry.pebbles > 0)
         )
       case "transaction_link":
