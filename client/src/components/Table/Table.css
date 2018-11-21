@@ -1,8 +1,8 @@
-
 td, th {
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
+
 .shortHash {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -16,3 +16,32 @@ td, th {
   color: gold;
   border-bottom: 1px solid gold;
 }
+
+.previous, .next {
+  border-radius: 5px;
+  border: 2px solid #00b5ad;
+  background-color: transparent;
+  color: #00b5ad;
+  padding: 5px;
+}
+
+.table-buttons {
+  text-align: center;
+}
+
+.previous {
+  float: left;
+}
+
+.next {
+  float: right;
+}
+
+.page-num {
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
