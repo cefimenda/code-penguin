@@ -1,0 +1,22 @@
+[
+    {
+        "Hash": "1",
+        "userEmail": "user1@gmail.com",
+        "userPassword": "password1"
+    },
+    {
+        "Hash": "1",
+        "userEmail": "anotheruser@gmail.com",
+        "userPassword": "password1"
+    },
+    {
+        "Hash": "1",
+        "userEmail": "codepenguinppl@gmail.com",
+        "userPassword": "password1"
+    },
+    {
+        "Hash": "1",
+        "userEmail": "insainlylongemailaddresstest@gmail.com",
+        "userPassword": "password1"
+    }
+]
