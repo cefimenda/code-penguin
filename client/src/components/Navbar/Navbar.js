@@ -28,7 +28,7 @@ export default class Navbar extends Component {
   getHash = () => {
     API.getUser()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.setState({ userPebbles: res.data.pebbles});
         let { github } = res.data.userdata[0].Entry || null;
         this.setState({ creator: github || res.data.hash });
@@ -71,7 +71,7 @@ export default class Navbar extends Component {
   };
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <React.Fragment>
         <div
@@ -87,7 +87,7 @@ export default class Navbar extends Component {
               <nav>
                 <ul className="nav">
                   <li key="1">
-                    <a href="/">
+                    <a href="/marketplace">
                       <h4 className="ui white"> Code Penguin</h4>
                     </a>
                   </li>
@@ -97,7 +97,7 @@ export default class Navbar extends Component {
                     </a>
                   </li>
                   <li key="3" className="float-right">
-                    <a href="/">
+                    <a href="/marketplace">
                       <p className={this.props.page === 'Marketplace' ? 'ui white navbold' : 'ui white'}>
                         Marketplace
                       </p>

@@ -1,13 +1,33 @@
-.fixed-box {
+.fixed-box,
+.fixed-box-login {
 	position: fixed;
-	width: 300px;
-	height: 450px;
-	top: 140px;
-	padding: 15px;
 	background-color: #3d3d3d71;
 }
 
-.fixed-box h1 {
+.fixed-box {
+	width: 300px;
+	height: 450px;
+	top: 120px;
+	padding: 15px;
+}
+
+.fixed-box-login {
+	width: 400px;
+	height: 550px;
+	padding: 40px;
+	top: 50%;
+	left : 50%;
+	margin-top: -300px;
+	margin-left: -200px;
+	box-shadow: 10px 10px 8px #00000091;
+}
+
+.fixed-box-login h1 {
+	letter-spacing: 1px;
+}
+
+.fixed-box h1,
+.fixed-box-login h1 {
 	text-align: center;
 }
 
