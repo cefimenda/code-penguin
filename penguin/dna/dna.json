@@ -76,6 +76,18 @@
             "Config": null,
             "Entries": [
                 {
+                    "Name": "identity",
+                    "DataFormat": "json",
+                    "SchemaFile": "identity.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "identity_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                },
+                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -86,26 +98,98 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
+                },
+                {
+                    "Name": "login",
+                    "DataFormat": "json",
+                    "SchemaFile": "login.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "login_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
                 }
             ],
             "Functions": [
+                {
+                    "Name": "test",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "isAuthorized",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createIdentity",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readIdentity",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readLoggedInId",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createUpdate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "logOut",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
                 {
                     "Name": "getUser",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "getUserData",
+                    "Name": "getData",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "setUserData",
+                    "Name": "createUserdata",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
                     "Name": "login",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "autoLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeLoggable",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeAlias",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "getLoggables",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "updateLoginToken",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

@@ -37,6 +37,7 @@ function addTimestamp(object) {
   return object;
 }
 
+
 /*********************************************
  * TASKS
  * (the task object that we receive from the UI should look like the following)
@@ -51,7 +52,7 @@ function createTask(task) {
   var pebbles = task.pebbles || 0;
   if (pebbles === 0) return;
   task = addTimestamp(task);
-  task.creator = App.Key.Hash;
+  task.creator = JSON.parse(call("users", "readLoggedInId", ""));
   task.title = task.title || "";
   task.details = task.details || "";
   task.tags = task.tags || [];
@@ -64,7 +65,7 @@ function createTask(task) {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
   var myTasksLink = commit('task_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "tasks" }]
+    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "tasks" }]
   });
   return hash;
 }
@@ -87,7 +88,7 @@ function readAllTasks() {
 }
 
 function readMyTasks(userHash) {
-  var links = getLinks(userHash || App.Key.Hash, "tasks", { Load: true });
+  var links = getLinks(userHash || JSON.parse(call("users", "readLoggedInId", "")), "tasks", { Load: true });
   return { links: links };
 }
 
@@ -115,7 +116,7 @@ function deleteTask(hash) {
  * }
  */
 function backTask(back) {
-  var backer = App.Key.Hash;
+  var backer = JSON.parse(call("users", "readLoggedInId", ""));
   var task = back.task;
   var pebbles = back.pebbles;
   return call("transactions", "createTransaction", {
@@ -141,6 +142,9 @@ function backTask(back) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
+  if (!JSON.parse(call("users", "autoLogin", ""))) {
+    call("users", "createIdentity", JSON.stringify({ username: "cefimenda", login: { email: "jeffyyy", password: String(Date.now()) } }))
+  };
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,
     destination: App.DNA.Hash,
@@ -180,12 +184,12 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType)) {
+  if (isValidEntryType(entryType) && call("users", "isAuthorized", JSON.stringify(sources[0]))) {
     switch (entryType) {
       case "task":
         return (
           //the creator of the task must have equal or more pebbles than what is specified in the transaction
-          (call("transactions", "tabulate", "\"" + sources[0] + "\"") >= entry.pebbles) &&
+          (call("transactions", "tabulate", "\"" + entry.creator + "\"") >= entry.pebbles) &&
 
           //negative pebbles not allowed
           (entry.pebbles > 0)

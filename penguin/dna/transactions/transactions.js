@@ -49,6 +49,9 @@ function getLastRedistributionDate(hash) {
   return date;
 }
 
+
+
+
 /*******************************************************************************
  * Set Ups
  ******************************************************************************/
@@ -60,7 +63,7 @@ function getLastRedistributionDate(hash) {
 function distribute() {
   var hash = createTransaction({
     origin: App.DNA.Hash,
-    destination: App.Key.Hash,
+    destination: JSON.parse(call("users", "readLoggedInId", "")),
     pebbles: 5
   })
   return hash
@@ -76,9 +79,7 @@ function distribute() {
  ********************************************/
 function createTransaction(transaction) {
   transaction = addTimestamp(transaction);
-  console.log(JSON.stringify(transaction));
   var hash = commit('transaction', transaction);
-  console.log(hash);
   //if DNA is sending itself pebbles, then we want it to be a deposit but not a withdrawal so that the total sum of pebbles in the system will increase
   if (transaction.destination !== App.DNA.Hash || transaction.origin !== App.DNA.Hash) {
     var withdrawalsLink = commit('transaction_link', {
@@ -88,7 +89,6 @@ function createTransaction(transaction) {
   var depositsLink = commit('transaction_link', {
     Links: [{ Base: transaction.destination, Link: hash, Tag: "deposits" }]
   });
-
   return hash;
 }
 
@@ -118,7 +118,7 @@ function readTransactions(hash) {
 }
 
 function readUserTransactions() {
-  return readTransactions(App.Key.Hash);
+  return readTransactions(JSON.parse(call("users", "readLoggedInId", "")));
 }
 
 function readWithdrawals(hash) {
@@ -178,25 +178,26 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  console.log("VALIDATION");
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "transaction":
-        console.log(JSON.stringify(entry));
         return (
-        //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
+          //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
           ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||
 
-        //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
+          //  // must be authorized to make transaction --> making sure that this is a valid login and not some id pretending that they have logged in
+          call("users", "isAuthorized", JSON.stringify(sources[0])) &&
+
+          //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
           ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
 
-        //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
-          // (tabulate(entry.origin) >= entry.pebbles) &&
+          //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
+          (tabulate(entry.origin) >= entry.pebbles) &&
 
-        //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
+          //   //if the transactions origin is a task then the source of the transaction must be equal to the creator of the task
           (((entry.origin !== App.DNA.Hash) && (get(entry.origin).title)) ? (sources[0] === getCreator(entry.origin)) : true) &&
 
-        //   //negative pebbles not allowed
+          //   //negative pebbles not allowed
           (entry.pebbles > 0)
         )
       case "transaction_link":
