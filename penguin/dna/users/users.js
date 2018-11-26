@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["identity", "identity_link", "userdata", "userdata_link"];
+  var entryTypes = ["identity", "identity_link", "userdata", "userdata_link", "login_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -92,11 +92,19 @@ function isAuthorized(key) {
  identity:  {
             username: (username),
             github: (github oAuth token) - Optional
+            login:{
+                email:email,
+                password:password
+              } -- login can be any object, login will not be saved into the entry
             } 
 ******************/
 
 //returns id hash
 function createIdentity(data) {
+  //removing login information from the inserted argument
+  var login = data.login
+  delete data.login
+
   //create new identity
   data.origin = App.Key.Hash;
   addTimestamp(data)
@@ -108,7 +116,10 @@ function createIdentity(data) {
   });
   //connect user to create loggable and identity links
   connectUser(id);
-  console.log("MY ID: " + id)
+
+  //create a login token linked to the id
+  createLoginToken(id, login)
+
   return id
 }
 
@@ -225,14 +236,23 @@ function getUser(id) {
   }
 }
 
-function login(token) {
+/******************
+login: {
+            email: email address,
+            password: password
+          } 
+
+    PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
+******************/
+function login(loginData) {
+  var login = makeHash("login", loginData);
   var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
-    var user = getData(link.Hash)
-    if (link.Hash === token || user.github === token) {
+    var userLogin = readLoginToken(link.Hash)
+    if (userLogin === login) {
       result = connectUser(link.Hash);
-      console.log("logging in to: "+ link.Hash)
+      console.log("logging in to: " + link.Hash)
       return
     };
   });
@@ -249,15 +269,78 @@ function autoLogin() {
   }
 }
 function test() {
-  console.log(createIdentity({ username: "cefimenda" }))
-  console.log(logOut())
-  return autoLogin()
+  logOut()
+  var id = createIdentity({ username: "cefimenda" })
+  console.log("reading Login Token:" + readLoginToken(id))
+  var newToken = (updateLoginToken(id, { email: "booo", password: "newPass" }))
+  console.log("newToken: " + newToken)
+  console.log("reading new Login Token: " + readLoginToken(id))
 }
+
+function updateLoginToken(newLogin) {
+  var id = readLoggedInId();
+  var removeLink = commit("login_link", {
+    Links: [{ Base: id, Link: readLoginToken(id), Tag: "login", LinkAction: HC.LinkAction.Del }]
+  });
+  return createLoginToken(id, newLogin)
+}
+
 /*******************************************************************************
- * Private Entries
+ * Private Functions for Secure Login Data
  ******************************************************************************/
 
+/******************
+login: {
+            email: email address,
+            password: password
+          } 
 
+    PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
+******************/
+function createLoginToken(id, login) {
+  var loginHash = makeHash("login", login)
+
+  var loginLink = commit("login_link", {
+    Links: [{ Base: id, Link: loginHash, Tag: "login" }]
+  });
+
+  return loginLink
+}
+function readLoginToken(id) {
+  if (getLinks(id, "login")[0]) {
+    return getLinks(id, "login")[0].Hash
+  } else {
+    return ""
+  }
+}
+
+
+function isDuplicateLogin(loginToken) {
+  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true })
+  var isDuplicate;
+  allUsers.forEach(function (user) {
+    var id = user.Hash
+    var thisToken = readLoginToken(id);
+    if (thisToken === loginToken) { isDuplicate = true }
+    return
+  });
+  if (isDuplicate) {
+    console.log("There is already an identical email/password combination on the DHT")
+    return isDuplicate
+  }
+  else { return false }
+}
+function howManyDuplicateLogin(loginToken) {
+  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true })
+  var duplicateCount = 0;
+  allUsers.forEach(function (user) {
+    var id = user.Hash
+    var thisToken = readLoginToken(id);
+    if (thisToken === loginToken) { duplicateCount += 1 }
+    return
+  });
+  return duplicateCount
+}
 
 
 /*******************************************************************************
@@ -310,6 +393,15 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "userdata_link":
         return true
+      case "login_link":
+        return (
+          //Delete action should pass no matter what
+          entry.Links[0].LinkAction === "d" ||
+          //Each id can only have one login linked to it at a time
+          getLinks(entry.Links[0].Base, "login").length === 0 &&
+          //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
+          !isDuplicateLogin(entry.Links[0].Link)
+        )
     }
   }
   return false
@@ -336,6 +428,19 @@ function validateCommit(entryType, entry, header, pkg, sources) {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validatePut(entryType, entry, header, pkg, sources) {
+  switch (entryType) {
+    case "login_link":
+      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "login").length + " logins")
+      console.log("this login token appears in " + howManyDuplicateLogin(entry.Links[0].Link) + " accounts")
+      return (
+        //Delete action should pass no matter what
+        entry.Links[0].LinkAction === "d" ||
+        //Each id can only have one login linked to it at a time
+        getLinks(entry.Links[0].Base, "login").length === 1 &&
+        //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
+        howManyDuplicateLogin(entry.Links[0].Link) === 1
+      )
+  }
   return (validateCommit(entryType, entry, header, pkg, sources))
 }
 
@@ -384,6 +489,8 @@ function validateLink(entryType, entry, header, pkg, sources) {
     case "identity_link":
       return true;
     case "userdata_link":
+      return true;
+    case "login_link":
       return true;
   }
   return false;

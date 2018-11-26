@@ -98,6 +98,18 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
+                },
+                {
+                    "Name": "login",
+                    "DataFormat": "json",
+                    "SchemaFile": "login.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "login_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
                 }
             ],
             "Functions": [
@@ -173,6 +185,11 @@
                 },
                 {
                     "Name": "getLoggables",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "updateLoginToken",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

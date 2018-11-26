@@ -79,9 +79,7 @@ function distribute() {
  ********************************************/
 function createTransaction(transaction) {
   transaction = addTimestamp(transaction);
-  console.log(JSON.stringify(transaction));
   var hash = commit('transaction', transaction);
-  console.log(hash);
   //if DNA is sending itself pebbles, then we want it to be a deposit but not a withdrawal so that the total sum of pebbles in the system will increase
   if (transaction.destination !== App.DNA.Hash || transaction.origin !== App.DNA.Hash) {
     var withdrawalsLink = commit('transaction_link', {
@@ -180,11 +178,9 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  console.log("VALIDATION");
   if (isValidEntryType(entryType)) {
     switch (entryType) {
       case "transaction":
-        console.log(JSON.stringify(entry));
         return (
           //   //at each genesis DNA sends itself 500 pebbles and this transaction should be allowed independent of other constraints
           ((entry.origin === App.DNA.Hash) && (entry.destination === App.DNA.Hash) && (entry.pebbles === 500)) ||

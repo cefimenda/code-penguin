@@ -143,7 +143,7 @@ function backTask(back) {
  */
 function genesis() {
   if (!JSON.parse(call("users", "autoLogin", ""))) {
-    call("users", "createIdentity", JSON.stringify({ username: "cefimenda" }))
+    call("users", "createIdentity", JSON.stringify({ username: "cefimenda", login: { email: "jeffyyy", password: String(Date.now()) } }))
   };
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,
