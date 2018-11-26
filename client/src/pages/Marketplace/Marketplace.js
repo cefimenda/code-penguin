@@ -27,7 +27,7 @@ export default class Marketplace extends Component {
         if (res.data.length === 0) {
           return;
         }
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({ dataList: res.data.tasks, fullList: res.data.tasks });
       })
       .catch(err => console.log(err));
