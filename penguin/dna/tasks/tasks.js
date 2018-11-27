@@ -142,9 +142,12 @@ function backTask(back) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
+  console.log(0)
   if (!JSON.parse(call("users", "autoLogin", ""))) {
-    call("users", "createAccount", JSON.stringify({ username: "cefimenda", credential: { email: "jeffyyy", password: String(Date.now()) } }))
+    console.log(1)
+    call("users", "createAccount", JSON.stringify({ username: "cefimenda", credentials: { email: "jeffyyy", password: String(Date.now()) } }))
   };
+
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,
     destination: App.DNA.Hash,

@@ -106,15 +106,16 @@ function isAuthorized(key) {
 
 //returns id hash
 function createAccount(data) {
-
+console.log("0")
   //removing credentials information from the inserted argument
   var credentials = data.credentials
   delete data.credentials
-
+console.log("01")
   //create new account
   data.origin = App.Key.Hash;
   addTimestamp(data)
   var id = commit('account', data);
+  console.log("012")
 
   //add this id as a link to DNA
   var idLinkDNA = commit('account_link', {
@@ -122,9 +123,11 @@ function createAccount(data) {
   });
   //connect user to create loggable and account links
   connectUser(id);
+  console.log("0123")
 
   //create a credentials token linked to the id
   createcredentialsToken(id, credentials)
+  console.log("01234")
 
   console.log("My Account Id: " + id)
   return id
@@ -163,6 +166,10 @@ function removeAlias(key) {
 //returns list of loggables
 function getLoggables(id) {
   return getLinks(id, "loggable")
+}
+
+function getLoggablesList(idOrKey) {
+  return ((getLoggables(idOrKey)).map(function (item) { return item.Hash }))
 }
 
 function getLoggablesFromId() {
@@ -293,7 +300,7 @@ function idLogin(id) {
 function autoLogin() {
   var loggables = getLoggables(App.Key.Hash);
   if (loggables.length === 1 && ((getLoggables(loggables[0].Hash)).map(function (item) { return item.Hash }).indexOf(App.Key.Hash) > -1)) {
-    return login(loggables[0].Hash);
+    return idLogin(loggables[0].Hash);
   }
   else {
     return false
@@ -407,9 +414,13 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "account":
         return true
       case "account_link":
+        console.log(JSON.stringify(getLoggablesList(entry.Links[0].Link)))
+        console.log("this runnin?")
         return (
           //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
-          (entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)) &&
+          //in order to log in the account must already have a loggable for the key and the key needs to have the account as a loggable.
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash)?(true):((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
         )
       case "userdata":
         return true
