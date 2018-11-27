@@ -65,6 +65,11 @@
 	border-radius: 5px;
 }
 
+/* .add-pebs-nav:hover {
+	cursor: pointer;
+	text-shadow: 0 0 15px #00b5ad;
+} */
+
 @media only screen and (max-width: 1024px) {
 	.navbar-inner {
 		height:60px;

@@ -125,6 +125,11 @@ export default class Navbar extends Component {
                       />
                     </a>
                   </li>
+                  {/* <li key="3" className="float-right">
+                      <p className={'ui white add-pebs-nav'} style={{fontSize: "20px", display: "block", padding: "0px 10px", margin: "23px 0px", position: "relative"}}>
+                        <i className="fas fa-plus-circle"></i>
+                      </p>
+                  </li> */}
                 </ul>
               </nav>
             </div>
