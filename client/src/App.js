@@ -7,8 +7,6 @@ import Marketplace from "./pages/Marketplace";
 import Task from "./pages/Task";
 import NewTask from "./pages/NewTask"
 import NoMatch from "./pages/NoMatch";
-// import profSeed from "./profSeed.json"
-// import cardSeed from "./cardSeed.json"
 import './App.css';
 
 export default class App extends Component {
@@ -25,8 +23,13 @@ export default class App extends Component {
     }
 
     render() {
-        console.log("user:", this.state.user);
-        
+        if (this.state.user === "") {return (
+            <Router>
+                <Switch>
+                    <Route path="/" render={() => <Login getUser={this.login} logout={this.logout}/>} />
+                </Switch>
+            </Router>)
+        }
         return (
             <Router>
                 <Switch>
@@ -35,7 +38,8 @@ export default class App extends Component {
                     <Route path="/profile" render={() => <Profile /> } />
                     <Route path="/marketplace" component={Marketplace} />
                     <Route path="/newtask" render={() => <NewTask />} />
-                    <Route path="/login" render={() => <Login getUser={this.login} />} />
+                    <Route path="/login" render={() => <Login getUser={this.login} logout={this.logout}/>} />
+                    <Route path="/logoff" render={() => <Redirect to="/login" /> } />} />
                     <Route path="/task/:hash" component={Task} />
                     <Route component={NoMatch} />
                 </Switch>

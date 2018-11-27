@@ -27,7 +27,6 @@ export default class Marketplace extends Component {
         if (res.data.length === 0) {
           return;
         }
-        // console.log(res.data);
         this.setState({ dataList: res.data.tasks, fullList: res.data.tasks });
       })
       .catch(err => console.log(err));
@@ -87,7 +86,6 @@ export default class Marketplace extends Component {
 
   sortTitle = order => {
     let data = this.state.dataList;
-    // console.log(data);
     if (order === 'a-z') {
       data.sort((a, b) => {
         var textA = a.Entry.title.toUpperCase();

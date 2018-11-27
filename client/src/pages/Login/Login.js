@@ -4,7 +4,6 @@ import HoverBox from '../../components/HoverBox/HoverBox';
 import Main from './MainLogin';
 import Create from './Create';
 import Another from './Another';
-// import API from "../../utils/API";
 import './Login.css';
 
 export default class Task extends Component {
@@ -12,6 +11,10 @@ export default class Task extends Component {
         redirectToReferrer: false,
         page: "Main"
     };
+
+    componentDidMount = () => {
+        this.props.logout()
+      };
 
     changePage = page => {
         this.setState({page: page})
