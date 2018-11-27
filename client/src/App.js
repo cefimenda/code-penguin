@@ -36,7 +36,7 @@ export default class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" render={() => <Redirect to="/login" /> } />
+                    <Route exact path="/" component={Marketplace} />
                     <Route path="/landing" component={Landing} />
                     <Route path="/profile" render={() => <Profile /> } />
                     <Route path="/marketplace" component={Marketplace} />
