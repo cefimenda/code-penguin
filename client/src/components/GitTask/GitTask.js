@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Grid } from 'semantic-ui-react';
-import Table from '../../components/Table';
+import { Button } from 'semantic-ui-react';
 import './GitTask.css';
-import Task from '../../pages/Task/Task';
 import API from '../../utils/API';
 import { link } from 'fs';
 
