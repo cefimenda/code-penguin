@@ -5,6 +5,16 @@
     border: 1px solid #3b3b3b;
 }
 
+.login-create-div {
+    height: 325px;
+}
+
+.notice {
+    position: relative;
+    bottom: 10px;
+    text-align: center;
+}
+
 .username {
     width: 90%;
     height: 38px;

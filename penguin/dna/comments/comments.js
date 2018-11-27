@@ -104,7 +104,7 @@ function createTestimonial(testimonial) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
-  createTestimonial("This is the greatest and best app in the world.");
+  // createTestimonial("This is the greatest and best app in the world.");
   return true;
 }
 

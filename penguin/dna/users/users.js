@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "login_link"];
+  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "credentials_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -39,18 +39,15 @@ function addTimestamp(object) {
 
 function connectUser(id) {
   //If already connected to an account log out
-  if (getLinks(App.Key.Hash, 'account') > 0) { logOut() }
+  if (getLinks(App.Key.Hash, 'account') > 0) { logout() }
   //create new connection to the account that the user is logging in to
+  connectUserLoggables(id);
+  connectUserAccount(id);
 
-  //link to get to logged in account
-  var loggedInLink = commit('account_link', {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
-  });
-  //link to get to all keys that are logged into an account
-  var loggedInKeysLink = commit('account_link', {
-    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
-  });
+  return getUser();
+}
 
+function connectUserLoggables(id) {
   //link to get to all accounts that a key can log in to
   var loggableLink = commit('account_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
@@ -59,8 +56,16 @@ function connectUser(id) {
   var aliasLink = commit('account_link', {
     Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
   });
-
-  return getUser();
+}
+function connectUserAccount(id) {
+  //link to get to logged in account
+  var loggedInLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
+  });
+  //link to get to all keys that are logged into an account
+  var loggedInKeysLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
+  });
 }
 
 
@@ -83,7 +88,7 @@ function isAuthorized(key) {
     return result;
   } else {
     console.log("INVALID LOGIN SPOTTED __ LOGGING OUT")
-    logOut()
+    logout()
     return false;
   }
 }
@@ -92,19 +97,18 @@ function isAuthorized(key) {
  account:  {
             username: (username),
             github: (github oAuth token) - Optional
-            login:{
+            credentials:{
                 email:email,
                 password:password
-              } -- login can be any object, login will not be saved into the entry
+              } -- credentials can be any object, credentials will not be saved into the entry
             } 
 ******************/
 
 //returns id hash
 function createAccount(data) {
-  //removing login information from the inserted argument
-  var login = data.login
-  delete data.login
-
+  //removing credentials information from the inserted argument
+  var credentials = data.credentials
+  delete data.credentials
   //create new account
   data.origin = App.Key.Hash;
   addTimestamp(data)
@@ -117,9 +121,10 @@ function createAccount(data) {
   //connect user to create loggable and account links
   connectUser(id);
 
-  //create a login token linked to the id
-  createLoginToken(id, login)
+  //create a credentials token linked to the id
+  createcredentialsToken(id, credentials)
 
+  console.log("My Account Id: " + id)
   return id
 }
 
@@ -158,7 +163,20 @@ function getLoggables(id) {
   return getLinks(id, "loggable")
 }
 
-//returns account with most up to date information
+function getLoggablesList(idOrKey) {
+  return ((getLoggables(idOrKey)).map(function (item) { return item.Hash }))
+}
+
+function getLoggablesFromId() {
+  var id = readLoggedInId();
+  return getLinks(id, "loggable", { Load: true })
+}
+function getLoggablesFromKey() {
+  var key = App.Key.Hash;
+  return getLinks(key, "loggable", { Load: true })
+}
+
+//returns identity with most up to date information
 function getData(id) {
   var id = id || readLoggedInId();
   var userdatas = getLinks(id, "userdata", { Load: true })
@@ -197,7 +215,7 @@ function createUserdata(userdata) {
   return getData();
 }
 
-function logOut() {
+function logout() {
   try {
     var id = readLoggedInId()
     commit("account_link", {
@@ -220,7 +238,7 @@ function getUser(id) {
       id = readLoggedInId()
     } catch (err) {
       console.log(err)
-      return "You are not logged in."
+      return false;
     }
   }
   try {
@@ -237,21 +255,36 @@ function getUser(id) {
 }
 
 /******************
-login: {
+credentials: {
             email: email address,
             password: password
           } 
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
-function login(loginData) {
-  var login = makeHash("login", loginData);
+
+function login(credentialsData) {
+  var credentials = makeHash("credentials", credentialsData);
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
-    var userLogin = readLoginToken(link.Hash)
-    if (userLogin === login) {
+    var usercredentials = readcredentialsToken(link.Hash)
+    if (usercredentials === credentials) {
       result = connectUser(link.Hash);
+      console.log("logging in to: " + link.Hash)
+      return
+    };
+  });
+  return result;
+}
+//can't use idLogin requires the user to already have loggables set up - without logables id login will fail the validation step.
+function idLogin(id) {
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
+  var result = "The token you have provided does not match any on the DHT";
+  allUsers.forEach(function (link) {
+    var userId = link.Hash
+    if (userId === id) {
+      result = connectUserAccount(link.Hash);
       console.log("logging in to: " + link.Hash)
       return
     };
@@ -262,27 +295,19 @@ function login(loginData) {
 function autoLogin() {
   var loggables = getLoggables(App.Key.Hash);
   if (loggables.length === 1 && ((getLoggables(loggables[0].Hash)).map(function (item) { return item.Hash }).indexOf(App.Key.Hash) > -1)) {
-    return login(loggables[0].Hash);
+    return idLogin(loggables[0].Hash);
   }
   else {
     return false
   }
 }
-function test() {
-  logOut()
-  var id = createAccount({ username: "cefimenda" })
-  console.log("reading Login Token:" + readLoginToken(id))
-  var newToken = (updateLoginToken(id, { email: "booo", password: "newPass" }))
-  console.log("newToken: " + newToken)
-  console.log("reading new Login Token: " + readLoginToken(id))
-}
 
-function updateLoginToken(newLogin) {
+function updatecredentialsToken(newcredentials) {
   var id = readLoggedInId();
-  var removeLink = commit("login_link", {
-    Links: [{ Base: id, Link: readLoginToken(id), Tag: "login", LinkAction: HC.LinkAction.Del }]
+  var removeLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: readcredentialsToken(id), Tag: "credentials", LinkAction: HC.LinkAction.Del }]
   });
-  return createLoginToken(id, newLogin)
+  return createcredentialsToken(id, newcredentials)
 }
 
 /*******************************************************************************
@@ -290,38 +315,37 @@ function updateLoginToken(newLogin) {
  ******************************************************************************/
 
 /******************
-login: {
+credentialss: {
             email: email address,
             password: password
           } 
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
-function createLoginToken(id, login) {
-  var loginHash = makeHash("login", login)
+function createcredentialsToken(id, credentials) {
+  var credentialsHash = makeHash("credentials", credentials)
 
-  var loginLink = commit("login_link", {
-    Links: [{ Base: id, Link: loginHash, Tag: "login" }]
+  var credentialsLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: credentialsHash, Tag: "credentials" }]
   });
 
-  return loginLink
+  return credentialsLink
 }
-function readLoginToken(id) {
-  if (getLinks(id, "login")[0]) {
-    return getLinks(id, "login")[0].Hash
+function readcredentialsToken(id) {
+  if (getLinks(id, "credentials")[0]) {
+    return getLinks(id, "credentials")[0].Hash
   } else {
     return ""
   }
 }
 
-
-function isDuplicateLogin(loginToken) {
+function isDuplicatecredentials(credentialsToken) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var isDuplicate;
   allUsers.forEach(function (user) {
     var id = user.Hash
-    var thisToken = readLoginToken(id);
-    if (thisToken === loginToken) { isDuplicate = true }
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { isDuplicate = true }
     return
   });
   if (isDuplicate) {
@@ -330,13 +354,13 @@ function isDuplicateLogin(loginToken) {
   }
   else { return false }
 }
-function howManyDuplicateLogin(loginToken) {
+function howManyDuplicatecredentials(credentialsToken) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var duplicateCount = 0;
   allUsers.forEach(function (user) {
     var id = user.Hash
-    var thisToken = readLoginToken(id);
-    if (thisToken === loginToken) { duplicateCount += 1 }
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { duplicateCount += 1 }
     return
   });
   return duplicateCount
@@ -387,20 +411,22 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "account_link":
         return (
           //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
-          (entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)) &&
+          //in order to log in the account must already have a loggable for the key and the key needs to have the account as a loggable.
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash)?(true):((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
         )
       case "userdata":
         return true
       case "userdata_link":
         return true
-      case "login_link":
+      case "credentials_link":
         return (
           //Delete action should pass no matter what
           entry.Links[0].LinkAction === "d" ||
-          //Each id can only have one login linked to it at a time
-          getLinks(entry.Links[0].Base, "login").length === 0 &&
+          //Each id can only have one credentials linked to it at a time
+          getLinks(entry.Links[0].Base, "credentials").length === 0 &&
           //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
-          !isDuplicateLogin(entry.Links[0].Link)
+          !isDuplicatecredentials(entry.Links[0].Link)
         )
     }
   }
@@ -429,16 +455,16 @@ function validateCommit(entryType, entry, header, pkg, sources) {
  */
 function validatePut(entryType, entry, header, pkg, sources) {
   switch (entryType) {
-    case "login_link":
-      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "login").length + " logins")
-      console.log("this login token appears in " + howManyDuplicateLogin(entry.Links[0].Link) + " accounts")
+    case "credentials_link":
+      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "credentials").length + " credentialss")
+      console.log("this credentials token appears in " + howManyDuplicatecredentials(entry.Links[0].Link) + " accounts")
       return (
         //Delete action should pass no matter what
         entry.Links[0].LinkAction === "d" ||
-        //Each id can only have one login linked to it at a time
-        getLinks(entry.Links[0].Base, "login").length === 1 &&
+        //Each id can only have one credentials linked to it at a time
+        getLinks(entry.Links[0].Base, "credentials").length === 1 &&
         //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
-        howManyDuplicateLogin(entry.Links[0].Link) === 1
+        howManyDuplicatecredentials(entry.Links[0].Link) === 1
       )
   }
   return (validateCommit(entryType, entry, header, pkg, sources))
@@ -490,7 +516,7 @@ function validateLink(entryType, entry, header, pkg, sources) {
       return true;
     case "userdata_link":
       return true;
-    case "login_link":
+    case "credentials_link":
       return true;
   }
   return false;
