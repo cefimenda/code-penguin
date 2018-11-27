@@ -39,7 +39,7 @@ function addTimestamp(object) {
 
 function connectUser(id) {
   //If already connected to an account log out
-  if (getLinks(App.Key.Hash, 'account') > 0) { logOut() }
+  if (getLinks(App.Key.Hash, 'account') > 0) { logout() }
   //create new connection to the account that the user is logging in to
 
   //link to get to logged in account
@@ -83,7 +83,7 @@ function isAuthorized(key) {
     return result;
   } else {
     console.log("INVALID LOGIN SPOTTED __ LOGGING OUT")
-    logOut()
+    logout()
     return false;
   }
 }
@@ -101,6 +101,7 @@ function isAuthorized(key) {
 
 //returns id hash
 function createAccount(data) {
+
   //removing credentials information from the inserted argument
   var credentials = data.credentials
   delete data.credentials
@@ -207,7 +208,7 @@ function createUserdata(userdata) {
   return getData();
 }
 
-function logOut() {
+function logout() {
   try {
     var id = readLoggedInId()
     commit("account_link", {
