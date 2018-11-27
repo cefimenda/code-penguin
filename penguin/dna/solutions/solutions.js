@@ -83,7 +83,7 @@ function reward(hash) {
   var solution = get(hash);
   var solutionTask = solution.task;
   var solutionAuthor = getCreator(hash);
-  var pebbles = tabulate(solutionTask);
+  var pebbles = call("transactions", "tabulate", solutionTask);
   var rewardedSolutionLink = commit('solution_link', {
     Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution" }]
   });
