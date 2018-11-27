@@ -100,13 +100,13 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "login",
+                    "Name": "credentials",
                     "DataFormat": "json",
-                    "SchemaFile": "login.json",
+                    "SchemaFile": "credentials.json",
                     "Sharing": "public"
                 },
                 {
-                    "Name": "login_link",
+                    "Name": "credentials_link",
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
@@ -164,6 +164,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "idLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "autoLogin",
                     "CallingType": "json",
                     "Exposure": "public"
@@ -193,7 +198,7 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "updateLoginToken",
+                    "Name": "updateCredentialsToken",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
