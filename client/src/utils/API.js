@@ -21,6 +21,46 @@ export default {
     return axios.get(`https://api.github.com/users/${username}`);
   },
 
+  getUsernames: function() {
+    return axios.post("/fn/users/getLoggablesFromKey");
+  },
+
+  logout: function() {
+    return axios.post("/fn/users/logout");
+  },
+
+  /*
+  credentials: {
+      email
+      password
+  }
+  */
+  login: function(credentials) {
+    return axios.post("/fn/users/login", credentials);
+  },
+
+  idLogin: function(idHash) {
+    return axios.post("/fn/users/idLogin", JSON.stringify(idHash));
+  },
+
+  autoLogin: function() {
+    return axios.post("/fn/users/autoLogin");
+  },
+
+  /*
+  * data: {
+            username
+            login: {
+              email
+              password
+            }
+          }
+  */
+  createAccount: function(data) {
+    console.log(data);
+    return axios.post("/fn/users/createAccount", data);
+  },
+
   // TRANSACTIONS
   /* Get pebble count given a user or task hash*/
   getPebbles: function (hash) {
@@ -33,6 +73,14 @@ export default {
 
   getTransactionTitle: function (hash) {
     return axios.post("/fn/transactions/readTransaction", "\"" + hash + "\"");
+  },
+
+  distribute: function() {
+    return axios.post("/fn/transactions/distribute");
+  },
+
+  canDistribute: function() {
+    return axios.post("/fn/transactions/canDistribute");
   },
 
 

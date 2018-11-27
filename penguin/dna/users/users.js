@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["userdata", "userdata_link"];
+  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "credentials_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -37,72 +37,335 @@ function addTimestamp(object) {
   return object;
 }
 
+function connectUser(id) {
+  //If already connected to an account log out
+  if (getLinks(App.Key.Hash, 'account') > 0) { logout() }
+  //create new connection to the account that the user is logging in to
+  connectUserLoggables(id);
+  connectUserAccount(id);
+
+  return getUser();
+}
+
+function connectUserLoggables(id) {
+  //link to get to all accounts that a key can log in to
+  var loggableLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
+  });
+  //link to get to all keys that can log into an account
+  var aliasLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
+  });
+}
+function connectUserAccount(id) {
+  //link to get to logged in account
+  var loggedInLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
+  });
+  //link to get to all keys that are logged into an account
+  var loggedInKeysLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
+  });
+}
+
+
 /****************************************
- * USER
- */
-function getUser() {
-  return {
-    hash: App.Key.Hash,
-    pebbles: call("transactions", "tabulate", "\"" + App.Key.Hash + "\"") || 0,
-    userdata: getLinks(App.Key.Hash, "userdata", { Load: true }) || {}
-  };
-}
+ * USER Functions With Endpoints
+****************************************/
 
-function getUserData(hash){
-  return {
-    hash: hash,
-    pebbles: call("transactions", "tabulate", "\"" + hash + "\"") || 0,
-    userdata: getLinks(hash, "userdata", { Load: true }) || {}
-  };
-}
+//Checks if a user's public key is listed under the aliases of the account the user is logged in to
 
-/* data: {
-            email: (email address),
-            password: (password),
-            github: (github username)
-         } */
-function setUserData(data) {
-  data = addTimestamp(data);
-  var hash = commit('userdata', data);
-  var userdataLink = commit('userdata_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "userdata" }]
-  });
-  var userdataDNALink = commit('userdata_link', {
-    Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "userdata" }]
-  });
-  return hash;
-}
-
-function login(login) {
-  var allUsers = getLinks(App.DNA.Hash, "userdata", { Load: true })
+function isAuthorized(key) {
+  var id = readLoggedInId(key)
+  var aliases = getLoggables(id)
   var result;
-  allUsers.forEach(function (link) {
-    var user = link.Entry
-    if (login.email === user.email && login.password === user.password) {
-      var userdataDNALink = commit('userdata_link', {
-        Links: [{ Base: App.Key.Hash, Link: link.Hash, Tag: "userdata" }]
-      });
-      result = getUser()
-    } else {
-      result = "This email/password combination that you have tried does not exist in this DHT"
+  aliases.forEach(function (alias) {
+    if (alias.Hash === key) {
+      result = true;
     }
-  })
-  return result
+  });
+  if (result) {
+    return result;
+  } else {
+    console.log("INVALID LOGIN SPOTTED __ LOGGING OUT")
+    logout()
+    return false;
+  }
 }
 
-/*
-User flow:
- 
-- create user
-  -create a user entry with email,password,github
-  -link the user entry to the current agent/key hash
-- login
-  -auto login based on agent/key hash
-    -if current agent/key has isn't attached to a userdata, then ask email/password and create userdata_link
-    -validate userdata_link by checking email/password information with the same on the dht
-  -can't login to a different account with the same agent/key hash
- 
-*/
+/******************
+ account:  {
+            username: (username),
+            github: (github oAuth token) - Optional
+            credentials:{
+                email:email,
+                password:password
+              } -- credentials can be any object, credentials will not be saved into the entry
+            } 
+******************/
+
+//returns id hash
+function createAccount(data) {
+  //removing credentials information from the inserted argument
+  var credentials = data.credentials
+  delete data.credentials
+  //create new account
+  data.origin = App.Key.Hash;
+  addTimestamp(data)
+  var id = commit('account', data);
+
+  //add this id as a link to DNA
+  var idLinkDNA = commit('account_link', {
+    Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'account' }]
+  });
+  //connect user to create loggable and account links
+  connectUser(id);
+
+  //create a credentials token linked to the id
+  createcredentialsToken(id, credentials)
+
+  console.log("My Account Id: " + id)
+  return id
+}
+
+//returns id hash
+function readLoggedInId(key) {
+  var key = key || App.Key.Hash
+  return getLinks(key, 'account')[0].Hash
+}
+
+
+/******************
+loggable:   {
+            base: (the base hash that the loggable link is committed on),
+            target: (the hash that you want to remove from the base)
+             }
+******************/
+//can be used to remove any type of loggables
+function removeLoggable(loggable) {
+  commit("account_link", {
+    Links: [{ Base: loggable.base, Link: loggable.target, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
+  });
+  return true
+}
+//removes current key from the currently logged in id by default. Also can be used to remove any other key from the logged in id.
+function removeAlias(key) {
+  var key = key || App.Key.Hash;
+  var id = readLoggedInId();
+  commit("account_link", {
+    Links: [{ Base: id, Link: key, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
+  })
+  return true
+}
+
+//returns list of loggables
+function getLoggables(id) {
+  return getLinks(id, "loggable")
+}
+
+function getLoggablesList(idOrKey) {
+  return ((getLoggables(idOrKey)).map(function (item) { return item.Hash }))
+}
+
+function getLoggablesFromId() {
+  var id = readLoggedInId();
+  return getLinks(id, "loggable", { Load: true })
+}
+function getLoggablesFromKey() {
+  var key = App.Key.Hash;
+  return getLinks(key, "loggable", { Load: true })
+}
+
+//returns identity with most up to date information
+function getData(id) {
+  var id = id || readLoggedInId();
+  var userdatas = getLinks(id, "userdata", { Load: true })
+
+  //sort userdatas according to date of Entry
+  userdatas.sort(function (a, b) {
+    return a.Entry.time - b.Entry.time
+  });
+  var sorted = userdatas
+
+  //start from the first account and apply all changes on userdatas
+  var account = get(id)
+  sorted.forEach(function (data) {
+    var entry = data.Entry
+    account[entry.type] = entry.data
+  })
+
+  return account
+}
+
+/******************
+userdata: {
+            type: (github,username, etc.),
+            data: (github oAuth token, some username, etc.)
+          } 
+******************/
+function createUserdata(userdata) {
+  addTimestamp(userdata)
+  var id = readLoggedInId()
+
+  var newUserdata = commit('userdata', userdata);
+  var userdataLink = commit('userdata_link', {
+    Links: [{ Base: id, Link: newUserdata, Tag: 'userdata' }]
+  });
+
+  return getData();
+}
+
+function logout() {
+  try {
+    var id = readLoggedInId()
+    commit("account_link", {
+      Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account', LinkAction: HC.LinkAction.Del }]
+    });
+    console.log("logging out")
+    return true
+  } catch (err) {
+    console.log(err)
+    return "You need to be logged in to log out."
+  }
+}
+
+function getUser(id) {
+  var id;
+  if (id) {
+    id = id
+  } else {
+    try {
+      id = readLoggedInId()
+    } catch (err) {
+      console.log(err)
+      return false;
+    }
+  }
+  try {
+    return {
+      hash: id,
+      aliases: getLoggables(id),
+      pebbles: call("transactions", "tabulate", "\"" + id + "\"") || 0,
+      userdata: getData(id) || {}
+    };
+  } catch (err) {
+    console.log(err);
+    return "Error occured, check consoles for details. If you are passing an ID in, make sure that the id is a valid hash"
+  }
+}
+
+/******************
+credentials: {
+            email: email address,
+            password: password
+          } 
+
+    PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
+******************/
+
+function login(credentialsData) {
+  var credentials = makeHash("credentials", credentialsData);
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
+  var result = "The token you have provided does not match any on the DHT";
+  allUsers.forEach(function (link) {
+    var usercredentials = readcredentialsToken(link.Hash)
+    if (usercredentials === credentials) {
+      result = connectUser(link.Hash);
+      console.log("logging in to: " + link.Hash)
+      return
+    };
+  });
+  return result;
+}
+//can't use idLogin requires the user to already have loggables set up - without logables id login will fail the validation step.
+function idLogin(id) {
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
+  var result = "The token you have provided does not match any on the DHT";
+  allUsers.forEach(function (link) {
+    var userId = link.Hash
+    if (userId === id) {
+      result = connectUserAccount(link.Hash);
+      console.log("logging in to: " + link.Hash)
+      return
+    };
+  });
+  return result;
+}
+
+function autoLogin() {
+  var loggables = getLoggables(App.Key.Hash);
+  if (loggables.length === 1 && ((getLoggables(loggables[0].Hash)).map(function (item) { return item.Hash }).indexOf(App.Key.Hash) > -1)) {
+    return idLogin(loggables[0].Hash);
+  }
+  else {
+    return false
+  }
+}
+
+function updatecredentialsToken(newcredentials) {
+  var id = readLoggedInId();
+  var removeLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: readcredentialsToken(id), Tag: "credentials", LinkAction: HC.LinkAction.Del }]
+  });
+  return createcredentialsToken(id, newcredentials)
+}
+
+/*******************************************************************************
+ * Private Functions for Secure Login Data
+ ******************************************************************************/
+
+/******************
+credentialss: {
+            email: email address,
+            password: password
+          } 
+
+    PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
+******************/
+function createcredentialsToken(id, credentials) {
+  var credentialsHash = makeHash("credentials", credentials)
+
+  var credentialsLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: credentialsHash, Tag: "credentials" }]
+  });
+
+  return credentialsLink
+}
+function readcredentialsToken(id) {
+  if (getLinks(id, "credentials")[0]) {
+    return getLinks(id, "credentials")[0].Hash
+  } else {
+    return ""
+  }
+}
+
+function isDuplicatecredentials(credentialsToken) {
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
+  var isDuplicate;
+  allUsers.forEach(function (user) {
+    var id = user.Hash
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { isDuplicate = true }
+    return
+  });
+  if (isDuplicate) {
+    console.log("There is already an identical email/password combination on the DHT")
+    return isDuplicate
+  }
+  else { return false }
+}
+function howManyDuplicatecredentials(credentialsToken) {
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
+  var duplicateCount = 0;
+  allUsers.forEach(function (user) {
+    var id = user.Hash
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { duplicateCount += 1 }
+    return
+  });
+  return duplicateCount
+}
+
 
 /*******************************************************************************
  * Required callbacks
@@ -112,7 +375,7 @@ User flow:
  * System genesis callback: Can the app start?
  *
  * Executes just after the initial genesis entries are committed to your chain
- * (1st - DNA entry, 2nd Identity entry). Enables you specify any additional
+ * (1st - DNA entry, 2nd account entry). Enables you specify any additional
  * operations you want performed when a node joins your holochain.
  *
  * @return {boolean} true if genesis is successful and so the app may start.
@@ -143,6 +406,28 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "userdata_link":
         return true
+      case "account":
+        return true
+      case "account_link":
+        return (
+          //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)) &&
+          //in order to log in the account must already have a loggable for the key and the key needs to have the account as a loggable.
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash)?(true):((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
+        )
+      case "userdata":
+        return true
+      case "userdata_link":
+        return true
+      case "credentials_link":
+        return (
+          //Delete action should pass no matter what
+          entry.Links[0].LinkAction === "d" ||
+          //Each id can only have one credentials linked to it at a time
+          getLinks(entry.Links[0].Base, "credentials").length === 0 &&
+          //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
+          !isDuplicatecredentials(entry.Links[0].Link)
+        )
     }
   }
   return false
@@ -169,6 +454,19 @@ function validateCommit(entryType, entry, header, pkg, sources) {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validatePut(entryType, entry, header, pkg, sources) {
+  switch (entryType) {
+    case "credentials_link":
+      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "credentials").length + " credentialss")
+      console.log("this credentials token appears in " + howManyDuplicatecredentials(entry.Links[0].Link) + " accounts")
+      return (
+        //Delete action should pass no matter what
+        entry.Links[0].LinkAction === "d" ||
+        //Each id can only have one credentials linked to it at a time
+        getLinks(entry.Links[0].Base, "credentials").length === 1 &&
+        //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
+        howManyDuplicatecredentials(entry.Links[0].Link) === 1
+      )
+  }
   return (validateCommit(entryType, entry, header, pkg, sources))
 }
 
@@ -212,8 +510,16 @@ function validateDel(entryType, hash, pkg, sources) {
     && getCreator(hash) === sources[0];
 }
 
-function validateLink() {
-  return true;
+function validateLink(entryType, entry, header, pkg, sources) {
+  switch (entryType) {
+    case "account_link":
+      return true;
+    case "userdata_link":
+      return true;
+    case "credentials_link":
+      return true;
+  }
+  return false;
 }
 
 /**

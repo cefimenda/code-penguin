@@ -76,6 +76,18 @@
             "Config": null,
             "Entries": [
                 {
+                    "Name": "account",
+                    "DataFormat": "json",
+                    "SchemaFile": "account.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "account_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
+                },
+                {
                     "Name": "userdata",
                     "DataFormat": "json",
                     "SchemaFile": "userdata.json",
@@ -86,26 +98,107 @@
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
+                },
+                {
+                    "Name": "credentials",
+                    "DataFormat": "json",
+                    "SchemaFile": "credentials.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "credentials_link",
+                    "DataFormat": "links",
+                    "Required": true,
+                    "Sharing": "public"
                 }
             ],
             "Functions": [
+                {
+                    "Name": "test",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "isAuthorized",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createAccount",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "readLoggedInId",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "createUpdate",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "logout",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
                 {
                     "Name": "getUser",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "getUserData",
+                    "Name": "getData",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "setUserData",
+                    "Name": "createUserdata",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
                 {
                     "Name": "login",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "idLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "autoLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeLoggable",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "removeAlias",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "getLoggables",
+                    "CallingType": "json"
+                },
+                {
+                    "Name": "getLoggablesFromId",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "getLoggablesFromKey",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "updateCredentialsToken",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
@@ -169,6 +262,11 @@
                 },
                 {
                     "Name": "distribute",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "canDistribute",
                     "CallingType": "json",
                     "Exposure": "public"
                 }

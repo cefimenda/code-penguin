@@ -1,11 +1,14 @@
 {
-    "title": "userdata Schema",
+    "title": "account Schema",
     "type": "object",
     "properties": {
-        "type": {
+        "origin": {
             "type": "string"
         },
-        "data": {
+        "github": {
+            "type": "string"
+        },
+        "username": {
             "type": "string"
         },
         "time": {
@@ -13,8 +16,8 @@
         }
     },
     "required": [
-        "type",
-        "data",
+        "origin",
+        "username",
         "time"
     ]
 }

@@ -1,0 +1,28 @@
+.message-bar {
+	width: 100%;
+	height: 40px;
+	color: #fff;
+	font-size: 16px;
+	opacity: .8;
+	position: absolute;
+	top: 60px;
+	padding: 8px;
+	letter-spacing: 1px;
+}
+
+.msg-btn {
+	position: absolute;
+	top: 0;
+	text-align: center;
+	padding-top: 8px;
+	margin-right: 10px;
+	width: 40px;
+	height: 40px;
+}
+
+.msg-btn:hover {
+
+	border: 1px solid #fff;
+	box-sizing: border-box;
+	cursor: pointer;
+}

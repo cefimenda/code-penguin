@@ -37,6 +37,7 @@ function addTimestamp(object) {
   return object;
 }
 
+
 /*********************************************
  * COMMENTS
  * {
@@ -54,7 +55,7 @@ function createComment(comment) {
   // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
   // in which case the user hash would be the page
   var authorCommentLink = commit('comment_link', {
-    Links: [{ Base: App.Key.Hash, Link: hash, Tag: "commentsMade" }]
+    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "commentsMade" }]
   });
   return hash;
 }
@@ -81,8 +82,8 @@ function testimonials() {
   return readComments(App.DNA.Hash);
 }
 
-function createTestimonial(testimonial){
-  return createComment({page: App.DNA.Hash, text: testimonial});
+function createTestimonial(testimonial) {
+  return createComment({ page: App.DNA.Hash, text: testimonial });
 }
 
 
@@ -103,7 +104,7 @@ function createTestimonial(testimonial){
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
-  createTestimonial("This is the greatest and best app in the world.");
+  // createTestimonial("This is the greatest and best app in the world.");
   return true;
 }
 
@@ -121,7 +122,7 @@ function genesis() {
  * @see https://developer.holochain.org/Validation_Functions
  */
 function validateCommit(entryType, entry, header, pkg, sources) {
-  if (isValidEntryType(entryType)) {
+  if (isValidEntryType(entryType) && call("users", "isAuthorized", JSON.stringify(sources[0]))) {
     switch (entryType) {
       case "comment":
         return true
