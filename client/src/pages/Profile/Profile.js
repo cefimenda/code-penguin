@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
-import GitTask from '../../components/GitTask'
+import GitTask from '../../components/GitTask';
 import API from '../../utils/API';
 import './Profile.css';
 
@@ -13,8 +13,7 @@ export default class Profile extends Component {
     avatar: '/images/penguin.png',
     pebbles: '',
     withdrawals: [],
-    deposits: [],
-    hasGithub: false
+    deposits: []
   };
 
   componentDidMount = () => {
@@ -25,35 +24,23 @@ export default class Profile extends Component {
   getHash = () => {
     API.getUser()
       .then(res => {
-        let { github } = res.data.userdata[0].Entry || null;
         this.setState({
-          creator: github || res.data.hash,
+          creator: res.data.hash,
           pebbles: res.data.pebbles
         });
-        if (github) {
-          this.setState({
-            hasGithub: true
-          });
-          API.getGithub(github)
-            .then(res => {
-              this.setState({
-                avatar: res.data.avatar_url
-              });
-            })
-            .catch(err => console.log(err));
-        }
       })
       .catch(err => console.log(err));
   };
 
   getTransactions = () => {
-    API.getTransactionHistory().then(res => {
-      this.setState({
-        withdrawals: res.data.withdrawals,
-        deposits: res.data.deposits
-      });
-    })
-    .catch(err => console.log(err))
+    API.getTransactionHistory()
+      .then(res => {
+        this.setState({
+          withdrawals: res.data.withdrawals,
+          deposits: res.data.deposits
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   handleInputChange = event => {
@@ -75,7 +62,6 @@ export default class Profile extends Component {
       .catch(err => {});
   };
 
-  
   render() {
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
@@ -85,17 +71,15 @@ export default class Profile extends Component {
         <Navbar page="Profile" />
         <HoverBox side={focus}>
           <div className="profile-div" style={{ margin: '10px 0' }}>
-            {this.state.hasGithub ? (
               <div>
                 <div className="label">
                   <label>Hello, </label>
                 </div>
                 <span className="span-user">{this.state.creator.toUpperCase()}</span>
               </div>
-            ) : (
-              <div>
+              {/* <div>
                 <div className="label">
-                  <label>Add your github username?</label>
+                  <label>Change your username</label>
                   <form onSubmit={this.state.handleFormSubmit}>
                     <input
                       value={this.state.creator}
@@ -107,8 +91,7 @@ export default class Profile extends Component {
                     <button onClick={this.handleFormSubmit}>Submit</button>
                   </form>
                 </div>
-              </div>
-            )}
+              </div> */}
             <img
               className="avatar"
               width="150px"
@@ -116,13 +99,13 @@ export default class Profile extends Component {
               alt={this.state.creator}
             />
             <span className="span-pebbles">Today's Pebble Count {this.state.pebbles}</span>
+            <i className="user-edit fas fa-user-edit" onClick={this.handleFormSubmit}></i>
           </div>
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <h2 className="table-header">Pebble Transaction History</h2>
-          <Table data={data} deposits={deposits} withdrawals={withdrawals}/>
-          <GitTask>
-          </GitTask>
+          <Table data={data} deposits={deposits} withdrawals={withdrawals} />
+          <GitTask />
         </Container>
       </React.Fragment>
     );

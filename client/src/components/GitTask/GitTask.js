@@ -8,19 +8,11 @@ import { link } from 'fs';
 
 export default class GitTask extends Component {
   state = {
-    // userHistory: {
-    //   comments: [],
-    //   solutions: [],
-    //   title: '',
-    //   pebbles: '',
-    //   creator: '',
-    //   time: ''
-    // },
     user: '',
     maxPebbles: '',
     tasks: [],
     solutions: [],
-    toggler: 'github solutions'
+    toggler: 'solutions'
   };
 
   componentDidMount = () => {
@@ -30,9 +22,9 @@ export default class GitTask extends Component {
 
   handleToggler = event => {
     this.setState({ toggler: event.target.name }, () => {
-      if (this.state.toggler === 'created tasks') {
+      if (this.state.toggler === 'tasks') {
         this.setState({ solutions: '' });
-      } else if (this.state.toggler === 'github solutions') {
+      } else if (this.state.toggler === 'solutions') {
         this.setState({ comments: '' });
       }
     });
@@ -46,7 +38,7 @@ export default class GitTask extends Component {
           maxPebbles: res.data.pebbles
         });
         API.getSolutions(res.data.hash).then(res => {
-          // console.log(res.data)
+          // console.log(res.data.solutions);
           this.setState({
             solutions: res.data.solutions
           });
@@ -58,79 +50,18 @@ export default class GitTask extends Component {
   getUserTasks = () => {
     API.getMyTasks()
       .then(res => {
+        // console.log(res.data.links);
         this.setState({
           tasks: res.data.links
         });
-        // console.log(res.data);
-        console.log(res.data.links);
-        // console.log(res.data.links[0].Entry)
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  renderSolutions = () => {
-    return (
-      <ul
-        className="solution-div"
-        style={{ display: `${this.state.toggler === 'github solutions' ? 'block' : 'none'}` }}
-      >
-        {this.state.solutions.map(solution => (
-          <li
-            key={solution._id}
-            id={solution._id}
-            title={solution.title}
-            link={solution.link}
-            detail={solution.detail}
-            date={solution.date}
-          />
-        ))}
-      </ul>
-    );
-  };
-
-  renderTasks = () => {
-    const userTask = this.state.tasks.map((task, i) => (
-      <li
-        key={i}
-        id={i}
-        title={task[i].Entry.title}
-        detail={task[i].Entry.details}
-        date={task[i].Entry.time}
-      >
-        {task[i].Entry.title}
-      </li>
-    ));
-    return userTask;
-  };
-
-  // renderTasks = () => {
-  //   let userTask = this.state.tasks.links.map((taskData, i, tasks) => {
-  //     return {
-  //       key: i,
-  //       title: taskData.Entry.title,
-  //       detail: taskData.Entry.details
-  //     }
-  //   })
-  //   console.log(userTask)
-  // }
-
-  // renderTaskItems = (tasks) => {
-  //   let taskItems = []
-  //   if (!tasks) return
-  //   for(let i = 0; i < tasks.length; i++) {
-  //     let title = tasks[i].title
-  //     let details = tasks[i].details
-  //   }
-  //   return taskItems
-  // };
-
   render() {
-    // let { solutions, tasks } = this.props
-    // let { toggler, user } = this.state;
-    let { solutions, tasks, toggler, user } = this.state;
-
+    let { toggler, user } = this.state;
 
     return (
       <Fragment>
@@ -138,40 +69,64 @@ export default class GitTask extends Component {
           <div className="git-task-div">
             <Button.Group size="mini" compact>
               <Button
-                name="github solutions"
+                name="solutions"
                 onClick={this.handleToggler}
-                color={toggler === 'github solutions' ? 'teal' : 'grey'}
+                color={toggler === 'solutions' ? 'teal' : 'grey'}
               >
-                {' '}
-                Github Solutions{' '}
+                Solutions
               </Button>
               <Button.Or />
               <Button
-                name="created tasks"
+                name="tasks"
                 onClick={this.handleToggler}
-                color={toggler === 'created tasks' ? 'teal' : 'grey'}
+                color={toggler === 'tasks' ? 'teal' : 'grey'}
               >
-                {' '}
-                Created Tasks{' '}
+                Tasks
               </Button>
             </Button.Group>
           </div>
           <div className="show-toggle-div">
             <ul
-              className="task-div"
-              style={{ display: `${this.state.toggler === 'created tasks' ? 'block' : 'none'}` }}
+              className="solution-ul"
+              style={{
+                display: `${this.state.toggler === 'solutions' ? 'block' : 'none'}`
+              }}
             >
-              {this.renderTasks}
+              {this.state.solutions.length !== 0
+                ? this.state.solutions.map((solution, i) => (
+                    <li className="list-titles" key={i}>
+                      {/* <i className="user-edit fas fa-link"></i> */}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          solution.Entry.link.includes('http')
+                            ? solution.Entry.link
+                            : `https://${solution.Entry.link}`
+                        }
+                      >
+                        {solution.Entry.text}
+                      </a>
+                    </li>
+                  ))
+                : 'There are currently no solutions associated with this user.'}
             </ul>
-            {/* {this.renderSolutions} */}
+
+            <ul
+              className="task-ul"
+              style={{ display: `${this.state.toggler === 'tasks' ? 'block' : 'none'}` }}
+            >
+              {this.state.tasks.length !== 0
+                ? this.state.tasks.map((task, i) => (
+                    <li className="list-titles task-text" key={i}>
+                      <span className="li-text">Title:</span> {task.Entry.title} <br />
+                      <span className="li-text">Details:</span> {task.Entry.details} <br />
+                      <span className="li-text">Pebbles:</span> {task.Entry.pebbles}
+                    </li>
+                  ))
+                : 'There are currently no tasks associated with this user.'}
+            </ul>
           </div>
-          {/* <Grid divided="vertically">
-            <Grid.Row columns={1}>
-              <Grid.Column>
-                
-              </Grid.Column>
-            </Grid.Row>
-          </Grid> */}
         </div>
       </Fragment>
     );
