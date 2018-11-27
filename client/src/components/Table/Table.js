@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import './Table.css';
-// import { isThisSecond } from 'date-fns';
 
 export default class Table extends Component {
   state = {
