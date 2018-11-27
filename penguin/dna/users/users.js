@@ -158,6 +158,15 @@ function getLoggables(token) {
   return getLinks(token, "loggable")
 }
 
+function getLoggablesFromId(){
+  var id = readLoggedInId();
+  return getLinks(id, "loggable", { Load: true })
+}
+function getLoggablesFromKey(){
+  var key = App.Key.Hash;
+  return getLinks(key, "loggable", { Load: true })
+}
+
 //returns identity with most up to date information
 function getData(id) {
   var id = id || readLoggedInId();
