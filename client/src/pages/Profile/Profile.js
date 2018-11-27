@@ -61,7 +61,7 @@ export default class Profile extends Component {
       .then(res => {
         this.getHash();
       })
-      .catch(err => {});
+      .catch(err => console.log(err));
   };
 
   render() {

@@ -119,17 +119,14 @@ export default class Task extends Component {
   }
 
   handleBackTask = () => {
-    const { pebbles, maxPebbles, user } = this.state;
+    const { pebbles, maxPebbles } = this.state;
     if (pebbles <= maxPebbles) {
-      console.log('user: ', user);
-      console.log('pebbles user have: ', maxPebbles);
-      console.log('pebbles donated: ', pebbles);
       API.backTask({
         task: this.props.match.params.hash,
         pebbles: parseInt(pebbles)
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.setState({ pebbles: '' });
           this.getInfo();
         })
@@ -146,7 +143,7 @@ export default class Task extends Component {
   handleReward = hash => {
     API.reward(hash)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.getSolutionRewardInfo();
       })
       .catch(err => console.log(err));

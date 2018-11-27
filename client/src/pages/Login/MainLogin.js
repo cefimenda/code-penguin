@@ -16,9 +16,7 @@ export default class Task extends Component {
                     users: res.data
                 });
             })
-            .catch(err=>{
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     toAnother = () => {
@@ -37,9 +35,7 @@ export default class Task extends Component {
                 // console.log(res);
                 // this.props.redirect();
             })
-            .catch(err=>{
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     render() {

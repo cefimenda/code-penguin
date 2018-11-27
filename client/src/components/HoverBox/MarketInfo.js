@@ -21,8 +21,7 @@ export default class HoverBox extends Component {
             if (e.target.id === this.state.activeItem) {
                 this.setState({ activeItem: "" })
             } else {
-                this.setState({ activeItem: e.target.id }, () => {console.log(this.state.activeItem);
-                })
+                this.setState({ activeItem: e.target.id })
             }
 
             // if not active will clear out

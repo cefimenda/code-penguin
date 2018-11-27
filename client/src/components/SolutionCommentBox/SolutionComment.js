@@ -15,9 +15,7 @@ export default class SolutionComment extends Component {
             .then(res=>{
                 this.setState({user: res.data.userdata.username})
             })
-            .catch(err=>{
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     render() {

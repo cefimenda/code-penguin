@@ -29,7 +29,7 @@ export default class Marketplace extends Component {
         else{
           API.autoLogin()
             .then(res=>{
-              console.log(res);
+              // console.log(res);
               if(res.data){
 
               }
@@ -39,14 +39,10 @@ export default class Marketplace extends Component {
                 });
               }
             })
-            .catch(err=>{
-              console.log(err);
-            })
+            .catch(err => console.log(err))
         }
       })
-      .catch(err=>{
-        console.log(err);
-      })
+      .catch(err => console.log(err))
   };
 
   // Data retrieval
