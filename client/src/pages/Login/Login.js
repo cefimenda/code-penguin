@@ -37,7 +37,7 @@ export default class Task extends Component {
         return (
         <React.Fragment>
            <HoverBox>
-                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : <Another changePage={this.changePage} getUser={this.getUser}/>}
+                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : <Another changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/>}
            </HoverBox>
         </React.Fragment>
         )
