@@ -48,6 +48,7 @@ export default class Task extends Component {
             <div className="login-btn-div" style={{position: "absolute", bottom: "20px", left: "30px"}}>
                 <button className="back-btn" onClick={this.toMain}><i className="fas fa-arrow-left"></i></button>
             </div>
+            <p className="notice">Your login credentials are never saved to the chain.</p>
         </React.Fragment>
         );
     }
