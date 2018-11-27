@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+import API from '../../utils/API';
 
 export default class Task extends Component {
     state = {
@@ -22,7 +23,17 @@ export default class Task extends Component {
     handleSubmit = () => {
         const { email, password} = this.state
         console.log(`email: ${email}, pasword: ${password}`);
-
+        API.login({
+            email,
+            password
+        })
+            .then(res=>{
+                console.log(res);
+                this.props.redirect();
+            })
+            .catch(err=>{
+                console.log(err);
+            });
     }
 
     render() {
