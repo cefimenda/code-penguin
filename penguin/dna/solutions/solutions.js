@@ -87,7 +87,7 @@ function reward(hash) {
   var rewardedSolutionLink = commit('solution_link', {
     Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution" }]
   });
-  return createTransaction({
+  return call("transactions", "createTransaction", {
     origin: solutionTask,
     destination: solutionAuthor,
     pebbles: pebbles
