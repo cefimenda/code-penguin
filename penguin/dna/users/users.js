@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "login_link"];
+  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "credentials_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -92,18 +92,18 @@ function isAuthorized(key) {
  account:  {
             username: (username),
             github: (github oAuth token) - Optional
-            login:{
+            credentials:{
                 email:email,
                 password:password
-              } -- login can be any object, login will not be saved into the entry
+              } -- credentials can be any object, credentials will not be saved into the entry
             } 
 ******************/
 
 //returns id hash
 function createAccount(data) {
-  //removing login information from the inserted argument
-  var login = data.login
-  delete data.login
+  //removing credentials information from the inserted argument
+  var credentials = data.credentials
+  delete data.credentials
 
   //create new account
   data.origin = App.Key.Hash;
@@ -117,8 +117,8 @@ function createAccount(data) {
   //connect user to create loggable and account links
   connectUser(id);
 
-  //create a login token linked to the id
-  createLoginToken(id, login)
+  //create a credentials token linked to the id
+  createcredentialsToken(id, credentials)
 
   console.log("My Account Id: " + id)
   return id
@@ -247,20 +247,20 @@ function getUser(id) {
 }
 
 /******************
-login: {
+credentials: {
             email: email address,
             password: password
           } 
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
-function login(loginData) {
-  var login = makeHash("login", loginData);
+function login(credentialsData) {
+  var credentials = makeHash("credentials", credentialsData);
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
-    var userLogin = readLoginToken(link.Hash)
-    if (userLogin === login) {
+    var usercredentials = readcredentialsToken(link.Hash)
+    if (usercredentials === credentials) {
       result = connectUser(link.Hash);
       console.log("logging in to: " + link.Hash)
       return
@@ -271,7 +271,6 @@ function login(loginData) {
 function idLogin(id) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
-  console.log("ALL USERS: " + JSON.stringify(allUsers))
   allUsers.forEach(function (link) {
     var userId = link.Hash
     if (userId === id) {
@@ -293,13 +292,12 @@ function autoLogin() {
   }
 }
 
-
-function updateLoginToken(newLogin) {
+function updatecredentialsToken(newcredentials) {
   var id = readLoggedInId();
-  var removeLink = commit("login_link", {
-    Links: [{ Base: id, Link: readLoginToken(id), Tag: "login", LinkAction: HC.LinkAction.Del }]
+  var removeLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: readcredentialsToken(id), Tag: "credentials", LinkAction: HC.LinkAction.Del }]
   });
-  return createLoginToken(id, newLogin)
+  return createcredentialsToken(id, newcredentials)
 }
 
 /*******************************************************************************
@@ -307,38 +305,37 @@ function updateLoginToken(newLogin) {
  ******************************************************************************/
 
 /******************
-login: {
+credentialss: {
             email: email address,
             password: password
           } 
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
-function createLoginToken(id, login) {
-  var loginHash = makeHash("login", login)
+function createcredentialsToken(id, credentials) {
+  var credentialsHash = makeHash("credentials", credentials)
 
-  var loginLink = commit("login_link", {
-    Links: [{ Base: id, Link: loginHash, Tag: "login" }]
+  var credentialsLink = commit("credentials_link", {
+    Links: [{ Base: id, Link: credentialsHash, Tag: "credentials" }]
   });
 
-  return loginLink
+  return credentialsLink
 }
-function readLoginToken(id) {
-  if (getLinks(id, "login")[0]) {
-    return getLinks(id, "login")[0].Hash
+function readcredentialsToken(id) {
+  if (getLinks(id, "credentials")[0]) {
+    return getLinks(id, "credentials")[0].Hash
   } else {
     return ""
   }
 }
 
-
-function isDuplicateLogin(loginToken) {
+function isDuplicatecredentials(credentialsToken) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var isDuplicate;
   allUsers.forEach(function (user) {
     var id = user.Hash
-    var thisToken = readLoginToken(id);
-    if (thisToken === loginToken) { isDuplicate = true }
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { isDuplicate = true }
     return
   });
   if (isDuplicate) {
@@ -347,13 +344,13 @@ function isDuplicateLogin(loginToken) {
   }
   else { return false }
 }
-function howManyDuplicateLogin(loginToken) {
+function howManyDuplicatecredentials(credentialsToken) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var duplicateCount = 0;
   allUsers.forEach(function (user) {
     var id = user.Hash
-    var thisToken = readLoginToken(id);
-    if (thisToken === loginToken) { duplicateCount += 1 }
+    var thisToken = readcredentialsToken(id);
+    if (thisToken === credentialsToken) { duplicateCount += 1 }
     return
   });
   return duplicateCount
@@ -410,14 +407,14 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "userdata_link":
         return true
-      case "login_link":
+      case "credentials_link":
         return (
           //Delete action should pass no matter what
           entry.Links[0].LinkAction === "d" ||
-          //Each id can only have one login linked to it at a time
-          getLinks(entry.Links[0].Base, "login").length === 0 &&
+          //Each id can only have one credentials linked to it at a time
+          getLinks(entry.Links[0].Base, "credentials").length === 0 &&
           //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
-          !isDuplicateLogin(entry.Links[0].Link)
+          !isDuplicatecredentials(entry.Links[0].Link)
         )
     }
   }
@@ -446,16 +443,16 @@ function validateCommit(entryType, entry, header, pkg, sources) {
  */
 function validatePut(entryType, entry, header, pkg, sources) {
   switch (entryType) {
-    case "login_link":
-      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "login").length + " logins")
-      console.log("this login token appears in " + howManyDuplicateLogin(entry.Links[0].Link) + " accounts")
+    case "credentials_link":
+      console.log("the base of " + entry.Links[0].Base + " has " + getLinks(entry.Links[0].Base, "credentials").length + " credentialss")
+      console.log("this credentials token appears in " + howManyDuplicatecredentials(entry.Links[0].Link) + " accounts")
       return (
         //Delete action should pass no matter what
         entry.Links[0].LinkAction === "d" ||
-        //Each id can only have one login linked to it at a time
-        getLinks(entry.Links[0].Base, "login").length === 1 &&
+        //Each id can only have one credentials linked to it at a time
+        getLinks(entry.Links[0].Base, "credentials").length === 1 &&
         //if the same email password combination already exists somewhere else on the DHT you can't use that combination.
-        howManyDuplicateLogin(entry.Links[0].Link) === 1
+        howManyDuplicatecredentials(entry.Links[0].Link) === 1
       )
   }
   return (validateCommit(entryType, entry, header, pkg, sources))
@@ -507,7 +504,7 @@ function validateLink(entryType, entry, header, pkg, sources) {
       return true;
     case "userdata_link":
       return true;
-    case "login_link":
+    case "credentials_link":
       return true;
   }
   return false;
