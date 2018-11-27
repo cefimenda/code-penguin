@@ -41,16 +41,13 @@ function connectUser(id) {
   //If already connected to an account log out
   if (getLinks(App.Key.Hash, 'account') > 0) { logOut() }
   //create new connection to the account that the user is logging in to
+  connectUserLoggables(id);
+  connectUserAccount(id);
 
-  //link to get to logged in account
-  var loggedInLink = commit('account_link', {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
-  });
-  //link to get to all keys that are logged into an account
-  var loggedInKeysLink = commit('account_link', {
-    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
-  });
+  return getUser();
+}
 
+function connectUserLoggables(id) {
   //link to get to all accounts that a key can log in to
   var loggableLink = commit('account_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
@@ -59,8 +56,16 @@ function connectUser(id) {
   var aliasLink = commit('account_link', {
     Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
   });
-
-  return getUser();
+}
+function connectUserAccount(id) {
+  //link to get to logged in account
+  var loggedInLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
+  });
+  //link to get to all keys that are logged into an account
+  var loggedInKeysLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
+  });
 }
 
 
@@ -254,6 +259,7 @@ credentials: {
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
+
 function login(credentialsData) {
   var credentials = makeHash("credentials", credentialsData);
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
@@ -268,13 +274,14 @@ function login(credentialsData) {
   });
   return result;
 }
+//can't use idLogin requires the user to already have loggables set up - without logables id login will fail the validation step.
 function idLogin(id) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
     var userId = link.Hash
     if (userId === id) {
-      result = connectUser(link.Hash);
+      result = connectUserAccount(link.Hash);
       console.log("logging in to: " + link.Hash)
       return
     };
