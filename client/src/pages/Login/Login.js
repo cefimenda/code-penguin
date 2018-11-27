@@ -13,8 +13,8 @@ export default class Task extends Component {
     };
 
     componentDidMount = () => {
-        this.props.logout()
-      };
+        this.props.logout();
+    }
 
     changePage = page => {
         this.setState({page: page})
@@ -37,7 +37,7 @@ export default class Task extends Component {
         return (
         <React.Fragment>
            <HoverBox>
-                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser}/> : <Another changePage={this.changePage} getUser={this.getUser}/>}
+                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : <Another changePage={this.changePage} getUser={this.getUser}/>}
            </HoverBox>
         </React.Fragment>
         )

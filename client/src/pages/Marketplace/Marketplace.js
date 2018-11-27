@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
@@ -9,6 +10,7 @@ import API from '../../utils/API';
 
 export default class Marketplace extends Component {
   state = {
+    loggedIn: true,
     activeCard: 'card-id-0',
     fullList: '',
     dataList: [],
@@ -18,6 +20,33 @@ export default class Marketplace extends Component {
 
   componentDidMount = () => {
     this.getCards(); //get all the info in the database
+    API.getUser()
+      .then(res=>{
+        console.log(res);
+        if(res.data){
+
+        }
+        else{
+          API.autoLogin()
+            .then(res=>{
+              console.log(res);
+              if(res.data){
+
+              }
+              else{
+                this.setState({
+                  loggedIn: false
+                });
+              }
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+        }
+      })
+      .catch(err=>{
+        console.log(err);
+      })
   };
 
   // Data retrieval
@@ -134,6 +163,9 @@ export default class Marketplace extends Component {
     this.setState({ currentPage: Number(e.target.id), activeCard: 'card-id-0' });
 
   render() {
+
+    if (!this.state.loggedIn) return <Redirect to="/login" />;
+    
     const focus = 'left';
 
     // Logic for getting the current card data

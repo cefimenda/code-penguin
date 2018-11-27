@@ -43,6 +43,10 @@ export default {
     return axios.post("/fn/users/idLogin", JSON.stringify(idHash));
   },
 
+  autoLogin: function() {
+    return axios.post("/fn/users/autoLogin");
+  },
+
   /*
   * data: {
             username

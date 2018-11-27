@@ -231,7 +231,7 @@ function getUser(id) {
       id = readLoggedInId()
     } catch (err) {
       console.log(err)
-      return "You are not logged in."
+      return false;
     }
   }
   try {
@@ -286,7 +286,7 @@ function idLogin(id) {
 function autoLogin() {
   var loggables = getLoggables(App.Key.Hash);
   if (loggables.length === 1 && ((getLoggables(loggables[0].Hash)).map(function (item) { return item.Hash }).indexOf(App.Key.Hash) > -1)) {
-    return login(loggables[0].Hash);
+    return idLogin(loggables[0].Hash);
   }
   else {
     return false

@@ -142,31 +142,31 @@ function backTask(back) {
  * @see https://developer.holochain.org/API#genesis
  */
 function genesis() {
-  if (!JSON.parse(call("users", "autoLogin", ""))) {
-    call("users", "createAccount", JSON.stringify({ username: "cefimenda", credential: { email: "jeffyyy", password: String(Date.now()) } }))
-  };
+  // if (!JSON.parse(call("users", "autoLogin", ""))) {
+  //   call("users", "createAccount", JSON.stringify({ username: "cefimenda", credential: { email: "jeffyyy", password: String(Date.now()) } }))
+  // };
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,
     destination: App.DNA.Hash,
     pebbles: 500
   });
-  call("transactions", "distribute", "");
-  var taskHash = createTask({
-    title: "Holochain App Debug",
-    details: "My holochain app isn't working!!",
-    tags: ["holochain"],
-    pebbles: 1
-  });
-  createTask({
-    title: "Need Holochain Help NOW",
-    details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
-    tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
-    pebbles: 2
-  });
-  call("comments", "createComment", {
-    page: taskHash,
-    text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
-  });
+  // call("transactions", "distribute", "");
+  // var taskHash = createTask({
+  //   title: "Holochain App Debug",
+  //   details: "My holochain app isn't working!!",
+  //   tags: ["holochain"],
+  //   pebbles: 1
+  // });
+  // createTask({
+  //   title: "Need Holochain Help NOW",
+  //   details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in metus iaculis, interdum urna sed, vulputate urna.",
+  //   tags: ["holochain", "other", "stuff", "gotta", "be", "visually", "full"],
+  //   pebbles: 2
+  // });
+  // call("comments", "createComment", {
+  //   page: taskHash,
+  //   text: "I think your app concept is amazing, and I hope you can get some help on this problem really quick! Good luck!"
+  // });
   return true;
 }
 
