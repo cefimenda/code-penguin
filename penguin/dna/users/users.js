@@ -41,16 +41,13 @@ function connectUser(id) {
   //If already connected to an account log out
   if (getLinks(App.Key.Hash, 'account') > 0) { logout() }
   //create new connection to the account that the user is logging in to
+  connectUserLoggables(id);
+  connectUserAccount(id);
 
-  //link to get to logged in account
-  var loggedInLink = commit('account_link', {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
-  });
-  //link to get to all keys that are logged into an account
-  var loggedInKeysLink = commit('account_link', {
-    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
-  });
+  return getUser();
+}
 
+function connectUserLoggables(id) {
   //link to get to all accounts that a key can log in to
   var loggableLink = commit('account_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
@@ -59,8 +56,16 @@ function connectUser(id) {
   var aliasLink = commit('account_link', {
     Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
   });
-
-  return getUser();
+}
+function connectUserAccount(id) {
+  //link to get to logged in account
+  var loggedInLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
+  });
+  //link to get to all keys that are logged into an account
+  var loggedInKeysLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
+  });
 }
 
 
@@ -101,11 +106,9 @@ function isAuthorized(key) {
 
 //returns id hash
 function createAccount(data) {
-
   //removing credentials information from the inserted argument
   var credentials = data.credentials
   delete data.credentials
-
   //create new account
   data.origin = App.Key.Hash;
   addTimestamp(data)
@@ -158,6 +161,10 @@ function removeAlias(key) {
 //returns list of loggables
 function getLoggables(id) {
   return getLinks(id, "loggable")
+}
+
+function getLoggablesList(idOrKey) {
+  return ((getLoggables(idOrKey)).map(function (item) { return item.Hash }))
 }
 
 function getLoggablesFromId() {
@@ -255,6 +262,7 @@ credentials: {
 
     PS. It actually can be any object since we are only using the hash of it on a link without making a real entry.
 ******************/
+
 function login(credentialsData) {
   var credentials = makeHash("credentials", credentialsData);
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
@@ -269,13 +277,14 @@ function login(credentialsData) {
   });
   return result;
 }
+//can't use idLogin requires the user to already have loggables set up - without logables id login will fail the validation step.
 function idLogin(id) {
   var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
     var userId = link.Hash
     if (userId === id) {
-      result = connectUser(link.Hash);
+      result = connectUserAccount(link.Hash);
       console.log("logging in to: " + link.Hash)
       return
     };
@@ -402,7 +411,9 @@ function validateCommit(entryType, entry, header, pkg, sources) {
       case "account_link":
         return (
           //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
-          (entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)) &&
+          //in order to log in the account must already have a loggable for the key and the key needs to have the account as a loggable.
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash)?(true):((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
         )
       case "userdata":
         return true
