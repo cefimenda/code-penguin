@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar';
 import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
+import GitTask from '../../components/GitTask'
 import API from '../../utils/API';
 import './Profile.css';
 
@@ -120,6 +121,8 @@ export default class Profile extends Component {
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <h2 className="table-header">Pebble Transaction History</h2>
           <Table data={data} deposits={deposits} withdrawals={withdrawals}/>
+          <GitTask>
+          </GitTask>
         </Container>
       </React.Fragment>
     );

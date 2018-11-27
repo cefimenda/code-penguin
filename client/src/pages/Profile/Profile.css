@@ -53,6 +53,14 @@ td {
   color: gold;
 }
 
+td:nth-child(1),
+td:nth-child(3) {
+  width: 25%;
+}
+td:nth-child(2) {
+  width: 50%;
+} 
+
 .tr-row {
   background-color: #323232b7;
 }
@@ -97,4 +105,14 @@ td {
   letter-spacing: 2px;
   font-size: 16px;
   padding: 6px 15px;
+}
+
+
+.gitSol, .createdTasks {
+  position: absolute;
+  margin-top: 80px;
+}
+
+.gitSol p, .createdTasks p {
+  font-size: 12px;
 }
