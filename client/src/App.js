@@ -11,7 +11,6 @@ import API from "./utils/API";
 import './App.css';
 
 export default class App extends Component {
-
     login = user => {
         sessionStorage.setItem('user', user);
     }
@@ -19,8 +18,6 @@ export default class App extends Component {
     logout = () => {
         API.logout()
             .then(res=>{
-                // console.log(res);
-
                 sessionStorage.clear();
             })
             .catch(err=>{
@@ -29,14 +26,6 @@ export default class App extends Component {
     }
 
     render() {
-        var data = sessionStorage.getItem('user');
-        if (data === "") {return (
-            <Router>
-                <Switch>
-                    <Route path="/" render={() => <Login getUser={this.login} logout={this.logout}/>} />
-                </Switch>
-            </Router>)
-        }
         return (
             <Router>
                 <Switch>

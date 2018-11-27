@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import MessageBar from "../MessageBar"
 import API from '../../utils/API';
 import './Navbar.css';
@@ -13,7 +14,8 @@ export default class Navbar extends Component {
     creator: '',
     avatar: '/images/penguin.png',
     showDiv: false,
-    user: "user"
+    username: "",
+    loggedIn: true
   };
 
   componentWillMount() {
@@ -25,6 +27,7 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
+    this.getUsername()
     this.getHash()
     this.canDist()
   };
@@ -50,28 +53,41 @@ export default class Navbar extends Component {
     this.setState({ showDiv: false})
   }
 
+  getUsername = () => {
+    setTimeout(() => { 
+      const userName = sessionStorage.getItem('user');
+      this.setState({
+        username: `${userName}`
+      })
+      if (this.state.username === "" || this.state.username === null || this.state.username === "null") {
+        this.setState({ loggedIn: false })
+      }
+    }, 100);
+  }
+
   getHash = () => {
-    const getUserName = sessionStorage.getItem('user');
     API.getUser()
       .then(res => {
         // console.log(res);
-        this.setState({ userPebbles: res.data.pebbles, user: `${getUserName === "" ? "user" : getUserName}`});
-        let { github } = res.data.userdata[0].Entry || null;
-        this.setState({ creator: github || res.data.hash });
-        if (github) {
-          this.setState({
-            hasGithub: true
-          });
-          API.getGithub(github)
-            .then(res => {
-              this.setState({
-                avatar: res.data.avatar_url
-              });
-            })
-            .catch(err => {}/*console.log(err)*/);
-        }
+        this.setState({ userPebbles: res.data.pebbles });
+        // let { github } = res.data.userdata[0].Entry || null;
+        this.setState({ creator: res.data.hash });
+
+        // this.setState({ creator: github || res.data.hash });
+        // if (github) {
+        //   this.setState({
+        //     hasGithub: true
+        //   });
+        //   API.getGithub(github)
+        //     .then(res => {
+        //       this.setState({
+        //         avatar: res.data.avatar_url
+        //       });
+        //     })
+        //     .catch(err => {}/*console.log(err)*/);
+        // }
       })
-      .catch(err => {}/*console.log(err)*/);
+      .catch(err => console.log(err));
   };
 
   handleScroll = () => {
@@ -97,6 +113,7 @@ export default class Navbar extends Component {
   };
 
   render() {
+    if (!this.state.loggedIn) return <Redirect to="/login" />;
     return (
       <React.Fragment>
         <div
@@ -136,7 +153,7 @@ export default class Navbar extends Component {
                   <li key="2" className="float-right">
                     <a href="/profile">
                       <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                        {`${this.state.user} = `} <span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
+                        {`${this.state.username} = `} <span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
                       </p>
                       <img
                         className="nav-pebble-img"
