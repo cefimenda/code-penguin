@@ -27,7 +27,7 @@ export default class Profile extends Component {
     API.getUser()
       .then(res => {
         this.setState({
-          creator: `${getUserName === '' ? res.data.hash : getUserName}`,
+          creator: `${getUserName ==="" ? res.data.hash : getUserName}`,
           pebbles: res.data.pebbles
         });
       })

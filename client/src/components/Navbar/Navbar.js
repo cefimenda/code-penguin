@@ -12,7 +12,8 @@ export default class Navbar extends Component {
     userPebbles: '',
     creator: '',
     avatar: '/images/penguin.png',
-    showDiv: false
+    showDiv: false,
+    user: "user"
   };
 
   componentWillMount() {
@@ -50,10 +51,11 @@ export default class Navbar extends Component {
   }
 
   getHash = () => {
+    const getUserName = sessionStorage.getItem('user');
     API.getUser()
       .then(res => {
         // console.log(res);
-        this.setState({ userPebbles: res.data.pebbles});
+        this.setState({ userPebbles: res.data.pebbles, user: `${getUserName === "" ? "user" : getUserName}`});
         let { github } = res.data.userdata[0].Entry || null;
         this.setState({ creator: github || res.data.hash });
         if (github) {
@@ -133,14 +135,8 @@ export default class Navbar extends Component {
                   </li>
                   <li key="2" className="float-right">
                     <a href="/profile">
-                      <img
-                        className="mini-avatar"
-                        width="30px"
-                        src={this.state.avatar}
-                        alt={this.state.creator}
-                      />
                       <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                        {this.state.userPebbles}
+                        {`${this.state.user} = `} <span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
                       </p>
                       <img
                         className="nav-pebble-img"

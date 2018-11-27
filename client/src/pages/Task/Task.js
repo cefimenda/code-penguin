@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from '../../components/Navbar';
+import MessageBar from '../../components/MessageBar';
 import Container from '../../components/Container';
 import TaskBox from '../../components/TaskBox';
 import SolutionCommentBox from '../../components/SolutionCommentBox';
@@ -32,7 +33,9 @@ export default class Task extends Component {
       text: '',
       task: '',
       time: ''
-    }
+    },
+    showDiv: false,
+    message: ""
   };
 
   componentDidMount = () => {
@@ -95,21 +98,25 @@ export default class Task extends Component {
   handleSubmit = () => {
     const task = this.props.match.params.hash;
     if (this.state.toggler === 'solutions') {
-      if (
-        this.state.newSolutionLink.includes('github') &&
-        this.state.newSolutionLink.includes('.com')
-      ) {
-        const text = this.state.newSolutionDes;
-        const link = this.state.newSolutionLink;
-        this.addSolution({ task, text, link });
-      } else {
-        alert(`Please add a github link`);
-      }
+        if (
+            this.state.newSolutionLink.includes('github') &&
+            this.state.newSolutionLink.includes('.com')
+        ) {
+            const text = this.state.newSolutionDes;
+            const link = this.state.newSolutionLink;
+            this.addSolution({ task, text, link });
+        } else {
+            this.setState({ showDiv: true, message: "Please add a github link"})
+        }
     } else if (this.state.toggler === 'comments') {
       const ctext = this.state.newComment;
       this.addComment({ page: task, text: ctext });
     }
   };
+
+  handleCancel = () => {
+    this.setState({ showDiv: false})
+  }
 
   handleBackTask = () => {
     const { pebbles, maxPebbles, user } = this.state;
@@ -168,6 +175,9 @@ export default class Task extends Component {
     return (
       <React.Fragment>
         <Navbar />
+        <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
+            {this.state.message}
+        </MessageBar>
         <Container bgcolor="rgb(32,32,32)">
           <TaskBox>
             <div className="pebble-div">
@@ -245,6 +255,7 @@ export default class Task extends Component {
                             solHash={solution.Hash}
                             key={i}
                             isCreator={task.creator === user ? true : false}
+                            creatorHash={task.Source}
                             reward={this.handleReward}
                             rewardHash={this.state.rewardHash}
                           />
