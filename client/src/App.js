@@ -10,20 +10,23 @@ import NoMatch from "./pages/NoMatch";
 import './App.css';
 
 export default class App extends Component {
-    state = {
-        user: ""
-    }
+    // state = {
+    //     user: ""
+    // }
 
     login = user => {
-        this.setState({ user: user })
+        // this.setState({ user: user })
+        sessionStorage.setItem('user', user);
     }
 
     logout = () => {
-        this.setState({ user: "" })
+        // this.setState({ user: "" })
+        sessionStorage.clear();
     }
 
     render() {
-        if (this.state.user === "") {return (
+        var data = sessionStorage.getItem('user');
+        if (data === "") {return (
             <Router>
                 <Switch>
                     <Route path="/" render={() => <Login getUser={this.login} logout={this.logout}/>} />
