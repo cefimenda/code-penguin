@@ -35,6 +35,14 @@ export default {
     return axios.post("/fn/transactions/readTransaction", "\"" + hash + "\"");
   },
 
+  distribute: function() {
+    return axios.post("/fn/transactions/distribute");
+  },
+
+  canDistribute: function() {
+    return axios.post("/fn/transactions/canDistribute");
+  },
+
 
   //TASKS
 

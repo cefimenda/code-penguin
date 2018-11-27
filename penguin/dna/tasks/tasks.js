@@ -134,7 +134,7 @@ function backTask(back) {
  * System genesis callback: Can the app start?
  *
  * Executes just after the initial genesis entries are committed to your chain
- * (1st - DNA entry, 2nd Identity entry). Enables you specify any additional
+ * (1st - DNA entry, 2nd Account entry). Enables you specify any additional
  * operations you want performed when a node joins your holochain.
  *
  * @return {boolean} true if genesis is successful and so the app may start.
@@ -143,7 +143,7 @@ function backTask(back) {
  */
 function genesis() {
   if (!JSON.parse(call("users", "autoLogin", ""))) {
-    call("users", "createIdentity", JSON.stringify({ username: "cefimenda", login: { email: "jeffyyy", password: String(Date.now()) } }))
+    call("users", "createAccount", JSON.stringify({ username: "cefimenda", login: { email: "jeffyyy", password: String(Date.now()) } }))
   };
   call("transactions", "createTransaction", {
     origin: App.DNA.Hash,

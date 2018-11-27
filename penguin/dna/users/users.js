@@ -11,7 +11,7 @@
 function isValidEntryType(entryType) {
   // Add additonal entry types here as they are added to dna.json.
   // return true
-  var entryTypes = ["identity", "identity_link", "userdata", "userdata_link", "login_link"];
+  var entryTypes = ["account", "account_link", "userdata", "userdata_link", "login_link"];
   if (entryTypes.indexOf(entryType) === -1) { console.log(entryType + " is not a valid entry type!"); }
   return (entryTypes.indexOf(entryType) > -1);
 }
@@ -38,25 +38,25 @@ function addTimestamp(object) {
 }
 
 function connectUser(id) {
-  //If already connected to an identity log out
-  if (getLinks(App.Key.Hash, 'identity') > 0) { logOut() }
+  //If already connected to an account log out
+  if (getLinks(App.Key.Hash, 'account') > 0) { logOut() }
   //create new connection to the account that the user is logging in to
 
   //link to get to logged in account
-  var loggedInLink = commit('identity_link', {
-    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity' }]
+  var loggedInLink = commit('account_link', {
+    Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account' }]
   });
   //link to get to all keys that are logged into an account
-  var loggedInKeysLink = commit('identity_link', {
-    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'identity' }]
+  var loggedInKeysLink = commit('account_link', {
+    Links: [{ Base: id, Link: App.Key.Hash, Tag: 'account' }]
   });
 
   //link to get to all accounts that a key can log in to
-  var loggableLink = commit('identity_link', {
+  var loggableLink = commit('account_link', {
     Links: [{ Base: App.Key.Hash, Link: id, Tag: 'loggable' }]
   });
   //link to get to all keys that can log into an account
-  var aliasLink = commit('identity_link', {
+  var aliasLink = commit('account_link', {
     Links: [{ Base: id, Link: App.Key.Hash, Tag: 'loggable' }]
   });
 
@@ -68,7 +68,7 @@ function connectUser(id) {
  * USER Functions With Endpoints
 ****************************************/
 
-//Checks if a user's public key is listed under the aliases of the identity the user is logged in to
+//Checks if a user's public key is listed under the aliases of the account the user is logged in to
 
 function isAuthorized(key) {
   var id = readLoggedInId(key)
@@ -89,7 +89,7 @@ function isAuthorized(key) {
 }
 
 /******************
- identity:  {
+ account:  {
             username: (username),
             github: (github oAuth token) - Optional
             login:{
@@ -100,21 +100,21 @@ function isAuthorized(key) {
 ******************/
 
 //returns id hash
-function createIdentity(data) {
+function createAccount(data) {
   //removing login information from the inserted argument
   var login = data.login
   delete data.login
 
-  //create new identity
+  //create new account
   data.origin = App.Key.Hash;
   addTimestamp(data)
-  var id = commit('identity', data);
+  var id = commit('account', data);
 
   //add this id as a link to DNA
-  var idLinkDNA = commit('identity_link', {
-    Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'identity' }]
+  var idLinkDNA = commit('account_link', {
+    Links: [{ Base: App.DNA.Hash, Link: id, Tag: 'account' }]
   });
-  //connect user to create loggable and identity links
+  //connect user to create loggable and account links
   connectUser(id);
 
   //create a login token linked to the id
@@ -126,7 +126,7 @@ function createIdentity(data) {
 //returns id hash
 function readLoggedInId(key) {
   var key = key || App.Key.Hash
-  return getLinks(key, 'identity')[0].Hash
+  return getLinks(key, 'account')[0].Hash
 }
 
 
@@ -138,7 +138,7 @@ loggable:   {
 ******************/
 //can be used to remove any type of loggables
 function removeLoggable(loggable) {
-  commit("identity_link", {
+  commit("account_link", {
     Links: [{ Base: loggable.base, Link: loggable.target, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
   });
   return true
@@ -147,18 +147,18 @@ function removeLoggable(loggable) {
 function removeAlias(key) {
   var key = key || App.Key.Hash;
   var id = readLoggedInId();
-  commit("identity_link", {
+  commit("account_link", {
     Links: [{ Base: id, Link: key, Tag: 'loggable', LinkAction: HC.LinkAction.Del }]
   })
   return true
 }
 
 //returns list of loggables
-function getLoggables(token) {
-  return getLinks(token, "loggable")
+function getLoggables(id) {
+  return getLinks(id, "loggable")
 }
 
-//returns identity with most up to date information
+//returns account with most up to date information
 function getData(id) {
   var id = id || readLoggedInId();
   var userdatas = getLinks(id, "userdata", { Load: true })
@@ -169,14 +169,14 @@ function getData(id) {
   });
   var sorted = userdatas
 
-  //start from the first identity and apply all changes on userdatas
-  var identity = get(id)
+  //start from the first account and apply all changes on userdatas
+  var account = get(id)
   sorted.forEach(function (data) {
     var entry = data.Entry
-    identity[entry.type] = entry.data
+    account[entry.type] = entry.data
   })
 
-  return identity
+  return account
 }
 
 /******************
@@ -200,8 +200,8 @@ function createUserdata(userdata) {
 function logOut() {
   try {
     var id = readLoggedInId()
-    commit("identity_link", {
-      Links: [{ Base: App.Key.Hash, Link: id, Tag: 'identity', LinkAction: HC.LinkAction.Del }]
+    commit("account_link", {
+      Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account', LinkAction: HC.LinkAction.Del }]
     });
     console.log("logging out")
     return true
@@ -246,7 +246,7 @@ login: {
 ******************/
 function login(loginData) {
   var login = makeHash("login", loginData);
-  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true });
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
   var result = "The token you have provided does not match any on the DHT";
   allUsers.forEach(function (link) {
     var userLogin = readLoginToken(link.Hash)
@@ -270,7 +270,7 @@ function autoLogin() {
 }
 function test() {
   logOut()
-  var id = createIdentity({ username: "cefimenda" })
+  var id = createAccount({ username: "cefimenda" })
   console.log("reading Login Token:" + readLoginToken(id))
   var newToken = (updateLoginToken(id, { email: "booo", password: "newPass" }))
   console.log("newToken: " + newToken)
@@ -316,7 +316,7 @@ function readLoginToken(id) {
 
 
 function isDuplicateLogin(loginToken) {
-  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true })
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var isDuplicate;
   allUsers.forEach(function (user) {
     var id = user.Hash
@@ -331,7 +331,7 @@ function isDuplicateLogin(loginToken) {
   else { return false }
 }
 function howManyDuplicateLogin(loginToken) {
-  var allUsers = getLinks(App.DNA.Hash, "identity", { Load: true })
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true })
   var duplicateCount = 0;
   allUsers.forEach(function (user) {
     var id = user.Hash
@@ -351,7 +351,7 @@ function howManyDuplicateLogin(loginToken) {
  * System genesis callback: Can the app start?
  *
  * Executes just after the initial genesis entries are committed to your chain
- * (1st - DNA entry, 2nd Identity entry). Enables you specify any additional
+ * (1st - DNA entry, 2nd account entry). Enables you specify any additional
  * operations you want performed when a node joins your holochain.
  *
  * @return {boolean} true if genesis is successful and so the app may start.
@@ -382,12 +382,12 @@ function validateCommit(entryType, entry, header, pkg, sources) {
         return true
       case "userdata_link":
         return true
-      case "identity":
+      case "account":
         return true
-      case "identity_link":
+      case "account_link":
         return (
-          //Each Key can only be logged into one identity at a time. If you want to log into another identity you must first log out.
-          (entry.Links[0].Tag === "identity") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "identity").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
+          //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
+          (entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)
         )
       case "userdata":
         return true
@@ -486,7 +486,7 @@ function validateDel(entryType, hash, pkg, sources) {
 
 function validateLink(entryType, entry, header, pkg, sources) {
   switch (entryType) {
-    case "identity_link":
+    case "account_link":
       return true;
     case "userdata_link":
       return true;

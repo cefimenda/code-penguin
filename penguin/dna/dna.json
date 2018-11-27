@@ -76,13 +76,13 @@
             "Config": null,
             "Entries": [
                 {
-                    "Name": "identity",
+                    "Name": "account",
                     "DataFormat": "json",
-                    "SchemaFile": "identity.json",
+                    "SchemaFile": "account.json",
                     "Sharing": "public"
                 },
                 {
-                    "Name": "identity_link",
+                    "Name": "account_link",
                     "DataFormat": "links",
                     "Required": true,
                     "Sharing": "public"
@@ -124,12 +124,7 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "createIdentity",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "readIdentity",
+                    "Name": "createAccount",
                     "CallingType": "json",
                     "Exposure": "public"
                 },
@@ -253,6 +248,11 @@
                 },
                 {
                     "Name": "distribute",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "canDistribute",
                     "CallingType": "json",
                     "Exposure": "public"
                 }
