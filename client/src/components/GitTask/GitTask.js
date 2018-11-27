@@ -48,7 +48,7 @@ export default class GitTask extends Component {
   getUserTasks = () => {
     API.getMyTasks()
       .then(res => {
-        // console.log(res.data.links);
+        console.log(res.data.links);
         this.setState({
           tasks: res.data.links
         });
@@ -105,6 +105,7 @@ export default class GitTask extends Component {
                       >
                         {solution.Entry.text}
                       </a>
+                      <p className="li-text">Submitted on: {new Date(solution.Entry.time).toLocaleDateString()}</p> 
                     </li>
                   ))
                 : 'There are currently no solutions associated with this user.'}
@@ -119,7 +120,8 @@ export default class GitTask extends Component {
                     <li className="list-titles task-text" key={i}>
                       <span className="li-text">Title:</span> {task.Entry.title} <br />
                       <span className="li-text">Details:</span> {task.Entry.details} <br />
-                      <span className="li-text">Pebbles:</span> {task.Entry.pebbles}
+                      <span className="li-text">Pebbles:</span> {task.Entry.pebbles} <br />
+                      <span className="li-text">Created on:</span> {new Date(task.Entry.time).toLocaleDateString()}
                     </li>
                   ))
                 : 'There are currently no tasks associated with this user.'}
