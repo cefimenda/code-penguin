@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import Navbar from '../../components/Navbar';
-import MessageBar from '../../components/MessageBar';
 import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import MarketInfo from '../../components/HoverBox/MarketInfo';
@@ -23,7 +22,7 @@ export default class Marketplace extends Component {
     this.getCards(); //get all the info in the database
     API.getUser()
       .then(res=>{
-        console.log(res);
+        // console.log(res);
         if(res.data){
 
         }
@@ -212,7 +211,6 @@ export default class Marketplace extends Component {
     return (
       <React.Fragment>
         <Navbar page="Marketplace" />
-        <MessageBar />
         <HoverBox side={focus}>
           <MarketInfo
             prof={this.props.profSeed}

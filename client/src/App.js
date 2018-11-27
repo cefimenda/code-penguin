@@ -19,7 +19,8 @@ export default class App extends Component {
     logout = () => {
         API.logout()
             .then(res=>{
-                console.log(res);
+                // console.log(res);
+
                 sessionStorage.clear();
             })
             .catch(err=>{
@@ -39,7 +40,7 @@ export default class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Marketplace} />
+                    <Route exact path="/" render={() => <Redirect to="/marketplace" /> } />
                     <Route path="/landing" component={Landing} />
                     <Route path="/profile" render={() => <Profile /> } />
                     <Route path="/marketplace" component={Marketplace} />

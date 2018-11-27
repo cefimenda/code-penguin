@@ -11,7 +11,7 @@ export default class Task extends Component {
     componentDidMount = () => {
         API.getUsernames()
             .then(res=>{
-                console.log(res.data);
+                // console.log(res.data);
                 this.setState({
                     users: res.data
                 });
@@ -30,10 +30,12 @@ export default class Task extends Component {
     }
 
     divClick = e => {
+        const username = e.target.textContent
         API.idLogin(e.target.id)
             .then(res=>{
-                console.log(res);
-                this.props.redirect();
+                this.props.getUser(username)
+                // console.log(res);
+                // this.props.redirect();
             })
             .catch(err=>{
                 console.log(err);
@@ -43,8 +45,8 @@ export default class Task extends Component {
     render() {
         const renderUser = this.state.users.map((user, i) => {
             return (
-                <div className="username" key={i} id={user.Hash} onClick={this.divClick}>
-                    <p id={user.Entry.username}>{user.Entry.username}</p>
+                <div className="username" key={i} id={user.Hash} name={user.Entry.username} onClick={this.divClick}>
+                    <p id={user.Hash} name={user.Entry.username}>{user.Entry.username}</p>
                 </div>
             )
         })

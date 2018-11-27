@@ -26,7 +26,6 @@ export default class Task extends Component {
         event.preventDefault()
         const { username, email, password, repassword} = this.state
         if (password === repassword) {
-            console.log(`username: ${username}, email: ${email}, pasword: ${password}, repass: ${repassword}`);
             API.createAccount({
                 username,
                 credentials: {
@@ -35,8 +34,9 @@ export default class Task extends Component {
                 }
             })
                 .then(res=>{
-                    console.log(res);
-                    this.props.redirect();
+                    this.props.getUser(username)
+                    // console.log(res);
+                    // this.props.redirect();
                 })
                 .catch(err=>{
                     console.log(err);
