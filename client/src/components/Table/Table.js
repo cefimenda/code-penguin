@@ -74,21 +74,6 @@ export default class Table extends Component {
               <th>Task Name</th>
               <th>Pebbles</th>
             </tr>
-            <tr className="fake-tr" style={{ width: '100px' }}>
-              <th>Test</th>
-              <th>Test</th>
-              <th>Testing length overflow wordwrap etc etc etc </th>
-            </tr>
-            <tr className="fake-tr" style={{ width: '100px' }}>
-              <th>Test</th>
-              <th>Test</th>
-              <th>Testing length overflow wordwrap etc etc etc </th>
-            </tr>
-            <tr className="fake-tr" style={{ width: '100px' }}>
-              <th>Test</th>
-              <th>Test</th>
-              <th>Testing length overflow wordwrap etc etc etc </th>
-            </tr>
             {this.renderTableInfo()}
           </tbody>
         </table>
