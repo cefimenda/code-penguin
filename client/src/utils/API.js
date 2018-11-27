@@ -21,6 +21,10 @@ export default {
     return axios.get(`https://api.github.com/users/${username}`);
   },
 
+  getUsernames: function() {
+    return axios.get("/fn/users/getLoggablesFromKey");
+  },
+
   // TRANSACTIONS
   /* Get pebble count given a user or task hash*/
   getPebbles: function (hash) {

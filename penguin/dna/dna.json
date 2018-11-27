@@ -180,7 +180,7 @@
                 },
                 {
                     "Name": "getLoggables",
-                    "CallingType": "json",
+                    "CallingType": "json"
                 },
                 {
                     "Name": "getLoggablesFromId",
