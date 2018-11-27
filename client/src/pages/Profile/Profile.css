@@ -118,3 +118,15 @@ td:nth-child(2) {
 .gitSol p, .createdTasks p {
   font-size: 12px;
 }
+
+.ui.button.edit-btn {
+  position: relative;
+  bottom: -100px;
+  color: white;
+  background-color: #00b5ad;
+}
+
+.ui.button.edit-btn:hover {
+  box-shadow: 2px 2px 2px #5c7271ee;
+    cursor: pointer;
+}

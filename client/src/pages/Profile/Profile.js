@@ -4,6 +4,7 @@ import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
 import GitTask from '../../components/GitTask';
+import Modal from '../../components/Modal'
 import API from '../../utils/API';
 import './Profile.css';
 
@@ -13,7 +14,7 @@ export default class Profile extends Component {
     avatar: '/images/penguin.png',
     pebbles: '',
     withdrawals: [],
-    deposits: [],
+    deposits: []
   };
 
   componentDidMount = () => {
@@ -26,13 +27,12 @@ export default class Profile extends Component {
     API.getUser()
       .then(res => {
         this.setState({
-          creator: `${getUserName === "" ? res.data.hash : getUserName}`,
+          creator: `${getUserName === '' ? res.data.hash : getUserName}`,
           pebbles: res.data.pebbles
         });
       })
       .catch(err => console.log(err));
   };
-
 
   getTransactions = () => {
     API.getTransactionHistory()
@@ -66,21 +66,23 @@ export default class Profile extends Component {
 
   render() {
     const focus = 'left';
-    let { withdrawals, deposits } = this.state;
+    let { creator, withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);
-    
+
     return (
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
           <div className="profile-div" style={{ margin: '10px 0' }}>
-              <div>
-                <div className="label">
-                  <label>Hello, </label>
-                </div>
-                <span className="span-user">{this.userName} {this.state.creator.toUpperCase()}</span>
+            <div>
+              <div className="label">
+                <label>Hello, </label>
               </div>
-              {/* <div>
+              <span className="span-user">
+                {this.userName} {this.state.creator.toUpperCase()}
+              </span>
+            </div>
+            {/* <div>
                 <div className="label">
                   <label>Change your username</label>
                   <form onSubmit={this.state.handleFormSubmit}>
@@ -102,7 +104,7 @@ export default class Profile extends Component {
               alt={this.state.creator}
             />
             <span className="span-pebbles">Today's Pebble Count {this.state.pebbles}</span>
-            <i className="user-edit fas fa-user-edit" onClick={this.handleFormSubmit}></i>
+            <Modal creator={creator}/>
           </div>
         </HoverBox>
         <Container padding={focus} bgcolor="rgb(32,32,32)">
