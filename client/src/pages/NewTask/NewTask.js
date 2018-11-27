@@ -38,7 +38,7 @@ export default class Profile extends Component {
     createTask = task => {
         API.createTask(task)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 window.location.pathname = `/task/${res.data}`
             }
             ).catch(err =>

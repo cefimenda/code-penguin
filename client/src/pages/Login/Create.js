@@ -41,9 +41,7 @@ export default class Task extends Component {
                     // console.log(res);
                     // this.props.redirect();
                 })
-                .catch(err=>{
-                    console.log(err);
-                })
+                .catch(err => console.log(err));
         } else {
             this.setState({ showDiv: true, message: "The passwords do not match"})
         }
