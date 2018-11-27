@@ -210,7 +210,7 @@ export default class Marketplace extends Component {
 
     return (
       <React.Fragment>
-        <Navbar page="Marketplace" />
+        <Navbar page="Marketplace"/>
         <HoverBox side={focus}>
           <MarketInfo
             prof={this.props.profSeed}
