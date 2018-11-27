@@ -164,6 +164,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "idLogin",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "autoLogin",
                     "CallingType": "json",
                     "Exposure": "public"
