@@ -17,7 +17,7 @@ export default class Task extends Component {
                 });
             })
             .catch(err=>{
-
+                console.log(err);
             });
     }
 
@@ -36,7 +36,7 @@ export default class Task extends Component {
     render() {
         const renderUser = this.state.users.map((user, i) => {
             return (
-                <div className="username" key={i} id={user.Entry.username} onClick={this.divClick}>
+                <div className="username" key={i} id={user.Hash} onClick={this.divClick}>
                     <p id={user.Entry.username}>{user.Entry.username}</p>
                 </div>
             )

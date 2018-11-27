@@ -139,7 +139,7 @@
                     "Exposure": "public"
                 },
                 {
-                    "Name": "logOut",
+                    "Name": "logout",
                     "CallingType": "json",
                     "Exposure": "public"
                 },

@@ -7,6 +7,7 @@ import Marketplace from "./pages/Marketplace";
 import Task from "./pages/Task";
 import NewTask from "./pages/NewTask"
 import NoMatch from "./pages/NoMatch";
+import API from "./utils/API";
 import './App.css';
 
 export default class App extends Component {
@@ -20,8 +21,14 @@ export default class App extends Component {
     }
 
     logout = () => {
-        // this.setState({ user: "" })
-        sessionStorage.clear();
+        API.logout()
+            .then(res=>{
+                console.log(res);
+                sessionStorage.clear();
+            })
+            .catch(err=>{
+                console.log(err);
+            })
     }
 
     render() {

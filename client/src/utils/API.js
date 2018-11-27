@@ -22,7 +22,33 @@ export default {
   },
 
   getUsernames: function() {
-    return axios.get("/fn/users/getLoggablesFromKey");
+    return axios.post("/fn/users/getLoggablesFromKey");
+  },
+
+  logout: function() {
+    return axios.post("/fn/users/logout");
+  },
+
+  login: function() {
+
+  },
+
+  idLogin: function() {
+
+  },
+
+  /*
+  * data: {
+            username
+            login: {
+              email
+              password
+            }
+          }
+  */
+  createAccount: function(data) {
+    console.log(data);
+    return axios.post("/fn/users/createAccount", data);
   },
 
   // TRANSACTIONS

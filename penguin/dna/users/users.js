@@ -39,7 +39,7 @@ function addTimestamp(object) {
 
 function connectUser(id) {
   //If already connected to an account log out
-  if (getLinks(App.Key.Hash, 'account') > 0) { logOut() }
+  if (getLinks(App.Key.Hash, 'account') > 0) { logout() }
   //create new connection to the account that the user is logging in to
 
   //link to get to logged in account
@@ -83,7 +83,7 @@ function isAuthorized(key) {
     return result;
   } else {
     console.log("INVALID LOGIN SPOTTED __ LOGGING OUT")
-    logOut()
+    logout()
     return false;
   }
 }
@@ -92,7 +92,7 @@ function isAuthorized(key) {
  account:  {
             username: (username),
             github: (github oAuth token) - Optional
-            login:{
+            credentials:{
                 email:email,
                 password:password
               } -- login can be any object, login will not be saved into the entry
@@ -101,6 +101,7 @@ function isAuthorized(key) {
 
 //returns id hash
 function createAccount(data) {
+  console.log(data);
   //removing login information from the inserted argument
   var login = data.login
   delete data.login
@@ -206,7 +207,7 @@ function createUserdata(userdata) {
   return getData();
 }
 
-function logOut() {
+function logout() {
   try {
     var id = readLoggedInId()
     commit("account_link", {
@@ -278,7 +279,7 @@ function autoLogin() {
   }
 }
 function test() {
-  logOut()
+  logout()
   var id = createAccount({ username: "cefimenda" })
   console.log("reading Login Token:" + readLoginToken(id))
   var newToken = (updateLoginToken(id, { email: "booo", password: "newPass" }))
