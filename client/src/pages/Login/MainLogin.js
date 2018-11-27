@@ -30,7 +30,14 @@ export default class Task extends Component {
     }
 
     divClick = e => {
-        this.props.getUser(e.target.id)
+        API.idLogin(e.target.id)
+            .then(res=>{
+                console.log(res);
+                this.props.redirect();
+            })
+            .catch(err=>{
+                console.log(err);
+            });
     }
 
     render() {

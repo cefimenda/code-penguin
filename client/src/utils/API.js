@@ -29,12 +29,18 @@ export default {
     return axios.post("/fn/users/logout");
   },
 
-  login: function() {
-
+  /*
+  credentials: {
+      email
+      password
+  }
+  */
+  login: function(credentials) {
+    return axios.post("/fn/users/login", credentials);
   },
 
-  idLogin: function() {
-
+  idLogin: function(idHash) {
+    return axios.post("/fn/users/idLogin", JSON.stringify(idHash));
   },
 
   /*
