@@ -277,14 +277,7 @@ function autoLogin() {
     return false
   }
 }
-function test() {
-  logOut()
-  var id = createAccount({ username: "cefimenda" })
-  console.log("reading Login Token:" + readLoginToken(id))
-  var newToken = (updateLoginToken(id, { email: "booo", password: "newPass" }))
-  console.log("newToken: " + newToken)
-  console.log("reading new Login Token: " + readLoginToken(id))
-}
+
 
 function updateLoginToken(newLogin) {
   var id = readLoggedInId();
