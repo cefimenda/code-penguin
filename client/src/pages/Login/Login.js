@@ -25,9 +25,9 @@ export default class Task extends Component {
         this.props.getUser(user)
     }
 
-    redirect = () =>{ 
-        this.setState({redirectToReferrer: true});
-    }
+    // redirect = () =>{ 
+    //     this.setState({redirectToReferrer: true});
+    // }
 
     render() {
         const { page, redirectToReferrer } = this.state

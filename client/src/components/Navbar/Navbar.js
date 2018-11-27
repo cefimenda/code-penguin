@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MessageBar from "../MessageBar"
 import API from '../../utils/API';
 import './Navbar.css';
 
@@ -10,7 +11,8 @@ export default class Navbar extends Component {
     color: 'transparent',
     userPebbles: '',
     creator: '',
-    avatar: '/images/penguin.png'
+    avatar: '/images/penguin.png',
+    showDiv: false
   };
 
   componentWillMount() {
@@ -22,8 +24,30 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
-    this.getHash();
+    this.getHash()
+    this.canDist()
   };
+
+  canDist = () => {
+    API.canDistribute()
+      .then(res => {
+        this.setState({showDiv: res.data})
+      })
+      .catch(err => console.log(err));
+  };
+
+  handleAccept = () => {
+    API.distribute()
+    .then(() => {
+      this.setState({ showDiv: false})
+      this.getHash()
+    })
+    .catch(err => console.log(err));
+  }
+
+  handleCancel = () => {
+    this.setState({ showDiv: false})
+  }
 
   getHash = () => {
     API.getUser()
@@ -125,16 +149,12 @@ export default class Navbar extends Component {
                       />
                     </a>
                   </li>
-                  {/* <li key="3" className="float-right">
-                      <p className={'ui white add-pebs-nav'} style={{fontSize: "20px", display: "block", padding: "0px 10px", margin: "23px 0px", position: "relative"}}>
-                        <i className="fas fa-plus-circle"></i>
-                      </p>
-                  </li> */}
                 </ul>
               </nav>
             </div>
           </div>
         </div>
+        <MessageBar isWarning={false} showDiv={this.state.showDiv} handleCancel={this.handleCancel} handleAccept={this.handleAccept}/>
       </React.Fragment>
     );
   }

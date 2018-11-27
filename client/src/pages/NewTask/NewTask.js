@@ -72,7 +72,6 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 <Navbar />
-                <MessageBar />
                 <Container bgcolor="rgb(32,32,32)">
                     <Task>
                         <div className="task-padd">

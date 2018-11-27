@@ -23,17 +23,18 @@ export default class Task extends Component {
     handleSubmit = event => {
         event.preventDefault()
         const { email, password} = this.state
-        console.log(`email: ${email}, pasword: ${password}`);
+        // console.log(`email: ${email}, pasword: ${password}`);
         API.login({
             email,
             password
         })
             .then(res=>{
-                console.log(res);
-                this.props.redirect();
+                this.props.getUser(email)
+                // console.log(res);
+                // this.props.redirect();
             })
             .catch(err=>{
-                console.log(err);
+                console.log("err",err);
             });
     }
 
