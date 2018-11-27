@@ -181,6 +181,15 @@
                 {
                     "Name": "getLoggables",
                     "CallingType": "json",
+                },
+                {
+                    "Name": "getLoggablesFromId",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "getLoggablesFromKey",
+                    "CallingType": "json",
                     "Exposure": "public"
                 },
                 {

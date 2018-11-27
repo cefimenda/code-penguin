@@ -158,7 +158,16 @@ function getLoggables(id) {
   return getLinks(id, "loggable")
 }
 
-//returns account with most up to date information
+function getLoggablesFromId(){
+  var id = readLoggedInId();
+  return getLinks(id, "loggable", { Load: true })
+}
+function getLoggablesFromKey(){
+  var key = App.Key.Hash;
+  return getLinks(key, "loggable", { Load: true })
+}
+
+//returns identity with most up to date information
 function getData(id) {
   var id = id || readLoggedInId();
   var userdatas = getLinks(id, "userdata", { Load: true })
