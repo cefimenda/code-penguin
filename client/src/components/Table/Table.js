@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import './Table.css';
-import { isThisSecond } from 'date-fns';
 
 export default class Table extends Component {
   state = {
@@ -74,6 +73,21 @@ export default class Table extends Component {
               <th>Date</th>
               <th>Task Name</th>
               <th>Pebbles</th>
+            </tr>
+            <tr className="fake-tr" style={{ width: '100px' }}>
+              <th>Test</th>
+              <th>Test</th>
+              <th>Testing length overflow wordwrap etc etc etc </th>
+            </tr>
+            <tr className="fake-tr" style={{ width: '100px' }}>
+              <th>Test</th>
+              <th>Test</th>
+              <th>Testing length overflow wordwrap etc etc etc </th>
+            </tr>
+            <tr className="fake-tr" style={{ width: '100px' }}>
+              <th>Test</th>
+              <th>Test</th>
+              <th>Testing length overflow wordwrap etc etc etc </th>
             </tr>
             {this.renderTableInfo()}
           </tbody>
