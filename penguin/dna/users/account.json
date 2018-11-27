@@ -1,5 +1,5 @@
 {
-    "title": "identity Schema",
+    "title": "account Schema",
     "type": "object",
     "properties": {
         "origin": {

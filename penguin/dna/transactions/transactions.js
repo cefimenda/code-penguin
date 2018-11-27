@@ -49,6 +49,10 @@ function getLastRedistributionDate(hash) {
   return date;
 }
 
+function canDistribute() {
+  console.log(JSON.parse(call("users", "readLoggedInId", "")));
+  return Date.now() - getLastRedistributionDate(JSON.parse(call("users", "readLoggedInId", ""))) > 24 * 60 * 60 * 1000
+}
 
 
 
