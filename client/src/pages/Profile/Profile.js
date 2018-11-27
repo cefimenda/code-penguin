@@ -13,7 +13,7 @@ export default class Profile extends Component {
     avatar: '/images/penguin.png',
     pebbles: '',
     withdrawals: [],
-    deposits: []
+    deposits: [],
   };
 
   componentDidMount = () => {
@@ -22,15 +22,17 @@ export default class Profile extends Component {
   };
 
   getHash = () => {
+    const getUserName = sessionStorage.getItem('user');
     API.getUser()
       .then(res => {
         this.setState({
-          creator: res.data.hash,
+          creator: `${getUserName === "" ? res.data.hash : getUserName}`,
           pebbles: res.data.pebbles
         });
       })
       .catch(err => console.log(err));
   };
+
 
   getTransactions = () => {
     API.getTransactionHistory()
@@ -66,6 +68,7 @@ export default class Profile extends Component {
     const focus = 'left';
     let { withdrawals, deposits } = this.state;
     let data = withdrawals.concat(deposits);
+    
     return (
       <React.Fragment>
         <Navbar page="Profile" />
@@ -75,7 +78,7 @@ export default class Profile extends Component {
                 <div className="label">
                   <label>Hello, </label>
                 </div>
-                <span className="span-user">{this.state.creator.toUpperCase()}</span>
+                <span className="span-user">{this.userName} {this.state.creator.toUpperCase()}</span>
               </div>
               {/* <div>
                 <div className="label">
