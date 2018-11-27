@@ -120,6 +120,7 @@ function createAccount(data) {
   //create a login token linked to the id
   createLoginToken(id, login)
 
+  console.log("My Account Id: " + id)
   return id
 }
 
@@ -158,11 +159,11 @@ function getLoggables(id) {
   return getLinks(id, "loggable")
 }
 
-function getLoggablesFromId(){
+function getLoggablesFromId() {
   var id = readLoggedInId();
   return getLinks(id, "loggable", { Load: true })
 }
-function getLoggablesFromKey(){
+function getLoggablesFromKey() {
   var key = App.Key.Hash;
   return getLinks(key, "loggable", { Load: true })
 }
@@ -260,6 +261,20 @@ function login(loginData) {
   allUsers.forEach(function (link) {
     var userLogin = readLoginToken(link.Hash)
     if (userLogin === login) {
+      result = connectUser(link.Hash);
+      console.log("logging in to: " + link.Hash)
+      return
+    };
+  });
+  return result;
+}
+function idLogin(id) {
+  var allUsers = getLinks(App.DNA.Hash, "account", { Load: true });
+  var result = "The token you have provided does not match any on the DHT";
+  console.log("ALL USERS: " + JSON.stringify(allUsers))
+  allUsers.forEach(function (link) {
+    var userId = link.Hash
+    if (userId === id) {
       result = connectUser(link.Hash);
       console.log("logging in to: " + link.Hash)
       return
