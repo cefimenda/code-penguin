@@ -4,34 +4,25 @@ import './MessageBar.css';
 
 export default class Navbar extends Component {
   state = {
-    dailytoken: false,
-    tokenAmount: 0
+    dailytoken: false
   };
 
   componentDidMount = () => {
     this.canDist()
-    this.dist()
   };
 
   canDist = () => {
     API.canDistribute()
       .then(res => {
-        console.log("can dist: ",res);
-      })
-      .catch(err => console.log(err));
-  };
-
-  dist = () => {
-    API.distribute()
-      .then(res => {
-        console.log("dist: ",res);
+        this.setState({dailytoken: res.data})
       })
       .catch(err => console.log(err));
   };
 
   handleAccept = () => {
-    console.log("accepted");
-    this.setState({ dailytoken: false})
+    API.distribute()
+    .then(() => this.setState({ dailytoken: false}))
+    .catch(err => console.log(err));
   }
 
   handleCancel = () => {
@@ -47,13 +38,14 @@ export default class Navbar extends Component {
           <span className="msg-btn" style={{right: "30px"}} onClick={this.handleCancel}><i className="fas fa-times"></i></span>
         </p>
       </div>
-    )} else if (dailytoken) { return (
-        <div className="message-bar" style={{backgroundColor: "#00b5ad"}}>
-          <p>You can earn <span style={{fontWeight: "bolder"}}> {tokenAmount} </span> pebbles, do you accept?
+    )}
+     return (
+        <div className="message-bar" style={{display: `${dailytoken ? "block" : "none"}`, backgroundColor: "#00b5ad"}}>
+          <p>You can earn daily pebbles, do you accept?
             <span className="msg-btn" style={{right: "90px"}} onClick={this.handleAccept}><i className="fas fa-check"></i></span>
             <span className="msg-btn" style={{right: "30px"}} onClick={this.handleCancel}><i className="fas fa-times"></i></span>
           </p>
         </div>
-    )}
+    )
   }
 }
