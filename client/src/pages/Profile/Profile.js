@@ -22,10 +22,11 @@ export default class Profile extends Component {
   };
 
   getHash = () => {
+    const getUserName = sessionStorage.getItem('user');
     API.getUser()
       .then(res => {
         this.setState({
-          creator: res.data.hash,
+          creator: `${getUserName ==="" ? res.data.hash : getUserName}`,
           pebbles: res.data.pebbles
         });
       })

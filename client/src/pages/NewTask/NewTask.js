@@ -14,6 +14,8 @@ export default class Profile extends Component {
         title: "",
         details: "",
         tags: "",
+        showDiv: false,
+        message: ""
     }
     
     componentDidMount = () => {
@@ -51,27 +53,39 @@ export default class Profile extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        let { pebbles, title, details, tags } = this.state
+        let { pebbles, title, details, tags, maxPebbles } = this.state
         pebbles = parseInt(pebbles)
 
-        if (pebbles !== "" && title !== "" && details !== "" && tags !== "") {
-            if (pebbles <= parseInt(this.state.maxPebbles) && pebbles >= 1 && Number.isInteger(pebbles)) {
-                let tagarr = tags.split("#")
-                tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
-                const task = { pebbles, title, details, tags: tagarr }
-                this.createTask(task);
-            } else {
-                alert(`Pebble needs to be an interger between 1 - ${this.state.maxPebbles}`)
-            }
+        if ( maxPebbles === 0) {
+            this.setState({ showDiv: true, message: "You have 0 pebbles"})
         } else {
-            alert("Please enter all field")
+            if (pebbles !== "" && title !== "" && details !== "" && tags !== "") {
+                if (pebbles <= parseInt(maxPebbles) && pebbles >= 1 && Number.isInteger(pebbles)) {
+                    let tagarr = tags.split("#")
+                    tagarr = tagarr.filter((entry) => { return entry.trim() !== '' }).map(e => e.trim().replace(/[,]/g, ""))
+                    const task = { pebbles, title, details, tags: tagarr }
+                    this.createTask(task);
+                } else {
+                    this.setState({ showDiv: true, message: `Pebble needs to be an interger between 1 - ${maxPebbles}`})
+                }
+            } else {
+                this.setState({ showDiv: true, message: "Please enter all field"})
+            }
         }
+        
+    }
+
+    handleCancel = () => {
+        this.setState({ showDiv: false})
     }
 
     render() {
         return (
             <React.Fragment>
                 <Navbar />
+                <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
+                    {this.state.message}
+                </MessageBar>
                 <Container bgcolor="rgb(32,32,32)">
                     <Task>
                         <div className="task-padd">

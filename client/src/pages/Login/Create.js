@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+import MessageBar from '../../components/MessageBar';
 import API from '../../utils/API';
 
 export default class Task extends Component {
@@ -7,7 +8,9 @@ export default class Task extends Component {
         username: "",
         email: "",
         password: "",
-        repassword: ""
+        repassword: "",
+        showDiv: false,
+        message: ""
     }
     componentDidMount(){
         this.loginInput.focus();
@@ -42,13 +45,20 @@ export default class Task extends Component {
                     console.log(err);
                 })
         } else {
-            alert("The passwords do not match")
+            this.setState({ showDiv: true, message: "The passwords do not match"})
         }
+    }
+
+    handleCancel = () => {
+        this.setState({ showDiv: false})
     }
 
     render() {
         return (
         <React.Fragment>
+            <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
+                {this.state.message}
+            </MessageBar>
             <h1>Create New Account</h1>
             <form>
                 <div className="login-user-div login-create-div">

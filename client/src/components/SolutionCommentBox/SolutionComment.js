@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
+import API from '../../utils/API';
 import './SolutionComment.css';
 
 export default class SolutionComment extends Component {
+    state = {
+        user: `${this.props.creatorHash}`
+    }
     handleReward = () => {
         this.props.reward(this.props.solHash)
     }
 
+    componentDidMount = () => {
+        API.getUser(this.props.creatorHash)
+            .then(res=>{
+                this.setState({user: res.data.userdata.username})
+            })
+            .catch(err=>{
+                console.log(err);
+            });
+    }
+
     render() {
+        const {solution, isCreator, rewardHash, solutionInfo, solHash, commentText} = this.props
         return (
             <React.Fragment>
-                {this.props.solution ? 
+                {solution ? 
                     <div className="show-div">
-                        {this.props.isCreator && this.props.rewardHash === "" ? <button onClick={this.handleReward}><i className="fas fa-check"></i></button> : ""}
-                        <a className="solution-link" href={this.props.solutionInfo.link.includes("http") ? this.props.solutionInfo.link : `https://${this.props.solutionInfo.link}`} target="_blank" rel="noopener noreferrer" >
-                            <li className= {this.props.solHash === this.props.rewardHash ? "reward-box" : "solution-box" }> 
-                                <span>{this.props.solutionInfo.text}</span>
+                        {isCreator && rewardHash === "" ? <button onClick={this.handleReward}><i className="fas fa-check"></i></button> : ""}
+                        <a className="solution-link" href={solutionInfo.link.includes("http") ? solutionInfo.link : `https://${solutionInfo.link}`} target="_blank" rel="noopener noreferrer" >
+                            <li className= {solHash === rewardHash ? "reward-box" : "solution-box" }> 
+                                <span>{solutionInfo.text}</span>
+                                <p className="sol-user">--Creator: {this.state.user}</p>
                             </li>
                         </a>
                     </div>
                      : 
                     <li className="comment-box"> 
-                        {this.props.commentText} 
+                        {commentText} 
                     </li>
                 }
             </React.Fragment>
