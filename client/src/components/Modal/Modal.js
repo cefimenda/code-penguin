@@ -8,25 +8,26 @@ class ModalExampleDimmer extends Component {
     email: ''
   };
 
-  show = dimmer => () => 
-    this.setState({ 
-      dimmer, open: true 
+  show = dimmer => () =>
+    this.setState({
+      dimmer,
+      open: true
     });
 
-  close = () => 
-    this.setState({ 
-      open: false 
+  close = () =>
+    this.setState({
+      open: false
     });
 
   handleChange = e => {
-    const {name, value} = e.target
-    this.setState({ [name]: value })
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = e => {
-    e.preventDefault()
-    this.close()
-  }
+    e.preventDefault();
+    this.close();
+  };
 
   render() {
     const { open, dimmer } = this.state;
@@ -38,20 +39,44 @@ class ModalExampleDimmer extends Component {
           <i className="user-edit fas fa-user-edit" />
         </Button>
 
-        <Modal dimmer={dimmer} open={open} onClose={this.close}>
-          <Modal.Header>Update Your User Name</Modal.Header>
+        <Modal
+          dimmer={dimmer}
+          open={open}
+          onClose={this.close}
+          style={{ width: '50%', textAlign: 'center' }}
+        >
+          <Modal.Header style={{ backgroundColor: '#00b5ad', color: 'white', letterSpacing: '2px' }}>Update Your User Name</Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Header>Current User Name: {creator.toUpperCase()}</Header>
+              <Header style={{ letterSpacing: '2px' }}>Current User Name: </Header>
               <input
+                style={{
+                  border: 'none',
+                  padding: '5px',
+                  borderBottom: '2px solid #00b5ad',
+                  borderRadius: '5px',
+                  letterSpacing: '2px',
+                  width: '200px',
+                  marginBottom: '10px',
+                  outline: 'none'
+                }}
                 type="text"
                 name="creator"
                 value={this.state.creator}
                 placeholder={this.props.creator}
                 onChange={this.handleChange}
               />
-              <Header>Current Email Address: {creator.toUpperCase()}</Header>
+              <Header style={{ letterSpacing: '2px' }}>Current Email Address: </Header>
               <input
+                style={{
+                  border: 'none',
+                  padding: '5px',
+                  borderRadius: '5px',
+                  borderBottom: '2px solid #00b5ad',
+                  letterSpacing: '2px',
+                  width: '200px',
+                  outline: 'none'
+                }}
                 type="text"
                 name="email"
                 value={this.state.email}
@@ -61,7 +86,13 @@ class ModalExampleDimmer extends Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions className="submit-btn">
-            <Button icon="checkmark" labelPosition="right" content="Submit" onClick={this.handleSubmit} />
+            <Button
+              style={{ backgroundColor: '#00b5ad', color: 'white' }}
+              icon="checkmark"
+              labelPosition="right"
+              content="Save"
+              onClick={this.handleSubmit}
+            />
           </Modal.Actions>
         </Modal>
       </div>
