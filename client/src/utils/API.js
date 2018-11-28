@@ -6,7 +6,7 @@ export default {
   /* Get current user object, has hash and pebbles */
   getUser: function (hash) {
     if(hash){
-      return axios.post("fn/users/getUserData", "\"" + hash + "\"");
+      return axios.post("/fn/users/getUser", "\"" + hash + "\"");
     }
     return axios.post("/fn/users/getUser");
   },
