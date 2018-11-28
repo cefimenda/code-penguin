@@ -59,10 +59,12 @@ export default class Task extends Component {
   };
 
   getCreatorUser = creatorHash => {
+    console.log(creatorHash);
+    
     API.getUser(creatorHash)
       .then(res=>{
         console.log(res);
-          this.setState({creatorUser: res.data.userdata.username})
+        // this.setState({creatorUser: res.data.userdata.username})
       })
       .catch(err => console.log(err));
   }
@@ -179,9 +181,8 @@ export default class Task extends Component {
 
   render() {
     var { task, user, rewardHash, toggler } = this.state;
-    if (task.creator !== "") {
-      console.log(task.creator);
-      
+    if (user !== "") {
+      this.getCreatorUser(user)
     }
     return (
       <React.Fragment>
