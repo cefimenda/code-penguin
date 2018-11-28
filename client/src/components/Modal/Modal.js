@@ -21,7 +21,9 @@ class ModalExampleDimmer extends Component {
 
   handleChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({
+      [name]: value
+    });
   };
 
   handleSubmit = e => {
@@ -43,12 +45,29 @@ class ModalExampleDimmer extends Component {
           dimmer={dimmer}
           open={open}
           onClose={this.close}
-          style={{ width: '50%', textAlign: 'center' }}
+          style={{
+            width: '50%',
+            textAlign: 'center'
+          }}
         >
-          <Modal.Header style={{ backgroundColor: '#00b5ad', color: 'white', letterSpacing: '2px' }}>Update Your User Name</Modal.Header>
+          <Modal.Header
+            style={{
+              backgroundColor: '#00b5ad',
+              color: 'white',
+              letterSpacing: '3px'
+            }}
+          >
+            Update Your Profile
+          </Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Header style={{ letterSpacing: '2px' }}>Current User Name: </Header>
+              <Header
+                style={{
+                  letterSpacing: '2px'
+                }}
+              >
+                Current Username:
+              </Header>
               <input
                 style={{
                   border: 'none',
@@ -66,7 +85,13 @@ class ModalExampleDimmer extends Component {
                 placeholder={this.props.creator}
                 onChange={this.handleChange}
               />
-              <Header style={{ letterSpacing: '2px' }}>Current Email Address: </Header>
+              <Header
+                style={{
+                  letterSpacing: '2px'
+                }}
+              >
+                Current Email Address:
+              </Header>
               <input
                 style={{
                   border: 'none',
@@ -87,7 +112,10 @@ class ModalExampleDimmer extends Component {
           </Modal.Content>
           <Modal.Actions className="submit-btn">
             <Button
-              style={{ backgroundColor: '#00b5ad', color: 'white' }}
+              style={{
+                backgroundColor: '#00b5ad',
+                color: 'white'
+              }}
               icon="checkmark"
               labelPosition="right"
               content="Save"
