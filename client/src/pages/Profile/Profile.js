@@ -100,7 +100,7 @@ export default class Profile extends Component {
               Total Solution Submitions: <span>{totalSol}</span>
             </p>
             <p>
-              Total Task Created: <span>{totalTask}</span>
+              Total Tasks Created: <span>{totalTask}</span>
             </p>
           </div>
         </HoverBox>
