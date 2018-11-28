@@ -27,9 +27,9 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
-    this.getUsername()
     this.getHash()
     this.canDist()
+    this.getUsername()
   };
 
   canDist = () => {
@@ -62,30 +62,14 @@ export default class Navbar extends Component {
       if (this.state.username === "" || this.state.username === null || this.state.username === "null") {
         this.setState({ loggedIn: false })
       }
-    }, 100);
+    }, 5);
   }
 
   getHash = () => {
     API.getUser()
       .then(res => {
-        // console.log(res);
         this.setState({ userPebbles: res.data.pebbles });
-        // let { github } = res.data.userdata[0].Entry || null;
         this.setState({ creator: res.data.hash });
-
-        // this.setState({ creator: github || res.data.hash });
-        // if (github) {
-        //   this.setState({
-        //     hasGithub: true
-        //   });
-        //   API.getGithub(github)
-        //     .then(res => {
-        //       this.setState({
-        //         avatar: res.data.avatar_url
-        //       });
-        //     })
-        //     .catch(err => {}/*console.log(err)*/);
-        // }
       })
       .catch(err => console.log(err));
   };

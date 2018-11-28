@@ -20,6 +20,7 @@ export default class Task extends Component {
       creator: '',
       time: ''
     },
+    creatorUser: '',
     user: '',
     maxPebbles: '',
     pebbles: '',
@@ -39,7 +40,7 @@ export default class Task extends Component {
   };
 
   componentDidMount = () => {
-    this.getInfo();
+    this.getInfo()
     this.getSolutionRewardInfo();
     this.getUserHash();
   };
@@ -56,6 +57,15 @@ export default class Task extends Component {
         console.log(err);
       });
   };
+
+  getCreatorUser = creatorHash => {
+    API.getUser(creatorHash)
+      .then(res=>{
+        console.log(res);
+          this.setState({creatorUser: res.data.userdata.username})
+      })
+      .catch(err => console.log(err));
+  }
 
   getSolutionRewardInfo = () => {
     API.rewardedSolution(this.props.match.params.hash)
@@ -169,6 +179,10 @@ export default class Task extends Component {
 
   render() {
     var { task, user, rewardHash, toggler } = this.state;
+    if (task.creator !== "") {
+      console.log(task.creator);
+      
+    }
     return (
       <React.Fragment>
         <Navbar />

@@ -1,3 +1,77 @@
+.ui.basic.modal{
+  border: 2px solid #333;
+  background-color: #222;
+  padding: 10px 20px;
+}
+
+.modal-or {
+  text-align: center;
+  padding: 10px 0 5px 0;
+  letter-spacing: 5px;
+}
+
+.modal-label {
+  margin-bottom: 2px;
+  color: #ccc;
+  font-size: 12px;
+  letter-spacing: .5px;
+}
+
+.ui.small.modal>.header:not(.ui) {
+  text-align: center;
+  border-bottom: 2px solid #fff;
+  margin: 0 30px;
+}
+
+/* modal inputs */
+.ui.modal>.content>.description input{
+  width: 45%;
+  margin-left: 50px;
+  margin-bottom: 20px;
+  padding: 2px 5px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 5px;
+  letter-spacing: 1px;
+}
+
+.ui.modal>.content>.description input:focus {
+  width: 70%;
+  outline: none;
+  border-bottom: 2px solid #00b5ad;
+  border-radius: 0px;
+}
+
+/* modal buttons */
+.modal-submit-btn,
+.modal-submit-btn-close {
+  color: #00b5ad;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 10px 8px 20px;
+  letter-spacing: .8px;
+  font-weight: bold;
+}
+
+.modal-submit-btn-close {
+  color: #c55959;
+}
+
+.modal-submit-btn i,
+.modal-submit-btn-close i {
+  padding-left: 5px;
+}
+
+.modal-submit-btn:hover,
+.modal-submit-btn-close:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
 .submit-btn.ui.icon.button {
   background-color: teal !important;
 }
