@@ -27,31 +27,101 @@ class ModalExampleDimmer extends Component {
     this.props.modalfunction()
   }
 
+
   render() {
     const { creator, modalOpen, modalfunction } = this.props;
     const { userusername, useremail, password, repassword } = this.state
 
     return (
-      <Modal dimmer='blurring' open={modalOpen} onClose={modalfunction}  basic size='small'>
-        <Modal.Header>Update User Informtion</Modal.Header>
-        <Modal.Content>
-          <Modal.Description>
-            <p className="modal-label">Edit Username:</p>
-            <input type="text" name="userusername" value={userusername} placeholder={creator} onChange={this.handleChange} /> <br />
-            <p className="modal-or center">--------------- or ---------------</p>
-            <p className="modal-label">Edit Email:</p>
-            <input type="text" name="useremail" value={useremail} placeholder={`need to replace with user current email`} onChange={this.handleChange} /> <br />
-            <p className="modal-or center">--------------- or ---------------</p>
-            <p className="modal-label">Edit Password:</p>
-            <input type="password" name="password" value={password} placeholder="please enter new password here" onChange={this.handleChange} /> <br />
-            <input type="password" name="repassword" value={repassword} placeholder="please re-enter new password here" onChange={this.handleChange} /> <br />
-          </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions className="submit-btn">
-        <button className="ui right modal-submit-btn-close" onClick={modalfunction}>Close <i aria-hidden="true" className="remove icon"></i></button>
-        <button className="ui right modal-submit-btn" onClick={this.handleSubmit}>Submit <i aria-hidden="true" className="checkmark icon"></i></button>
-        </Modal.Actions>
-      </Modal>
+
+      <div>
+        <Button className="ui button edit-btn" onClick={this.show('blurring')}>
+          <i className="user-edit fas fa-user-edit" />
+        </Button>
+
+        <Modal
+          dimmer={dimmer}
+          open={open}
+          onClose={this.close}
+          style={{
+            width: '50%',
+            textAlign: 'center'
+          }}
+        >
+          <Modal.Header
+            style={{
+              backgroundColor: '#00b5ad',
+              color: 'white',
+              letterSpacing: '3px'
+            }}
+          >
+            Update Your Profile
+          </Modal.Header>
+          <Modal.Content>
+            <Modal.Description>
+              <Header
+                style={{
+                  letterSpacing: '2px'
+                }}
+              >
+                Current Username:
+              </Header>
+              <input
+                style={{
+                  border: 'none',
+                  padding: '5px',
+                  borderBottom: '2px solid #00b5ad',
+                  borderRadius: '5px',
+                  letterSpacing: '2px',
+                  width: '200px',
+                  marginBottom: '10px',
+                  outline: 'none'
+                }}
+                type="text"
+                name="creator"
+                value={this.state.creator}
+                placeholder={this.props.creator}
+                onChange={this.handleChange}
+              />
+              <Header
+                style={{
+                  letterSpacing: '2px'
+                }}
+              >
+                Current Email Address:
+              </Header>
+              <input
+                style={{
+                  border: 'none',
+                  padding: '5px',
+                  borderRadius: '5px',
+                  borderBottom: '2px solid #00b5ad',
+                  letterSpacing: '2px',
+                  width: '200px',
+                  outline: 'none'
+                }}
+                type="text"
+                name="email"
+                value={this.state.email}
+                // placeholder={this.props.creator}
+                onChange={this.handleChange}
+              />
+            </Modal.Description>
+          </Modal.Content>
+          <Modal.Actions className="submit-btn">
+            <Button
+              style={{
+                backgroundColor: '#00b5ad',
+                color: 'white'
+              }}
+              icon="checkmark"
+              labelPosition="right"
+              content="Save"
+              onClick={this.handleSubmit}
+            />
+          </Modal.Actions>
+        </Modal>
+      </div>
     );
   }
 }
