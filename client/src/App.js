@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile2";
 import Marketplace from "./pages/Marketplace";
 import Task from "./pages/Task";
 import NewTask from "./pages/NewTask"

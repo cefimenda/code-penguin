@@ -1,61 +1,64 @@
 .toggle-div {
   width: 100%;
-  margin-top: 50px;
-  height: 70vh;
-  background-color: #383838;
-  box-shadow: 20px 20px 30px #05050596;
+  padding: 5px;
 }
 
 .show-toggle-div {
-  width: 80%;
-  margin: 0 auto;
-  height: 50vh;
-  padding: 20px;
-  background-color: #222;
-  border: 1px solid #222;
-  overflow: auto;
-}
-
-.show-toggle-div p {
-  color: teal;
+  margin-top: 30px;
 }
 
 .git-task-div {
   z-index: 99;
-  padding: 20px;
   text-align: center;
 }
 
 .git-task-div button {
   letter-spacing: 2px;
+  width: 100px;
+}
+
+/* solution task li */
+.solution-ul li {
+  background-color: #946c00;
+  border: 7px solid #6b4f00;
+  padding: 5px 10px;
+  margin: 15px 0;
+}
+
+.task-ul li {
+  background-color: #00646b;
+  border: 7px solid #00474d;
+  padding: 5px 10px;
+  margin: 15px 0;
 }
 
 .list-titles {
   list-style: none;
   padding: 5px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
 
-.list-titles a {
-  background-color: #ffd700;
-  border: 7px solid #c49b2b;
-  padding: 5px;
-  border-radius: 2px;
-  color: #31b4ae;
+.solution-ul a,
+.task-ul a {
+  color: #fff;
 }
 
-.list-titles:hover a {
-  background-color: #d8b803;
+.solution-ul li:hover {
+  background-color: #6b4f00;
+}
+
+.task-ul li:hover {
+  background-color: #00474d;
 }
 
 .li-text {
-  color: #212f33;
+  margin-bottom: 0px;
 }
 
-.task-text {
-  background-color: #00646b;
-  border: 7px solid #00474d;
-  margin: 10px;
+.li-text-right {
+  color: #fff;
+  text-align: right;
+  font-size: 10px;
 }

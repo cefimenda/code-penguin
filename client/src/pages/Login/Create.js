@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Login.css';
-import MessageBar from '../../components/MessageBar';
 import API from '../../utils/API';
 
 export default class Task extends Component {
@@ -8,9 +7,7 @@ export default class Task extends Component {
         username: "",
         email: "",
         password: "",
-        repassword: "",
-        showDiv: false,
-        message: ""
+        repassword: ""
     }
     componentDidMount(){
         this.loginInput.focus();
@@ -20,43 +17,44 @@ export default class Task extends Component {
         this.props.changePage("Main")
     }
 
+    handleSubmit = event => {
+        event.preventDefault()
+        const { username, email, password, repassword} = this.state
+        if (username.length >= 6) {
+            if (email.includes('@')) {
+                if (password === repassword && password.length > 0) {
+                    API.createAccount({
+                        username,
+                        credentials: {
+                            email,
+                            password
+                        }
+                    })
+                        .then(res=>{
+                            this.props.getUser(username)
+                            // console.log(res);
+                            // this.props.redirect();
+                        })
+                        .catch(err => console.log(err));
+                } else {
+                    this.props.changeMsg("The passwords do not match or is empty")
+                }
+            } else {
+                this.props.changeMsg("Please enter real email")
+            }
+        } else {
+            this.props.changeMsg("Please enter a username with more than 6 characters")
+        }
+    }
+
     handleChange = event => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
-    handleSubmit = event => {
-        event.preventDefault()
-        const { username, email, password, repassword} = this.state
-        if (password === repassword) {
-            API.createAccount({
-                username,
-                credentials: {
-                    email,
-                    password
-                }
-            })
-                .then(res=>{
-                    this.props.getUser(username)
-                    // console.log(res);
-                    // this.props.redirect();
-                })
-                .catch(err => console.log(err));
-        } else {
-            this.setState({ showDiv: true, message: "The passwords do not match"})
-        }
-    }
-
-    handleCancel = () => {
-        this.setState({ showDiv: false})
-    }
-
     render() {
         return (
         <React.Fragment>
-            <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
-                {this.state.message}
-            </MessageBar>
             <h1>Create New Account</h1>
             <form>
                 <div className="login-user-div login-create-div">
@@ -65,12 +63,13 @@ export default class Task extends Component {
                     <input type="password" name="password" onChange={this.handleChange} placeholder="Password" required />
                     <input type="password" name="repassword" onChange={this.handleChange} placeholder="Password again" required />
                     <button onClick={this.handleSubmit} >Submit</button>
-                </div>
-                <div className="login-btn-div" style={{position: "absolute", bottom: "20px", left: "30px"}}>
-                    <button className="back-btn" onClick={this.toMain}><i className="fas fa-arrow-left"></i></button>
+                    <p className="notice">*Your login credentials are never saved to the chain.</p>
                 </div>
             </form>
-            <p className="notice">Your login credentials are never saved to the chain.</p>
+            <div className="login-btn-div" style={{position: "absolute", bottom: "20px", left: "30px"}}>
+                <button className="back-btn" onClick={this.toMain}><i className="fas fa-arrow-left"></i></button>
+            </div>
+            
         </React.Fragment>
         );
     }

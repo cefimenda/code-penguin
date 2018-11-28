@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Header, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
+import "./Modal.css"
 
 class ModalExampleDimmer extends Component {
   state = {
-    open: false,
-    creator: '',
-    email: ''
+    userusername: '',
+    useremail: '',
+    password: '',
+    repassword: ''
   };
 
   show = dimmer => () =>
@@ -32,8 +34,8 @@ class ModalExampleDimmer extends Component {
   };
 
   render() {
-    const { open, dimmer } = this.state;
-    const { creator } = this.props;
+    const { creator, modalOpen, modalfunction } = this.props;
+    const { userusername, useremail, password, repassword } = this.state
 
     return (
       <div>

@@ -11,7 +11,7 @@ export default class Task extends Component {
     componentDidMount = () => {
         API.getUsernames()
             .then(res=>{
-                // console.log(res.data);
+                // console.log(res);
                 this.setState({
                     users: res.data
                 });
