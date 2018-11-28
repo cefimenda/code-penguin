@@ -4,7 +4,7 @@ import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
 import GitTask from '../../components/GitTask';
-import Modal from '../../components/Modal'
+import Modal from '../../components/Modal2'
 import API from '../../utils/API';
 import './Profile.css';
 
