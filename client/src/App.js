@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile2";
 import Marketplace from "./pages/Marketplace";
 import Task from "./pages/Task";
 import NewTask from "./pages/NewTask"
@@ -11,7 +11,6 @@ import API from "./utils/API";
 import './App.css';
 
 export default class App extends Component {
-
     login = user => {
         sessionStorage.setItem('user', user);
     }
@@ -19,7 +18,6 @@ export default class App extends Component {
     logout = () => {
         API.logout()
             .then(res=>{
-                console.log(res);
                 sessionStorage.clear();
             })
             .catch(err=>{
@@ -28,18 +26,10 @@ export default class App extends Component {
     }
 
     render() {
-        var data = sessionStorage.getItem('user');
-        if (data === "") {return (
-            <Router>
-                <Switch>
-                    <Route path="/" render={() => <Login getUser={this.login} logout={this.logout}/>} />
-                </Switch>
-            </Router>)
-        }
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Marketplace} />
+                    <Route exact path="/" render={() => <Redirect to="/marketplace" /> } />
                     <Route path="/landing" component={Landing} />
                     <Route path="/profile" render={() => <Profile /> } />
                     <Route path="/marketplace" component={Marketplace} />

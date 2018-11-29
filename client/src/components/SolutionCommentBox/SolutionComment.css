@@ -31,14 +31,20 @@
     transition: all 300ms ease-in-out;
 }
 
-.solution-link {
+.solution-link,
+.sol-user {
     color: #fff;
 }
 
-.solution-link:hover {
+.solution-link:hover .solution-box span{
     color: #fff;
     text-decoration: underline;
     font-weight: bold;
+}
+
+.sol-user {
+    font-size: 10px;
+    text-align: right;
 }
 
 .comment-box {
@@ -56,10 +62,10 @@
     background-color: #5c1f1f;
 }
 
-.solution-link:hover .solution-box{
+.solution-link:hover .solution-box {
     background-color: #6b4f00;
 }
 
-.solution-link:hover .reward-box {
+.solution-link:hover .reward-box  {
     background-color: #3b1616;
 }

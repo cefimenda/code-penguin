@@ -1,6 +1,7 @@
 .cardholder {
     margin-top: 80px;
     width: 100%;
+    min-width: 500px;
     height: 360px;
     padding: 10px;
 }

@@ -29,6 +29,14 @@ td, th {
   text-align: center;
 }
 
+.previous:hover {
+  cursor: pointer;
+}
+
+.next:hover {
+  cursor: pointer;
+}
+
 .previous {
   float: left;
 }
