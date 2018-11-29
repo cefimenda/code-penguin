@@ -17,24 +17,42 @@ class ModalExampleDimmer extends Component {
     const { name, value } = e.target;
     if (name === 'userusername') {
       this.setState({ userusername: value, useremail: '', password: '', repassword: '' });
-    } else if (name === 'useremail') {
-      this.setState({ userusername: '', useremail: value, password: '', repassword: '' });
-    } else {
-      this.setState({ userusername: '', useremail: '', [name]: value });
+    }  else {
+      this.setState({ userusername: '', [name]: value });
     }
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    if (this.state.userusername !== '' && this.state.userusername) {
-      await API.createUserData({
-        'type': 'username', 'data': this.state.userusername
-      });
+    const { userusername, useremail, password, repassword } = this.state
+    this.setState({ showerr: false})
+    if ( userusername === '' && useremail === '' && password === '') {
+      this.setState({ showerr: true, errmsg: "Please add text"})
+    } else {
+      if (userusername !== '' && userusername) {
+        await API.createUserData({
+          'type': 'username', 'data': userusername
+        });
+        this.props.modalfunction();
+      } else {
+        if (useremail !== '' && password !== '' && useremail && password) {
+          if (useremail.includes('@') && useremail.includes('.')) {
+            if (password === repassword) {
+              await API.updateCredentials({ 'email': useremail, 'password': password });
+              this.props.modalfunction();
+            } else {
+              this.setState({ showerr: true, errmsg: "Your passwords do not match"})
+            }
+          } else {
+            this.setState({ showerr: true, errmsg: "Must be an email"})
+          }
+        } else {
+          this.setState({ showerr: true, errmsg: "Must add email and password to make this change"})
+        }
+        
+      }
     }
-    if (this.state.useremail !== '' && this.state.password !== '' && this.state.useremail && this.state.password && this.state.password === this.state.repassword) {
-      await API.updateCredentials({ 'email': this.state.useremail, 'password': this.state.password });
-    }
-    this.props.modalfunction();
+
   };
 
   render() {
@@ -62,7 +80,7 @@ class ModalExampleDimmer extends Component {
             />{' '}
             <br />
             <p className="modal-or center">--------------- or ---------------</p>
-            <p className="modal-label">Edit Email:</p>
+            <p className="modal-label">Edit Email and Password:</p>
             <input
               type="text"
               name="useremail"
@@ -71,8 +89,6 @@ class ModalExampleDimmer extends Component {
               onChange={this.handleChange}
             />{' '}
             <br />
-            <p className="modal-or center">--------------- or ---------------</p>
-            <p className="modal-label">Edit Password:</p>
             <input
               type="password"
               name="password"
@@ -92,7 +108,7 @@ class ModalExampleDimmer extends Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions className="submit-btn">
-          {showerr ? <p className="modal-err">{errmsg}</p> : ""}
+          {showerr ? <p className="modal-err">* {errmsg}</p> : ""}
           <button className="ui right modal-submit-btn-close" onClick={modalfunction}>
             Close <i aria-hidden="true" className="remove icon" />
           </button>
