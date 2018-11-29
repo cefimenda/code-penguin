@@ -95,7 +95,10 @@ export default {
   },
 
   /* Get all tasks associated with user on the chain */
-  getMyTasks: function () {
+  getMyTasks: function (hash) {
+    if(hash){
+      return axios.post("/fn/tasks/readMyTasks", "\"" + hash + "\"");
+    }
     return axios.post("/fn/tasks/readMyTasks");
   },
 
