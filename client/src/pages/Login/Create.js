@@ -21,7 +21,7 @@ export default class Task extends Component {
         event.preventDefault()
         const { username, email, password, repassword} = this.state
         if (username.length >= 3) {
-            if (email.includes('@')) {
+            if (email.includes('@') && email.includes('.')) {
                 if (password === repassword && password.length > 0) {
                     API.createAccount({
                         username,
