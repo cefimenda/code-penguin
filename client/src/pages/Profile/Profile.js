@@ -58,7 +58,6 @@ export default class Profile extends Component {
         .then(this.setTransactions)
         .catch(err => console.log(err));
     } else {
-      console.log(this.props.match.params.user);
       API.getTransactionHistory(this.props.match.params.user)
         .then(this.setTransactions)
         .catch(err => console.log(err));
@@ -94,7 +93,7 @@ export default class Profile extends Component {
 
     return (
       <React.Fragment>
-        <Navbar page="Profile" changeUser={creator}/>
+        <Navbar page="Profile" changeUser={this.props.otherUser === "isUser" ? creator : undefined}/>
         <HoverBox side={focus}>
           {this.props.otherUser === "isUser" ? <p className="user-edit">
             <i className="fas fa-user-edit" onClick={this.handleModal} />
