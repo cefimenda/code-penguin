@@ -4,10 +4,10 @@ import './Table.css';
 export default class Table extends Component {
   state = {
     start: 0,
-    finish: 2,
+    finish: 10,
     previousItems: false,
     nextItems: true,
-    total: 0
+    itemsPerPage: 10
   };
 
   renderTableInfo = () => {
@@ -22,11 +22,13 @@ export default class Table extends Component {
     });
 
     let total = newWithdrawals.concat(newDeposits);
+    // Sorts in reverse chronological order
+    total.sort((a,b)=>b.Entry.time-a.Entry.time);
 
     total = total.slice(this.state.start, this.state.finish);
     return total.map(data => (
       <tr className="tr-row" key={data.Hash}>
-        <td>{new Date(data.Entry.time).toLocaleDateString()}</td>
+        <td>{new Date(data.Entry.time).toLocaleDateString() + " at " + new Date(data.Entry.time).toLocaleTimeString()}</td>
         <td className="shortHash">
           <a
             href={
@@ -49,21 +51,21 @@ export default class Table extends Component {
 
   onPrevious = () => {
     this.setState(prevState => ({
-      start: prevState.start - 2,
-      finish: prevState.finish - 2
+      start: prevState.start - this.state.itemsPerPage,
+      finish: prevState.finish - this.state.itemsPerPage
     }));
   };
 
   onNext = () => {
     this.setState(prevState => ({
-      start: prevState.start + 2,
-      finish: prevState.finish + 2
+      start: prevState.start + this.state.itemsPerPage,
+      finish: prevState.finish + this.state.itemsPerPage
     }));
   };
 
   render() {
     const { withdrawals, deposits } = this.props;
-    const { start, finish } = this.state;
+    const { start, finish, itemsPerPage } = this.state;
     let total = withdrawals.length + deposits.length;
     return (
       <Fragment>
@@ -77,7 +79,7 @@ export default class Table extends Component {
             {this.renderTableInfo()}
           </tbody>
         </table>
-        <div className="page-num">Page {(finish / 2)}</div>
+        <div className="page-num">Page {(finish / itemsPerPage)}</div>
         <div className="table-buttons">
           {start <= 0 ? null : (
             <button className="previous" onClick={this.onPrevious}>

@@ -64,7 +64,7 @@ export default class Main extends Component {
                     <div className="test-quote">
                         <img src="/images/quotation-open.png" alt="quote mark" />
                         <p className="test-data">{array[i].Entry.text}</p>
-                        <p className="test-author">--{array[i].user}</p>
+                        <p className="test-author">--<a className="test-author-link" href={`/user/${array[i].Entry.creator}`}>{array[i].user}</a></p>
                     </div>
                 </Snippet>
             )

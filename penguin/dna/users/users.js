@@ -95,8 +95,6 @@ function isAuthorized(key) {
 
 /******************
  account:  {
-            username: (username),
-            github: (github oAuth token) - Optional
             credentials:{
                 email:email,
                 password:password

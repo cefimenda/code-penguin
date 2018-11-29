@@ -79,6 +79,14 @@ export default class Marketplace extends Component {
         if (res.data.length === 0) {
           return;
         }
+        res.data.tasks = res.data.tasks.filter(task=>task.Entry.pebbles!=="0");
+        res.data.tasks.sort((a,b)=>b.Entry.time-a.Entry.time);
+        res.data.tasks.forEach(task=>{
+          API.getUser(task.Entry.creator)
+            .then(user=>{
+              task.Entry.creatorName = user.data.userdata.username;
+            })
+        })
         this.setState({ dataList: res.data.tasks, fullList: res.data.tasks });
       })
       .catch(err => console.log(err));
@@ -87,7 +95,7 @@ export default class Marketplace extends Component {
   // Filter Functions
   filterCreator = name => {
     const { fullList } = this.state;
-    const newArray = fullList.filter(cardinfo => cardinfo.Entry.creator.includes(name));
+    const newArray = fullList.filter(cardinfo => cardinfo.Entry.creatorName.includes(name));
     this.setState({ dataList: newArray });
   };
 

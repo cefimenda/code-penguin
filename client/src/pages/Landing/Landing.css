@@ -117,3 +117,10 @@
 	line-height: 50px;
 	letter-spacing: 1px;
 }
+
+.test-author-link{
+    color: #dac25b;
+}
+.test-author-link:hover{
+    color: #baa23b;
+}

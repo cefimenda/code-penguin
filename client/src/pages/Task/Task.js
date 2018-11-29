@@ -51,6 +51,8 @@ export default class Task extends Component {
         let rawdata = res.data;
         let date = new Date(res.data.time);
         rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`;
+        rawdata.solutions.sort((a,b)=>b.Entry.time-a.Entry.time);
+        rawdata.comments.sort((a,b)=>b.Entry.time-a.Entry.time);
         this.setState({ task: rawdata });
         return rawdata.creator
       })
@@ -120,7 +122,7 @@ export default class Task extends Component {
             const link = this.state.newSolutionLink;
             this.addSolution({ task, text, link });
         } else {
-            this.setState({ showDiv: true, message: "Please add a github link"})
+            this.setState({ showDiv: true, message: "Please add a GitHub link"})
         }
     } else if (this.state.toggler === 'comments') {
       const ctext = this.state.newComment;
@@ -169,7 +171,7 @@ export default class Task extends Component {
       this.setState({ showDiv: true, message: "Please enter a description for the solution"})
     } else {
       if (task.creator === user) {
-        this.setState({ showDiv: true, message: "You can not post a sloution to your own task"})
+        this.setState({ showDiv: true, message: "You cannot post a solution to your own task"})
       } else {
         API.createSolution(solution)
         .then(res => {
@@ -184,7 +186,7 @@ export default class Task extends Component {
 
   addComment = comment => {
     if (this.state.newComment === "") {
-      this.setState({ showDiv: true, message: "Ypu can not submit a blank comment"})
+      this.setState({ showDiv: true, message: "You can not submit a blank comment"})
     } else {
       API.createComment(comment)
         .then(res => {
@@ -281,7 +283,7 @@ export default class Task extends Component {
                             solHash={solution.Hash}
                             key={i}
                             isCreator={task.creator === user ? true : false}
-                            creatorHash={solution.creator}
+                            creatorHash={solution.Entry.creator}
                             reward={this.handleReward}
                             rewardHash={this.state.rewardHash}
                           />
@@ -296,7 +298,7 @@ export default class Task extends Component {
                           <SolutionCommentBox
                             solution={false}
                             commentText={comment.Entry.text}
-                            creatorHash={comment.creator}
+                            creatorHash={comment.Entry.creator}
                             key={i}
                           />
                         ))
