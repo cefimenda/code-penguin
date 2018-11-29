@@ -51,6 +51,8 @@ export default class Task extends Component {
         let rawdata = res.data;
         let date = new Date(res.data.time);
         rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`;
+        rawdata.solutions.sort((a,b)=>b.Entry.time-a.Entry.time);
+        rawdata.comments.sort((a,b)=>b.Entry.time-a.Entry.time);
         this.setState({ task: rawdata });
         return rawdata.creator
       })
