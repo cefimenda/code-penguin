@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
+import API from '../../utils/API';
 import './Modal.css';
 
 class ModalExampleDimmer extends Component {
@@ -21,8 +22,16 @@ class ModalExampleDimmer extends Component {
     }
   };
 
-  handleSubmit = e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
+    if (this.state.userusername !== '' && this.state.userusername) {
+      await API.createUserData({
+        'type': 'username', 'data': this.state.userusername
+      });
+    }
+    if (this.state.useremail !== '' && this.state.password !== '' && this.state.useremail && this.state.password && this.state.password === this.state.repassword) {
+      await API.updateCredentials({ 'email': this.state.useremail, 'password': this.state.password });
+    }
     this.props.modalfunction();
   };
 
@@ -33,10 +42,10 @@ class ModalExampleDimmer extends Component {
     return (
       <Modal dimmer="blurring" open={modalOpen} onClose={modalfunction} basic size="small">
         <Modal.Header
-        style={{
-          color: 'white',
-          letterSpacing: '3px'
-        }}
+          style={{
+            color: 'white',
+            letterSpacing: '3px'
+          }}
         >Update Profile Information
         </Modal.Header>
         <Modal.Content>

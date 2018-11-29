@@ -27,27 +27,26 @@ export default class Profile extends Component {
   };
 
   getHash = () => {
-    const getUserName = sessionStorage.getItem('user');
     if (this.props.otherUser === "isUser") {
       API.getUser()
-      .then(res => {
-        this.setState({
-          creator: `${getUserName === '' ? res.data.userdata.username : getUserName}`,
-          pebbles: res.data.pebbles
-        });
-      })
-      .catch(err => console.log(err));
+        .then(res => {
+          this.setState({
+            creator: res.data.userdata.username,
+            pebbles: res.data.pebbles
+          });
+        })
+        .catch(err => console.log(err));
     } else {
       API.getUser(this.props.match.params.user)
-      .then(res => {
-        this.setState({
-          creator: res.data.userdata.username,
-          pebbles: res.data.pebbles
-        });
-      })
-      .catch(err => console.log(err));
+        .then(res => {
+          this.setState({
+            creator: res.data.userdata.username,
+            pebbles: res.data.pebbles
+          });
+        })
+        .catch(err => console.log(err));
     }
-    
+
   };
 
   getTransactions = () => {
@@ -88,6 +87,7 @@ export default class Profile extends Component {
 
   handleModal = () => {
     if (this.state.modalOpen) {
+      this.getHash();
       this.setState({ modalOpen: false });
     } else {
       this.setState({ modalOpen: true });
@@ -109,7 +109,7 @@ export default class Profile extends Component {
           <div className="user-label">
             <p>
               Hello,
-              <br/>
+              <br />
               <span className={`${creator.length >= 20 ? 'span-long-user' : 'span-short-user'}`}>
                 {creator}
               </span>
@@ -135,15 +135,15 @@ export default class Profile extends Component {
                 <i className="fas fa-arrow-left" />
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
             {page === 'History' ? (
               <span className="prof-arrows prof-arrows-right" onClick={this.pageChange}>
                 <i className="fas fa-arrow-right" />
               </span>
             ) : (
-              ''
-            )}
+                ''
+              )}
           </div>
 
           <h2 className="table-header">
@@ -154,9 +154,9 @@ export default class Profile extends Component {
           {page === 'Transaction' ? (
             <Table data={data} deposits={deposits} withdrawals={withdrawals} />
           ) : (
-            ''
-          )}
-          {page === 'History' ? <GitTask getTotal={this.getTotal} user={this.props.otherUser === "isUser" ? "isUser" : this.props.match.params.user}/> : ''}
+              ''
+            )}
+          {page === 'History' ? <GitTask getTotal={this.getTotal} user={this.props.otherUser === "isUser" ? "isUser" : this.props.match.params.user} /> : ''}
         </Container>
         <Modal
           creator={creator}

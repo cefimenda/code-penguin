@@ -17,7 +17,7 @@ export default {
             } 
   ******************/
   createUserData: function (userdata) {
-    return axios.post("/fn/users/createUserData", userdata)
+    return axios.post("/fn/users/createUserdata", userdata)
   },
   getGithub: function (username) {
     return axios.get(`https://api.github.com/users/${username}`);
