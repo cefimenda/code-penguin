@@ -70,9 +70,9 @@
     background-color: #3b1616;
 }
 
-a{
+.user-link{
     color: white;
 }
-a:hover{
-    color: black;
+.user-link:hover{
+    color: lightgray;
 }

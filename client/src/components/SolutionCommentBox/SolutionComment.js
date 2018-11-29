@@ -29,14 +29,14 @@ export default class SolutionComment extends Component {
                         <a className="solution-link" href={solutionInfo.link.includes("http") ? solutionInfo.link : `https://${solutionInfo.link}`} target="_blank" rel="noopener noreferrer" >
                             <li className= {solHash === rewardHash ? "reward-box" : "solution-box" }> 
                                 <span>{solutionInfo.text}</span>
-                                <p className="sol-user">-- <a href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
+                                <p className="sol-user">-- <a className="user-link" href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
                             </li>
                         </a>
                     </div>
                      : 
                     <li className="comment-box"> 
                         {commentText} 
-                        <p className="sol-user">-- <a href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
+                        <p className="sol-user">-- <a className="user-link" href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
                     </li>
                 }
             </React.Fragment>
