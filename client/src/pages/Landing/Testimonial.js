@@ -26,7 +26,7 @@ export default class Main extends Component {
         API.getTestimonials()
             .then(res=>{
                 res.data.comments.forEach(comment => {
-                    API.getUser(comment.creator)
+                    API.getUser(comment.Entry.creator)
                         .then(user=>{
                             comment.user = user.data.userdata.username
                             this.setState({testimonials: res.data.comments});
