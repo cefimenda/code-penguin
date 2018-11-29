@@ -10,7 +10,7 @@ export default class Container extends Component {
         } else if (this.props.padding === "right") {
             padd = "50px 470px 50px 100px" 
         } else if (this.props.padding === "market") {
-            padd = "50px 0px 50px 470px" 
+            padd = "50px 50px 50px 470px" 
         } else {
             padd = "50px" 
         }
