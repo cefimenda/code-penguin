@@ -14,18 +14,21 @@ export default class Main extends Component {
         this.getTestimonials();
     }
 
+    getCreatorUser = (creatorHash) => {
+        API.getUser(creatorHash)
+          .then(res=>{
+            this.setState({creatorUser: res.data.userdata.username})
+          })
+          .catch(err => console.log(err));
+    }
+
     getTestimonials = () => {
         API.getTestimonials()
             .then(res=>{
                 res.data.comments.forEach(comment => {
-                    API.getUser(comment.Source)
+                    API.getUser(comment.creator)
                         .then(user=>{
-                            try{
-                                comment.Source = user.data.userdata[0].Entry.github
-                            }
-                            catch(err){
-                                comment.Source = comment.Source.substring(0,20) + "...";
-                            } 
+                            comment.user = user.data.userdata.username
                             this.setState({testimonials: res.data.comments});
                         })
                         .catch(err=>{
@@ -61,7 +64,7 @@ export default class Main extends Component {
                     <div className="test-quote">
                         <img src="/images/quotation-open.png" alt="quote mark" />
                         <p className="test-data">{array[i].Entry.text}</p>
-                        <p className="test-author">--{array[i].Source}</p>
+                        <p className="test-author">--{array[i].user}</p>
                     </div>
                 </Snippet>
             )

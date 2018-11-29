@@ -67,7 +67,10 @@ export default {
     return axios.post("/fn/transactions/tabulate", "\"" + hash + "\"");
   },
 
-  getTransactionHistory: function () {
+  getTransactionHistory: function (hash) {
+    if(hash){
+      return axios.post("/fn/transactions/readUserTransactions", "\"" + hash + "\"");
+    }
     return axios.post("/fn/transactions/readUserTransactions");
   }, 
 
