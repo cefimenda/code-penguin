@@ -67,7 +67,11 @@ function readComment(hash) {
 
 // For reading comments from a page's hash
 function readComments(hash) {
-  var comments = getLinks(hash, "comments", { Load: true });
+  var id = hash || JSON.parse(call("users", "readLoggedInId", ""))
+  if (!id){
+    return false
+  }
+  var comments = getLinks(id, "comments", { Load: true });
   return { comments: comments };
 }
 

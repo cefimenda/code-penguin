@@ -131,7 +131,8 @@ function createAccount(data) {
 //returns id hash
 function readLoggedInId(key) {
   var key = key || App.Key.Hash
-  return getLinks(key, 'account')[0].Hash
+  var links = getLinks(key, 'account')
+  return links.length > 0 ? (links[0].Hash) : (false)
 }
 
 
@@ -218,13 +219,19 @@ function createUserdata(userdata) {
 function logout() {
   try {
     var id = readLoggedInId()
-    commit("account_link", {
-      Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account', LinkAction: HC.LinkAction.Del }]
-    });
-    console.log("logging out")
-    return true
+    if (id) {
+
+
+      commit("account_link", {
+        Links: [{ Base: App.Key.Hash, Link: id, Tag: 'account', LinkAction: HC.LinkAction.Del }]
+      });
+      return true
+    } else {
+      return false
+    }
   } catch (err) {
     console.log(err)
+    console.log("You need to be logged in to log out.")
     return "You need to be logged in to log out."
   }
 }
@@ -413,7 +420,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           //Each Key can only be logged into one account at a time. If you want to log into another account you must first log out.
           ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === sources[0]) ? ((getLinks(sources[0], "account").length > 0) ? (entry.Links[0].LinkAction === "d" ? true : false) : (true)) : true) : (true)) &&
           //in order to log in the account must already have a loggable for the key and the key needs to have the account as a loggable.
-          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash)?(true):((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
+          ((entry.Links[0].Tag === "account") ? ((entry.Links[0].Base === App.DNA.Hash) ? (true) : ((getLoggablesList(entry.Links[0].Link).indexOf(entry.Links[0].Base) > -1))) : (true))
         )
       case "userdata":
         return true
