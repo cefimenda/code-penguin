@@ -311,6 +311,9 @@ function autoLogin() {
 
 function updatecredentialsToken(newcredentials) {
   var id = readLoggedInId();
+  if (!id) {
+    return false
+  }
   var removeLink = commit("credentials_link", {
     Links: [{ Base: id, Link: readcredentialsToken(id), Tag: "credentials", LinkAction: HC.LinkAction.Del }]
   });
