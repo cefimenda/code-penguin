@@ -21,9 +21,10 @@
 	left: 15%;
 	padding: 30px;
 	line-height: 24px;
-	letter-spacing: 2px;
+	letter-spacing: 3px;
 	font-size: 18px;
 	color: #fff;
+	width: 400px;
 }
 
 @media (max-width:1024px) {
