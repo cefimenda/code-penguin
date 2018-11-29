@@ -27,9 +27,10 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
+    console.log(this.props.changeUser);
+    
     this.getHash()
     this.canDist()
-    this.getUsername()
   };
 
   canDist = () => {
@@ -53,25 +54,15 @@ export default class Navbar extends Component {
     this.setState({ showDiv: false})
   }
 
-  getUsername = () => {
-    setTimeout(() => { 
-      const userName = sessionStorage.getItem('user');
-      this.setState({
-        username: `${userName}`
-      })
-      if (this.state.username === "" || this.state.username === null || this.state.username === "null") {
-        this.setState({ loggedIn: false })
-      }
-    }, 5);
-  }
-
   getHash = () => {
     API.getUser()
       .then(res => {
-        this.setState({ userPebbles: res.data.pebbles });
-        this.setState({ creator: res.data.hash });
+        this.setState({ userPebbles: res.data.pebbles, creator: res.data.hash, username: res.data.userdata.username });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ loggedIn: false })
+        console.log(err)
+      });
   };
 
   handleScroll = () => {
@@ -137,7 +128,7 @@ export default class Navbar extends Component {
                   <li key="2" className="float-right">
                     <a href="/profile">
                       <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                        <span style={{letterSpacing: "2px"}}> {`${this.state.username} `} {this.state.userPebbles} </span>
+                        <span style={{letterSpacing: "2px"}}> {`${this.props.changeUser !== undefined ? this.props.changeUser : this.state.username} `} {this.state.userPebbles} </span>
                       </p>
                       <img
                         className="nav-pebble-img"

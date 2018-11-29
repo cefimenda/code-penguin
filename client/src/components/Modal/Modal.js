@@ -8,7 +8,9 @@ class ModalExampleDimmer extends Component {
     userusername: '',
     useremail: '',
     password: '',
-    repassword: ''
+    repassword: '',
+    showerr: false,
+    errmsg: ''
   };
 
   handleChange = e => {
@@ -37,7 +39,7 @@ class ModalExampleDimmer extends Component {
 
   render() {
     const { creator, modalOpen, modalfunction } = this.props;
-    const { userusername, useremail, password, repassword } = this.state;
+    const { userusername, useremail, password, repassword, showerr, errmsg } = this.state;
 
     return (
       <Modal dimmer="blurring" open={modalOpen} onClose={modalfunction} basic size="small">
@@ -90,6 +92,7 @@ class ModalExampleDimmer extends Component {
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions className="submit-btn">
+          {showerr ? <p className="modal-err">{errmsg}</p> : ""}
           <button className="ui right modal-submit-btn-close" onClick={modalfunction}>
             Close <i aria-hidden="true" className="remove icon" />
           </button>
