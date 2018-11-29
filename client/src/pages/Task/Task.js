@@ -63,8 +63,8 @@ export default class Task extends Component {
       });
   };
 
-  getCreatorUser = () => {
-    API.getUser()
+  getCreatorUser = (creatorHash) => {
+    API.getUser(creatorHash)
       .then(res=>{
         this.setState({creatorUser: res.data.userdata.username})
       })
@@ -164,21 +164,36 @@ export default class Task extends Component {
   };
 
   addSolution = solution => {
-    API.createSolution(solution)
-      .then(res => {
-        this.handleClear();
-        this.getInfo();
-      })
-      .catch(err => console.log(err));
+    var { task, user} = this.state;
+    if (this.state.newSolutionDes === "") {
+      this.setState({ showDiv: true, message: "Please enter a description for the solution"})
+    } else {
+      if (task.creator === user) {
+        this.setState({ showDiv: true, message: "You can not post a sloution to your own task"})
+      } else {
+        API.createSolution(solution)
+        .then(res => {
+          this.handleClear();
+          this.getInfo();
+        })
+        .catch(err => console.log(err));
+      }
+    }
+    
   };
 
   addComment = comment => {
-    API.createComment(comment)
-      .then(res => {
-        this.handleClear();
-        this.getInfo();
-      })
-      .catch(err => console.log(err));
+    if (this.state.newComment === "") {
+      this.setState({ showDiv: true, message: "Ypu can not submit a blank comment"})
+    } else {
+      API.createComment(comment)
+        .then(res => {
+          this.handleClear();
+          this.getInfo();
+        })
+        .catch(err => console.log(err));
+    }
+    
   };
 
   render() {

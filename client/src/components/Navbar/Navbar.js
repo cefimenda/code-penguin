@@ -137,7 +137,7 @@ export default class Navbar extends Component {
                   <li key="2" className="float-right">
                     <a href="/profile">
                       <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                        {`${this.state.username} = `} <span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
+                        {`${this.state.username} `} <span className="nav-user-bar">|</span><span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
                       </p>
                       <img
                         className="nav-pebble-img"

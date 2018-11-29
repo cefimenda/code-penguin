@@ -37,6 +37,10 @@
 	letter-spacing: 3px;
 }
 
+.nav-user-bar {
+	font-size: 18px;
+}
+
 .nav-pebble-img {
 	height: 22px;
 	position: absolute;
