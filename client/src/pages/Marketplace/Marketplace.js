@@ -58,7 +58,6 @@ export default class Marketplace extends Component {
           API.getUser(task.Entry.creator)
             .then(user=>{
               task.Entry.creatorName = user.data.userdata.username;
-              console.log(task);
             })
         })
         this.setState({ dataList: res.data.tasks, fullList: res.data.tasks });
