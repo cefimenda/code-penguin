@@ -52,17 +52,21 @@ export default class Task extends Component {
         let date = new Date(res.data.time);
         rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`;
         this.setState({ task: rawdata });
+        return rawdata.creator
+      })
+      .then((hash) => {
+        this.getCreatorUser(hash)
+        
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  getCreatorUser = creatorHash => {
+  getCreatorUser = (creatorHash) => {
     API.getUser(creatorHash)
       .then(res=>{
-        console.log(res);
-          this.setState({creatorUser: res.data.userdata.username})
+        this.setState({creatorUser: res.data.userdata.username})
       })
       .catch(err => console.log(err));
   }
@@ -160,29 +164,40 @@ export default class Task extends Component {
   };
 
   addSolution = solution => {
-    API.createSolution(solution)
-      .then(res => {
-        this.handleClear();
-        this.getInfo();
-      })
-      .catch(err => console.log(err));
+    var { task, user} = this.state;
+    if (this.state.newSolutionDes === "") {
+      this.setState({ showDiv: true, message: "Please enter a description for the solution"})
+    } else {
+      if (task.creator === user) {
+        this.setState({ showDiv: true, message: "You can not post a sloution to your own task"})
+      } else {
+        API.createSolution(solution)
+        .then(res => {
+          this.handleClear();
+          this.getInfo();
+        })
+        .catch(err => console.log(err));
+      }
+    }
+    
   };
 
   addComment = comment => {
-    API.createComment(comment)
-      .then(res => {
-        this.handleClear();
-        this.getInfo();
-      })
-      .catch(err => console.log(err));
+    if (this.state.newComment === "") {
+      this.setState({ showDiv: true, message: "Ypu can not submit a blank comment"})
+    } else {
+      API.createComment(comment)
+        .then(res => {
+          this.handleClear();
+          this.getInfo();
+        })
+        .catch(err => console.log(err));
+    }
+    
   };
 
   render() {
-    var { task, user, rewardHash, toggler } = this.state;
-    if (task.creator !== "") {
-      console.log(task.creator);
-      
-    }
+    var { task, user, rewardHash, toggler, creatorUser } = this.state;
     return (
       <React.Fragment>
         <Navbar />
@@ -229,7 +244,7 @@ export default class Task extends Component {
                   <div className="task-problem">
                     <h2>{task.title}</h2>
                     <div className="creator-info-div">
-                      <p>Creator: {task.creator}</p>
+                      <p>Creator: {creatorUser !== "" ? creatorUser : task.creator}</p>
                       <p>Created: {task.time}</p>
                     </div>
                     <div className="div-blue-box" style={{ height: '60px' }}>

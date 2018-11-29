@@ -20,7 +20,7 @@ export default class Task extends Component {
     handleSubmit = event => {
         event.preventDefault()
         const { username, email, password, repassword} = this.state
-        if (username.length >= 6) {
+        if (username.length >= 3) {
             if (email.includes('@')) {
                 if (password === repassword && password.length > 0) {
                     API.createAccount({
@@ -43,7 +43,7 @@ export default class Task extends Component {
                 this.props.changeMsg("Please enter real email")
             }
         } else {
-            this.props.changeMsg("Please enter a username with more than 6 characters")
+            this.props.changeMsg("Please enter a username with more than 3 characters")
         }
     }
 

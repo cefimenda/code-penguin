@@ -31,7 +31,8 @@ export default class App extends Component {
                 <Switch>
                     <Route exact path="/" render={() => <Redirect to="/marketplace" /> } />
                     <Route path="/landing" component={Landing} />
-                    <Route path="/profile" render={() => <Profile /> } />
+                    <Route path="/profile" render={() => <Profile otherUser={true} /> } />
+                    <Route exact path="/profile/:user" render={() => <Profile otherUser={true} /> } />
                     <Route path="/marketplace" component={Marketplace} />
                     <Route path="/newtask" render={() => <NewTask />} />
                     <Route path="/login" render={() => <Login getUser={this.login} logout={this.logout}/>} />
