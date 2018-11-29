@@ -65,7 +65,7 @@ function createTask(task) {
     Links: [{ Base: App.DNA.Hash, Link: hash, Tag: "tasks" }]
   });
   var myTasksLink = commit('task_link', {
-    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "tasks" }]
+    Links: [{ Base: task.creator, Link: hash, Tag: "tasks" }]
   });
   return hash;
 }
