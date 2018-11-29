@@ -4,17 +4,21 @@ import Container from '../../components/Container';
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Table from '../../components/Table';
 import GitTask from '../../components/GitTask';
-import Modal from '../../components/Modal'
+import Modal from '../../components/Modal';
 import API from '../../utils/API';
 import './Profile.css';
 
 export default class Profile extends Component {
   state = {
+    page: 'History',
     creator: '',
     avatar: '/images/penguin.png',
     pebbles: '',
     withdrawals: [],
-    deposits: []
+    deposits: [],
+    totalSol: 0,
+    totalTask: 0,
+    modalOpen: false
   };
 
   componentDidMount = () => {
@@ -27,7 +31,7 @@ export default class Profile extends Component {
     API.getUser()
       .then(res => {
         this.setState({
-          creator: `${getUserName ==="" ? res.data.hash : getUserName}`,
+          creator: `${getUserName === '' ? res.data.hash : getUserName}`,
           pebbles: res.data.pebbles
         });
       })
@@ -45,73 +49,97 @@ export default class Profile extends Component {
       .catch(err => console.log(err));
   };
 
-  handleInputChange = event => {
-    let value = event.target.value;
-    const name = event.target.name;
-    this.setState({
-      [name]: value
-    });
+  getTotal = e => {
+    const { name, value } = e;
+    this.setState({ [name]: value });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    API.setUserData({
-      github: this.state.creator
-    })
-      .then(res => {
-        this.getHash();
-      })
-      .catch(err => console.log(err));
+  pageChange = () => {
+    if (this.state.page === 'Transaction') {
+      this.setState({ page: 'History' });
+    } else {
+      this.setState({ page: 'Transaction' });
+    }
+  };
+
+  handleModal = () => {
+    if (this.state.modalOpen) {
+      this.setState({ modalOpen: false });
+    } else {
+      this.setState({ modalOpen: true });
+    }
   };
 
   render() {
     const focus = 'left';
-    let { creator, withdrawals, deposits } = this.state;
+    let { page, creator, withdrawals, deposits, pebbles, totalSol, totalTask } = this.state;
     let data = withdrawals.concat(deposits);
 
     return (
       <React.Fragment>
         <Navbar page="Profile" />
         <HoverBox side={focus}>
-          <div className="profile-div" style={{ margin: '10px 0' }}>
-            <div>
-              <div className="label">
-                <label>Hello, </label>
-              </div>
-              <span className="span-user">
-                {this.userName} {this.state.creator.toUpperCase()}
+          <p className="user-edit">
+            <i className="fas fa-user-edit" onClick={this.handleModal} />
+          </p>
+          <div className="user-label">
+            <p>
+              Hello,{' '}
+              <span className={`${creator.length >= 20 ? 'span-long-user' : 'span-short-user'}`}>
+                {' '}
+                {creator}
               </span>
-            </div>
-            {/* <div>
-                <div className="label">
-                  <label>Change your username</label>
-                  <form onSubmit={this.state.handleFormSubmit}>
-                    <input
-                      value={this.state.creator}
-                      name="creator"
-                      type="text"
-                      onChange={this.handleInputChange}
-                      placeholder="username"
-                    />
-                    <button onClick={this.handleFormSubmit}>Submit</button>
-                  </form>
-                </div>
-              </div> */}
-            <img
-              className="avatar"
-              width="150px"
-              src={this.state.avatar}
-              alt={this.state.creator}
-            />
-            <span className="span-pebbles">Today's Pebble Count {this.state.pebbles}</span>
-            <Modal creator={creator}/>
+            </p>
+            <hr />
+          </div>
+          <div className="user-stats">
+            <p>
+              Total Pebble Count: <span>{pebbles}</span>{' '}
+            </p>
+            <p>
+              Total Solution Submitions: <span>{totalSol}</span>
+            </p>
+            <p>
+              Total Tasks Created: <span>{totalTask}</span>
+            </p>
           </div>
         </HoverBox>
+
         <Container padding={focus} bgcolor="rgb(32,32,32)">
-          <h2 className="table-header">Pebble Transaction History</h2>
-          <Table data={data} deposits={deposits} withdrawals={withdrawals} />
-          <GitTask />
+          <div style={{ position: 'relative', width: '100%', marginTop: '10%' }}>
+            {page === 'Transaction' ? (
+              <span className="prof-arrows prof-arrows-left" onClick={this.pageChange}>
+                <i className="fas fa-arrow-left" />
+              </span>
+            ) : (
+              ''
+            )}
+            {page === 'History' ? (
+              <span className="prof-arrows prof-arrows-right" onClick={this.pageChange}>
+                <i className="fas fa-arrow-right" />
+              </span>
+            ) : (
+              ''
+            )}
+          </div>
+
+          <h2 className="table-header">
+            {page === 'Transaction'
+              ? 'Pebble Transaction History'
+              : 'User History'}
+          </h2>
+          {page === 'Transaction' ? (
+            <Table data={data} deposits={deposits} withdrawals={withdrawals} />
+          ) : (
+            ''
+          )}
+          {page === 'History' ? <GitTask getTotal={this.getTotal} /> : ''}
         </Container>
+        <Modal
+          creator={creator}
+          modalOpen={this.state.modalOpen}
+          modalfunction={this.handleModal}
+        />
       </React.Fragment>
     );
   }
