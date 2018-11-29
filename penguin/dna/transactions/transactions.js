@@ -37,6 +37,10 @@ function addTimestamp(object) {
   return object;
 }
 
+function distributionFrequency(){
+  return 5 * 60 * 1000; //24 * 60 * 60 * 1000;
+}
+
 function getLastRedistributionDate(hash) {
   var deposits = getLinks(hash, "deposits", { Load: true });
   var date = 0
@@ -50,8 +54,7 @@ function getLastRedistributionDate(hash) {
 }
 
 function canDistribute() {
-  console.log(JSON.parse(call("users", "readLoggedInId", "")));
-  return Date.now() - getLastRedistributionDate(JSON.parse(call("users", "readLoggedInId", ""))) > 24 * 60 * 60 * 1000
+  return Date.now() - getLastRedistributionDate(JSON.parse(call("users", "readLoggedInId", ""))) > distributionFrequency();
 }
 
 
@@ -194,7 +197,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
           call("users", "isAuthorized", JSON.stringify(sources[0])) &&
 
           //   //validation for redistribution --> making sure that it has been at least 24 hours since this agent has last run the redistribution function
-          ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > 24 * 60 * 60 * 1000) ? (true) : (false)) : (true)) &&
+          ((entry.origin === App.DNA.Hash && entry.destination !== App.DNA.Hash) ? (((Date.now() - getLastRedistributionDate(entry.destination)) > distributionFrequency()) ? (true) : (false)) : (true)) &&
 
           //   //the creator of the transaction must have equal or more pebbles than what is specified in the transaction
           (tabulate(entry.origin) >= entry.pebbles) &&
