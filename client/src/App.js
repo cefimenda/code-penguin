@@ -11,8 +11,11 @@ import API from "./utils/API";
 import './App.css';
 
 export default class App extends Component {
+    state = {
+        user: ""
+    }
     login = user => {
-        sessionStorage.setItem('user', user);
+        this.setState({ user })
     }
 
     logout = () => {

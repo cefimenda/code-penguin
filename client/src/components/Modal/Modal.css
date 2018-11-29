@@ -75,3 +75,10 @@
 .submit-btn.ui.icon.button {
   background-color: teal !important;
 }
+
+/* modal error message */
+.modal-err {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}

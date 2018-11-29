@@ -101,11 +101,11 @@ export default class Profile extends Component {
 
     return (
       <React.Fragment>
-        <Navbar page="Profile" />
+        <Navbar page="Profile" changeUser={creator}/>
         <HoverBox side={focus}>
-          <p className="user-edit">
+          {this.props.otherUser === "isUser" ? <p className="user-edit">
             <i className="fas fa-user-edit" onClick={this.handleModal} />
-          </p>
+          </p> : ""}
           <div className="user-label">
             <p>
               Hello,
