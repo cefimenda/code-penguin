@@ -52,19 +52,21 @@ export default class Task extends Component {
         let date = new Date(res.data.time);
         rawdata.time = `${date.toDateString()}, ${date.toLocaleTimeString()}`;
         this.setState({ task: rawdata });
+        return rawdata.creator
+      })
+      .then((hash) => {
+        this.getCreatorUser(hash)
+        
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  getCreatorUser = creatorHash => {
-    console.log(creatorHash);
-    
-    API.getUser(creatorHash)
+  getCreatorUser = () => {
+    API.getUser()
       .then(res=>{
-        console.log(res);
-        // this.setState({creatorUser: res.data.userdata.username})
+        this.setState({creatorUser: res.data.userdata.username})
       })
       .catch(err => console.log(err));
   }
@@ -180,10 +182,7 @@ export default class Task extends Component {
   };
 
   render() {
-    var { task, user, rewardHash, toggler } = this.state;
-    if (user !== "") {
-      this.getCreatorUser(user)
-    }
+    var { task, user, rewardHash, toggler, creatorUser } = this.state;
     return (
       <React.Fragment>
         <Navbar />
@@ -230,7 +229,7 @@ export default class Task extends Component {
                   <div className="task-problem">
                     <h2>{task.title}</h2>
                     <div className="creator-info-div">
-                      <p>Creator: {task.creator}</p>
+                      <p>Creator: {creatorUser !== "" ? creatorUser : task.creator}</p>
                       <p>Created: {task.time}</p>
                     </div>
                     <div className="div-blue-box" style={{ height: '60px' }}>
