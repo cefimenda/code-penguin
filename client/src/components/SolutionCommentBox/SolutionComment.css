@@ -69,3 +69,10 @@
 .solution-link:hover .reward-box  {
     background-color: #3b1616;
 }
+
+a{
+    color: white;
+}
+a:hover{
+    color: black;
+}

@@ -283,7 +283,7 @@ export default class Task extends Component {
                             solHash={solution.Hash}
                             key={i}
                             isCreator={task.creator === user ? true : false}
-                            creatorHash={solution.creator}
+                            creatorHash={solution.Entry.creator}
                             reward={this.handleReward}
                             rewardHash={this.state.rewardHash}
                           />
@@ -298,7 +298,7 @@ export default class Task extends Component {
                           <SolutionCommentBox
                             solution={false}
                             commentText={comment.Entry.text}
-                            creatorHash={comment.creator}
+                            creatorHash={comment.Entry.creator}
                             key={i}
                           />
                         ))

@@ -4,7 +4,8 @@ import './SolutionComment.css';
 
 export default class SolutionComment extends Component {
     state = {
-        user: `${this.props.creatorHash}`
+        username: '',
+        userHash: this.props.creatorHash
     }
     handleReward = () => {
         this.props.reward(this.props.solHash)
@@ -13,7 +14,7 @@ export default class SolutionComment extends Component {
     componentDidMount = () => {
         API.getUser(this.props.creatorHash)
             .then(res=>{
-                this.setState({user: res.data.userdata.username})
+                this.setState({userName: res.data.userdata.username})
             })
             .catch(err => console.log(err));
     }
@@ -28,14 +29,14 @@ export default class SolutionComment extends Component {
                         <a className="solution-link" href={solutionInfo.link.includes("http") ? solutionInfo.link : `https://${solutionInfo.link}`} target="_blank" rel="noopener noreferrer" >
                             <li className= {solHash === rewardHash ? "reward-box" : "solution-box" }> 
                                 <span>{solutionInfo.text}</span>
-                                <p className="sol-user">-- {this.state.user}</p>
+                                <p className="sol-user">-- <a href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
                             </li>
                         </a>
                     </div>
                      : 
                     <li className="comment-box"> 
                         {commentText} 
-                        <p className="sol-user">-- {this.state.user}</p>
+                        <p className="sol-user">-- <a href={`/user/${this.state.userHash}`}>{this.state.userName}</a></p>
                     </li>
                 }
             </React.Fragment>
