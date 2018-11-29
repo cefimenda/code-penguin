@@ -220,7 +220,7 @@ export default class Marketplace extends Component {
             sortPebbles={this.sortPebbles}
           />
         </HoverBox>
-        <Container padding={focus} bgcolor="rgb(32,32,32)">
+        <Container padding="market" bgcolor="rgb(32,32,32)">
           <div className="cardholder">
             <div className="new-task-div">
               <a href="/newtask">
