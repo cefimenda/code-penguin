@@ -15,10 +15,13 @@ export default class Marketplace extends Component {
     fullList: '',
     dataList: [],
     currentPage: 1,
-    perPage: 5
+    perPage: Math.floor(window.innerWidth/272),
+    width: window.innerWidth
   };
 
   componentDidMount = () => {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this));
     this.getCards(); //get all the info in the database
     API.getUser()
       .then(res=>{
@@ -44,6 +47,30 @@ export default class Marketplace extends Component {
       })
       .catch(err => console.log(err))
   };
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions() {
+    let { innerWidth } = window
+    let perPage
+    this.setState({ width: innerWidth });
+
+    if (innerWidth > 1360) {
+      perPage = Math.floor(innerWidth/192)
+      this.setState({ perPage });
+    } else if ( innerWidth > 960 ) {
+      perPage = Math.floor(innerWidth/272)
+      this.setState({ perPage });
+    } else {
+      perPage = Math.floor(innerWidth/480)
+      if (perPage <= 1 ) { 
+        perPage = 1
+      }
+      this.setState({ perPage });
+    }
+  }
 
   // Data retrieval
   getCards = () => {
@@ -221,7 +248,7 @@ export default class Marketplace extends Component {
           />
         </HoverBox>
         <Container padding="market" bgcolor="rgb(32,32,32)">
-          <div className="cardholder">
+          <div ref={this.myInput} className="cardholder">
             <div className="new-task-div">
               <a href="/newtask">
                 <button className="new-task-btn">+ New Task</button>
