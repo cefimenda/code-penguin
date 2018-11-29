@@ -27,8 +27,6 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
-    console.log(this.props.changeUser);
-    
     this.getHash()
     this.canDist()
   };

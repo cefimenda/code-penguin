@@ -86,9 +86,9 @@ function rewardedSolution(hash) {
  */
 function reward(hash) {
   var solution = get(hash);
-  var solutionTask = solution.task;
-  var solutionAuthor = getCreator(hash);
-  var pebbles = call("transactions", "tabulate", JSON.stringify(solutionTask));
+  var solutionTask = solution.task
+  var solutionAuthor = solution.creator;
+  var pebbles = JSON.parse(call("transactions", "tabulate", JSON.stringify(solutionTask)));
   var rewardedSolutionLink = commit('solution_link', {
     Links: [{ Base: solutionTask, Link: hash, Tag: "rewarded_solution" }]
   });
@@ -139,7 +139,7 @@ function validateCommit(entryType, entry, header, pkg, sources) {
          * This validation will be necessary to implement when we actually deploy, because we don't want users 
          * creating solutions to their own problems. (Then if they get backers, they might be able to give themselves extra pebbles)
          */
-        return sources[0] != getCreator(entry.task);
+        return entry.creator != call("tasks","readTask", JSON.stringify(entry.task)).creator;
       case "solution_link":
         return true
     }

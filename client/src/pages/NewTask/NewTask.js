@@ -69,7 +69,7 @@ export default class Profile extends Component {
                     this.setState({ showDiv: true, message: `Pebble needs to be an integer between 1 - ${maxPebbles}`})
                 }
             } else {
-                this.setState({ showDiv: true, message: "Please enter all field"})
+                this.setState({ showDiv: true, message: "Please enter all fields"})
             }
         }
         
