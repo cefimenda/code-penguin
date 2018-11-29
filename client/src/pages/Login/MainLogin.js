@@ -11,9 +11,14 @@ export default class Task extends Component {
     componentDidMount = () => {
         API.getUsernames()
             .then(res=>{
-                // console.log(res);
-                this.setState({
-                    users: res.data
+                res.data.forEach(e=>{
+                    API.getUser(e.Hash)
+                        .then(userData=>{
+                            e.Entry.username = userData.data.userdata.username;
+                            this.setState({
+                                users: res.data
+                            });
+                        })
                 });
             })
             .catch(err => console.log(err));
