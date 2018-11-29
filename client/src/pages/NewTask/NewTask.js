@@ -66,7 +66,7 @@ export default class Profile extends Component {
                     const task = { pebbles, title, details, tags: tagarr }
                     this.createTask(task);
                 } else {
-                    this.setState({ showDiv: true, message: `Pebble needs to be an interger between 1 - ${maxPebbles}`})
+                    this.setState({ showDiv: true, message: `Pebble needs to be an integer between 1 - ${maxPebbles}`})
                 }
             } else {
                 this.setState({ showDiv: true, message: "Please enter all field"})

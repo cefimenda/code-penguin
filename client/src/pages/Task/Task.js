@@ -120,7 +120,7 @@ export default class Task extends Component {
             const link = this.state.newSolutionLink;
             this.addSolution({ task, text, link });
         } else {
-            this.setState({ showDiv: true, message: "Please add a github link"})
+            this.setState({ showDiv: true, message: "Please add a GitHub link"})
         }
     } else if (this.state.toggler === 'comments') {
       const ctext = this.state.newComment;
@@ -169,7 +169,7 @@ export default class Task extends Component {
       this.setState({ showDiv: true, message: "Please enter a description for the solution"})
     } else {
       if (task.creator === user) {
-        this.setState({ showDiv: true, message: "You can not post a sloution to your own task"})
+        this.setState({ showDiv: true, message: "You cannot post a solution to your own task"})
       } else {
         API.createSolution(solution)
         .then(res => {
@@ -184,7 +184,7 @@ export default class Task extends Component {
 
   addComment = comment => {
     if (this.state.newComment === "") {
-      this.setState({ showDiv: true, message: "Ypu can not submit a blank comment"})
+      this.setState({ showDiv: true, message: "You can not submit a blank comment"})
     } else {
       API.createComment(comment)
         .then(res => {

@@ -5,19 +5,12 @@
         "origin": {
             "type": "string"
         },
-        "github": {
-            "type": "string"
-        },
-        "username": {
-            "type": "string"
-        },
         "time": {
             "type": "integer"
         }
     },
     "required": [
         "origin",
-        "username",
         "time"
     ]
 }
