@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import API from '../../utils/API'
 import './Card.css'
 
 export default class Card extends Component {
     state= {
         cardflip: true,
-        date: this.props.info.time
+        date: this.props.info.time,
+        creatorUser: ""
     }
 
     componentDidMount = () => {
@@ -26,7 +28,16 @@ export default class Card extends Component {
             AMPM = "PM"
         }
         this.setState({ date: `${months[mm]} ${dd}, ${yyyy} ${hh}:${min} ${AMPM}`}) 
+        this.getCreatorUser(this.props.info.creator)
     }
+
+    getCreatorUser = (creatorHash) => {
+        API.getUser(creatorHash)
+          .then(res=>{
+            this.setState({creatorUser: res.data.userdata.username})
+          })
+          .catch(err => console.log(err));
+      }
 
     handleFlip = () => {
         if(this.state.cardflip) {
@@ -53,7 +64,7 @@ export default class Card extends Component {
                             <div className="fixed-para-length">
                                 <p id={id} >{this.props.info.details}</p>
                                 <hr className="card-hr"/>
-                                <p className="card-creator">By: {this.props.info.creator} <br /> {this.state.date}</p>
+                                <p className="card-creator">By: {this.state.creatorUser !== "" ? this.state.creatorUser : this.props.info.creator} <br /> {this.state.date}</p>
                             </div>
                         : ""}
                         <button className="choose-card-btn" onClick={this.handleChoose}>View</button>

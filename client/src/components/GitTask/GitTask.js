@@ -27,29 +27,56 @@ export default class GitTask extends Component {
   };
 
   getHashAndSolutions = () => {
-    API.getUser()
-      .then(res => {
-        this.setState({
-          user: res.data.hash,
-          maxPebbles: res.data.pebbles
-        });
-        API.getSolutions(res.data.hash).then(res => {
-          const value = res.data.solutions.length;
-          this.props.getTotal({ name: 'totalSol', value });
-          this.setState({ solutions: res.data.solutions });
-        });
-      })
-      .catch(err => console.log(err));
+    if (this.props.user === "isUser") {
+      API.getUser()
+        .then(res => {
+          this.setState({
+            user: res.data.hash,
+            maxPebbles: res.data.pebbles
+          });
+          API.getSolutions(res.data.hash).then(res => {
+            const value = res.data.solutions.length;
+            this.props.getTotal({ name: 'totalSol', value });
+            this.setState({ solutions: res.data.solutions });
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      API.getUser(this.props.user)
+        .then(res => {
+          this.setState({
+            user: res.data.hash,
+            maxPebbles: res.data.pebbles
+          });
+          API.getSolutions(res.data.hash).then(res => {
+            const value = res.data.solutions.length;
+            this.props.getTotal({ name: 'totalSol', value });
+            this.setState({ solutions: res.data.solutions });
+          });
+        })
+        .catch(err => console.log(err));
+    }
+    
   };
 
   getUserTasks = () => {
-    API.getMyTasks()
-      .then(res => {
-        const value = res.data.links.length;
-        this.props.getTotal({ name: 'totalTask', value });
-        this.setState({ tasks: res.data.links });
-      })
-      .catch(err => console.log(err));
+    if (this.props.user === "isUser") {
+      API.getMyTasks()
+        .then(res => {
+          const value = res.data.links.length;
+          this.props.getTotal({ name: 'totalTask', value });
+          this.setState({ tasks: res.data.links });
+        })
+        .catch(err => console.log(err));
+    } else {
+      API.getMyTasks(this.props.user)
+        .then(res => {
+          const value = res.data.links.length;
+          this.props.getTotal({ name: 'totalTask', value });
+          this.setState({ tasks: res.data.links });
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   render() {
