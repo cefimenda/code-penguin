@@ -136,11 +136,13 @@ export default class Task extends Component {
 
   handleBackTask = () => {
     const { hash } = this.props.match.params;
-    const { pebbles, maxPebbles } = this.state;
+    let { pebbles, maxPebbles } = this.state;
+    pebbles = parseInt(pebbles)
     if (pebbles <= maxPebbles) {
+      console.log("hello");
       API.backTask({
         task: hash,
-        pebbles: parseInt(pebbles)
+        pebbles: pebbles
       })
         .then(res => {
           // console.log(res);
