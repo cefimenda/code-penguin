@@ -29,7 +29,6 @@ export default class Navbar extends Component {
   componentDidMount = () => {
     this.getHash()
     this.canDist()
-    this.getUsername()
   };
 
   canDist = () => {
@@ -53,25 +52,15 @@ export default class Navbar extends Component {
     this.setState({ showDiv: false})
   }
 
-  getUsername = () => {
-    setTimeout(() => { 
-      const userName = sessionStorage.getItem('user');
-      this.setState({
-        username: `${userName}`
-      })
-      if (this.state.username === "" || this.state.username === null || this.state.username === "null") {
-        this.setState({ loggedIn: false })
-      }
-    }, 5);
-  }
-
   getHash = () => {
     API.getUser()
       .then(res => {
-        this.setState({ userPebbles: res.data.pebbles });
-        this.setState({ creator: res.data.hash });
+        this.setState({ userPebbles: res.data.pebbles, creator: res.data.hash, username: res.data.userdata.username });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ loggedIn: false })
+        console.log(err)
+      });
   };
 
   handleScroll = () => {
