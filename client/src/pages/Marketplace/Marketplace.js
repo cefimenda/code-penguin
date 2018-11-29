@@ -52,6 +52,8 @@ export default class Marketplace extends Component {
         if (res.data.length === 0) {
           return;
         }
+        res.data.tasks = res.data.tasks.filter(task=>task.Entry.pebbles!=="0");
+        res.data.tasks.sort((a,b)=>b.Entry.time-a.Entry.time);
         res.data.tasks.forEach(task=>{
           API.getUser(task.Entry.creator)
             .then(user=>{
