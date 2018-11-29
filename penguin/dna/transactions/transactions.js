@@ -121,8 +121,9 @@ function readTransactions(hash) {
   }
 }
 
-function readUserTransactions() {
-  return readTransactions(JSON.parse(call("users", "readLoggedInId", "")));
+function readUserTransactions(id) {
+  var id = id || JSON.parse(call("users", "readLoggedInId", ""))
+  return readTransactions(id);
 }
 
 function readWithdrawals(hash) {

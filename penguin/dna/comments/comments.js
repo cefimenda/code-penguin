@@ -68,13 +68,21 @@ function readComment(hash) {
 
 // For reading comments from a page's hash
 function readComments(hash) {
-  var comments = getLinks(hash, "comments", { Load: true });
+  var id = hash || JSON.parse(call("users", "readLoggedInId", ""))
+  if (!id) {
+    return false
+  }
+  var comments = getLinks(id, "comments", { Load: true });
   return { comments: comments };
 }
 
 // For reading comments made by a particular user from the agent hash
 function readMyComments(hash) {
-  var comments = getLinks(hash, "commentsMade", { Load: true });
+  var id = hash || JSON.parse(call("users", "readLoggedInId", ""))
+  if (!id) {
+    return false
+  }
+  var comments = getLinks(id, "commentsMade", { Load: true });
   return { comments: comments };
 }
 

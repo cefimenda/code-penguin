@@ -5,27 +5,29 @@ export default {
 
   /* Get current user object, has hash and pebbles */
   getUser: function (hash) {
-    if(hash){
+    if (hash) {
       return axios.post("/fn/users/getUser", "\"" + hash + "\"");
     }
     return axios.post("/fn/users/getUser");
   },
-  
-  setUserData: function (data) {
-    data.email = "";
-    data.password = "";
-    return axios.post("/fn/users/setUserData", data);
+  /******************
+  userdata: {
+              type: (github,username, etc.),
+              data: (github oAuth token, some username, etc.)
+            } 
+  ******************/
+  createUserData: function (userdata) {
+    return axios.post("/fn/users/createUserData", userdata)
   },
-
   getGithub: function (username) {
     return axios.get(`https://api.github.com/users/${username}`);
   },
 
-  getUsernames: function() {
+  getUsernames: function () {
     return axios.post("/fn/users/getLoggablesFromKey");
   },
 
-  logout: function() {
+  logout: function () {
     return axios.post("/fn/users/logout");
   },
 
@@ -35,16 +37,19 @@ export default {
       password
   }
   */
-  login: function(credentials) {
+  login: function (credentials) {
     return axios.post("/fn/users/login", credentials);
   },
 
-  idLogin: function(idHash) {
+  idLogin: function (idHash) {
     return axios.post("/fn/users/idLogin", JSON.stringify(idHash));
   },
 
-  autoLogin: function() {
+  autoLogin: function () {
     return axios.post("/fn/users/autoLogin");
+  },
+  updateCredentials(newCredentials) {
+    return axios.post("/fn/users/updatecredentialsToken",newCredentials);
   },
 
   /*
@@ -56,7 +61,7 @@ export default {
             }
           }
   */
-  createAccount: function(data) {
+  createAccount: function (data) {
     console.log(data);
     return axios.post("/fn/users/createAccount", data);
   },
@@ -67,19 +72,22 @@ export default {
     return axios.post("/fn/transactions/tabulate", "\"" + hash + "\"");
   },
 
-  getTransactionHistory: function () {
+  getTransactionHistory: function (hash) {
+    if(hash){
+      return axios.post("/fn/transactions/readUserTransactions", "\"" + hash + "\"");
+    }
     return axios.post("/fn/transactions/readUserTransactions");
-  }, 
+  },
 
   getTransactionTitle: function (hash) {
     return axios.post("/fn/transactions/readTransaction", "\"" + hash + "\"");
   },
 
-  distribute: function() {
+  distribute: function () {
     return axios.post("/fn/transactions/distribute");
   },
 
-  canDistribute: function() {
+  canDistribute: function () {
     return axios.post("/fn/transactions/canDistribute");
   },
 
@@ -92,7 +100,10 @@ export default {
   },
 
   /* Get all tasks associated with user on the chain */
-  getMyTasks: function () {
+  getMyTasks: function (hash) {
+    if(hash){
+      return axios.post("/fn/tasks/readMyTasks", "\"" + hash + "\"");
+    }
     return axios.post("/fn/tasks/readMyTasks");
   },
 
@@ -167,11 +178,11 @@ export default {
     return axios.post("/fn/comments/readComment", "\"" + hash + "\"");
   },
 
-  getTestimonials: function() {
+  getTestimonials: function () {
     return axios.post("/fn/comments/testimonials");
   },
 
-  createTestimonial: function(testimonial) {
+  createTestimonial: function (testimonial) {
     return axios.post("/fn/comments/createTestimonial", "\"" + testimonial + "\"");
   },
 

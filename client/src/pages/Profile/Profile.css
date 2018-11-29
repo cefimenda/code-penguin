@@ -15,18 +15,19 @@
 .user-label {
   text-align: center;
   font-size: 22px;
-  letter-spacing: 1px;
+  letter-spacing: 3px;
   margin: 40px auto 10px auto;
 }
 
 .user-label hr {
   width: 85%;
-  margin: 30px auto;
+  margin: 10px auto;
 }
 
 .span-short-user {
-  font-size: 15px;
-  text-decoration: underline #00b5ad dashed;
+  font-size: 20px;
+  color: #00b5ad;
+  /* text-decoration: underline #00b5ad dashed; */
 }
 
 .span-long-user {

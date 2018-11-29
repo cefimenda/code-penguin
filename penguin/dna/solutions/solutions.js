@@ -68,7 +68,11 @@ function readSolution(hash) {
 }
 
 function readSolutions(hash) {
-  var solutions = getLinks(hash, "solutions", { Load: true });
+  var id = hash || JSON.parse(call("users", "readLoggedInId", ""));
+  if (!id){
+    return false
+  }
+  var solutions = getLinks(id, "solutions", { Load: true });
   return { solutions: solutions };
 }
 
