@@ -27,25 +27,49 @@ export default class Profile extends Component {
   };
 
   getHash = () => {
-    API.getUser()
-      .then(res => {
-        this.setState({
-          creator: res.data.userdata.username,
-          pebbles: res.data.pebbles
-        });
-      })
-      .catch(err => console.log(err));
+    if (this.props.otherUser === "isUser") {
+      API.getUser()
+        .then(res => {
+          this.setState({
+            creator: res.data.userdata.username,
+            pebbles: res.data.pebbles
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      API.getUser(this.props.match.params.user)
+        .then(res => {
+          this.setState({
+            creator: res.data.userdata.username,
+            pebbles: res.data.pebbles
+          });
+        })
+        .catch(err => console.log(err));
+    }
+
   };
 
   getTransactions = () => {
-    API.getTransactionHistory()
-      .then(res => {
-        this.setState({
-          withdrawals: res.data.withdrawals,
-          deposits: res.data.deposits
-        });
-      })
-      .catch(err => console.log(err));
+    if (this.props.otherUser === "isUser") {
+      API.getTransactionHistory()
+        .then(res => {
+          this.setState({
+            withdrawals: res.data.withdrawals,
+            deposits: res.data.deposits
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      console.log(this.props.match.params.user);
+      API.getTransactionHistory(this.props.match.params.user)
+        .then(res => {
+          this.setState({
+            withdrawals: res.data.withdrawals,
+            deposits: res.data.deposits
+          });
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   getTotal = e => {
@@ -132,7 +156,7 @@ export default class Profile extends Component {
           ) : (
               ''
             )}
-          {page === 'History' ? <GitTask getTotal={this.getTotal} /> : ''}
+          {page === 'History' ? <GitTask getTotal={this.getTotal} user={this.props.otherUser === "isUser" ? "isUser" : this.props.match.params.user} /> : ''}
         </Container>
         <Modal
           creator={creator}

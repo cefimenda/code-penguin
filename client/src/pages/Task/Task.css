@@ -36,6 +36,15 @@
     font-size: 12px
 }
 
+.creator-info-div a {
+    color: #ccc;
+}
+
+.creator-info-div a:hover {
+    color: #ccc;
+    text-decoration: underline;
+}
+
 .task-problem h4 {
     color: #ccc;
     margin-top: 15px;

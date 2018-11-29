@@ -244,7 +244,7 @@ export default class Task extends Component {
                   <div className="task-problem">
                     <h2>{task.title}</h2>
                     <div className="creator-info-div">
-                      <p>Creator: {creatorUser !== "" ? creatorUser : task.creator}</p>
+                      <p>Creator: <a href={`/user/${task.creator}`}>{creatorUser !== "" ? creatorUser : task.creator}</a></p>
                       <p>Created: {task.time}</p>
                     </div>
                     <div className="div-blue-box" style={{ height: '60px' }}>
