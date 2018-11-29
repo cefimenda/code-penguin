@@ -17,33 +17,39 @@ export default class Task extends Component {
         this.props.changePage("Main")
     }
 
-    handleChange = event => {
-        const { name, value } = event.target;
-        this.setState({ [name]: value });
-    }
-
     handleSubmit = event => {
         event.preventDefault()
         const { username, email, password, repassword} = this.state
-        if (password === repassword) {
-            console.log(`username: ${username}, email: ${email}, pasword: ${password}, repass: ${repassword}`);
-            API.createAccount({
-                username,
-                credentials: {
-                    email,
-                    password
+        if (username.length >= 6) {
+            if (email.includes('@')) {
+                if (password === repassword && password.length > 0) {
+                    API.createAccount({
+                        username,
+                        credentials: {
+                            email,
+                            password
+                        }
+                    })
+                        .then(res=>{
+                            this.props.getUser(username)
+                            // console.log(res);
+                            // this.props.redirect();
+                        })
+                        .catch(err => console.log(err));
+                } else {
+                    this.props.changeMsg("The passwords do not match or is empty")
                 }
-            })
-                .then(res=>{
-                    console.log(res);
-                    this.props.redirect();
-                })
-                .catch(err=>{
-                    console.log(err);
-                })
+            } else {
+                this.props.changeMsg("Please enter real email")
+            }
         } else {
-            alert("The passwords do not match")
+            this.props.changeMsg("Please enter a username with more than 6 characters")
         }
+    }
+
+    handleChange = event => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
     }
 
     render() {
@@ -57,12 +63,13 @@ export default class Task extends Component {
                     <input type="password" name="password" onChange={this.handleChange} placeholder="Password" required />
                     <input type="password" name="repassword" onChange={this.handleChange} placeholder="Password again" required />
                     <button onClick={this.handleSubmit} >Submit</button>
-                </div>
-                <div className="login-btn-div" style={{position: "absolute", bottom: "20px", left: "30px"}}>
-                    <button className="back-btn" onClick={this.toMain}><i className="fas fa-arrow-left"></i></button>
+                    <p className="notice">*Your login credentials are never saved to the chain.</p>
                 </div>
             </form>
-            <p className="notice">Your login credentials are never saved to the chain.</p>
+            <div className="login-btn-div" style={{position: "absolute", bottom: "20px", left: "30px"}}>
+                <button className="back-btn" onClick={this.toMain}><i className="fas fa-arrow-left"></i></button>
+            </div>
+            
         </React.Fragment>
         );
     }

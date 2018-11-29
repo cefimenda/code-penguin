@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
+import MessageBar from "../MessageBar"
 import API from '../../utils/API';
 import './Navbar.css';
 
@@ -10,7 +12,10 @@ export default class Navbar extends Component {
     color: 'transparent',
     userPebbles: '',
     creator: '',
-    avatar: '/images/penguin.png'
+    avatar: '/images/penguin.png',
+    showDiv: false,
+    username: "",
+    loggedIn: true
   };
 
   componentWillMount() {
@@ -22,30 +27,51 @@ export default class Navbar extends Component {
   }
 
   componentDidMount = () => {
-    this.getHash();
+    this.getHash()
+    this.canDist()
+    this.getUsername()
   };
+
+  canDist = () => {
+    API.canDistribute()
+      .then(res => {
+        this.setState({showDiv: res.data})
+      })
+      .catch(err => console.log(err));
+  };
+
+  handleAccept = () => {
+    API.distribute()
+    .then(() => {
+      this.setState({ showDiv: false})
+      this.getHash()
+    })
+    .catch(err => console.log(err));
+  }
+
+  handleCancel = () => {
+    this.setState({ showDiv: false})
+  }
+
+  getUsername = () => {
+    setTimeout(() => { 
+      const userName = sessionStorage.getItem('user');
+      this.setState({
+        username: `${userName}`
+      })
+      if (this.state.username === "" || this.state.username === null || this.state.username === "null") {
+        this.setState({ loggedIn: false })
+      }
+    }, 5);
+  }
 
   getHash = () => {
     API.getUser()
       .then(res => {
-        // console.log(res);
-        this.setState({ userPebbles: res.data.pebbles});
-        let { github } = res.data.userdata[0].Entry || null;
-        this.setState({ creator: github || res.data.hash });
-        if (github) {
-          this.setState({
-            hasGithub: true
-          });
-          API.getGithub(github)
-            .then(res => {
-              this.setState({
-                avatar: res.data.avatar_url
-              });
-            })
-            .catch(err => {}/*console.log(err)*/);
-        }
+        this.setState({ userPebbles: res.data.pebbles });
+        this.setState({ creator: res.data.hash });
       })
-      .catch(err => {}/*console.log(err)*/);
+      .catch(err => console.log(err));
   };
 
   handleScroll = () => {
@@ -71,6 +97,7 @@ export default class Navbar extends Component {
   };
 
   render() {
+    if (!this.state.loggedIn) return <Redirect to="/login" />;
     return (
       <React.Fragment>
         <div
@@ -109,14 +136,8 @@ export default class Navbar extends Component {
                   </li>
                   <li key="2" className="float-right">
                     <a href="/profile">
-                      <img
-                        className="mini-avatar"
-                        width="30px"
-                        src={this.state.avatar}
-                        alt={this.state.creator}
-                      />
                       <p className={this.props.page === 'Profile' ? 'ui white navbold' : 'ui white'}>
-                        {this.state.userPebbles}
+                        {`${this.state.username} = `} <span style={{fontWeight: "bolder", letterSpacing: "3px"}}> {this.state.userPebbles} </span>
                       </p>
                       <img
                         className="nav-pebble-img"
@@ -125,16 +146,12 @@ export default class Navbar extends Component {
                       />
                     </a>
                   </li>
-                  {/* <li key="3" className="float-right">
-                      <p className={'ui white add-pebs-nav'} style={{fontSize: "20px", display: "block", padding: "0px 10px", margin: "23px 0px", position: "relative"}}>
-                        <i className="fas fa-plus-circle"></i>
-                      </p>
-                  </li> */}
                 </ul>
               </nav>
             </div>
           </div>
         </div>
+        <MessageBar isWarning={false} showDiv={this.state.showDiv} handleCancel={this.handleCancel} handleAccept={this.handleAccept}/>
       </React.Fragment>
     );
   }

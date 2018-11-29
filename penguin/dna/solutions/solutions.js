@@ -51,12 +51,13 @@ function addTimestamp(object) {
  ********************************************/
 function createSolution(solution) {
   solution = addTimestamp(solution);
+  solution.creator = JSON.parse(call("users", "readLoggedInId", ""));
   var hash = commit('solution', solution);
   var taskSolutionLink = commit('solution_link', {
     Links: [{ Base: solution.task, Link: hash, Tag: "solutions" }]
   });
   var authorSolutionLink = commit('solution_link', {
-    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "solutions" }]
+    Links: [{ Base: solution.creator, Link: hash, Tag: "solutions" }]
   });
   return hash;
 }

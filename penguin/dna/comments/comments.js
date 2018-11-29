@@ -47,6 +47,7 @@ function addTimestamp(object) {
  ********************************************/
 function createComment(comment) {
   comment = addTimestamp(comment);
+  comment.creator = JSON.parse(call("users", "readLoggedInId", ""));
   var hash = commit('comment', comment);
   var pageCommentLink = commit('comment_link', {
     Links: [{ Base: comment.page, Link: hash, Tag: "comments" }]
@@ -55,7 +56,7 @@ function createComment(comment) {
   // We use the tag "commentsMade" instead of "comments" in case we want user pages to accept incoming comments,
   // in which case the user hash would be the page
   var authorCommentLink = commit('comment_link', {
-    Links: [{ Base: JSON.parse(call("users", "readLoggedInId", "")), Link: hash, Tag: "commentsMade" }]
+    Links: [{ Base: comment.creator, Link: hash, Tag: "commentsMade" }]
   });
   return hash;
 }

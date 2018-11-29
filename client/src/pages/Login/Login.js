@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
 import HoverBox from '../../components/HoverBox/HoverBox';
 import Main from './MainLogin';
+import MessageBar from '../../components/MessageBar';
 import Create from './Create';
 import Another from './Another';
 import './Login.css';
@@ -9,7 +10,9 @@ import './Login.css';
 export default class Task extends Component {
     state = {
         redirectToReferrer: false,
-        page: "Main"
+        page: "Main",
+        showDiv: false,
+        message: ""
     };
 
     componentDidMount = () => {
@@ -25,8 +28,12 @@ export default class Task extends Component {
         this.props.getUser(user)
     }
 
-    redirect = () =>{ 
-        this.setState({redirectToReferrer: true});
+    changeMsg = msg => {
+        this.setState({ showDiv: true, message: msg})
+    }
+
+    handleCancel = () => {
+        this.setState({ showDiv: false})
     }
 
     render() {
@@ -36,8 +43,11 @@ export default class Task extends Component {
 
         return (
         <React.Fragment>
+            <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
+                {this.state.message}
+            </MessageBar>
            <HoverBox>
-                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/> : <Another changePage={this.changePage} getUser={this.getUser} redirect={this.redirect}/>}
+                {page === "Main" ? <Main changePage={this.changePage} getUser={this.getUser} redirect={this.redirect} /> : page === "Create" ? <Create changePage={this.changePage} getUser={this.getUser} redirect={this.redirect} changeMsg={this.changeMsg}/> : <Another changePage={this.changePage} getUser={this.getUser} redirect={this.redirect} changeMsg={this.changeMsg}/>}
            </HoverBox>
         </React.Fragment>
         )

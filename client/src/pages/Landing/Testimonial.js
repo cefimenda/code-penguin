@@ -33,9 +33,7 @@ export default class Main extends Component {
                         });
                 });
             })
-            .catch(err=>{
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
 
@@ -52,9 +50,7 @@ export default class Main extends Component {
                 this.setState({testimonial: ""});
                 this.getTestimonials();
             })
-            .catch(err=>{
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     createTestimonial = array => {

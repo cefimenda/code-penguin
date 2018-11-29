@@ -8,12 +8,17 @@
 		"text": {
 			"type": "string"
 		},
+		"creator": {
+			"type": "string"
+		},
 		"time": {
 			"type": "integer"
 		}
 	},
 	"required": [
 		"link",
+		"text",
+		"creator",
 		"time"
 	]
 }

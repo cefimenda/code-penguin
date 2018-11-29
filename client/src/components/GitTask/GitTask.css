@@ -1,0 +1,64 @@
+.toggle-div {
+  width: 100%;
+  padding: 5px;
+}
+
+.show-toggle-div {
+  margin-top: 30px;
+}
+
+.git-task-div {
+  z-index: 99;
+  text-align: center;
+}
+
+.git-task-div button {
+  letter-spacing: 2px;
+  width: 100px;
+}
+
+/* solution task li */
+.solution-ul li {
+  background-color: #946c00;
+  border: 7px solid #6b4f00;
+  padding: 5px 10px;
+  margin: 15px 0;
+}
+
+.task-ul li {
+  background-color: #00646b;
+  border: 7px solid #00474d;
+  padding: 5px 10px;
+  margin: 15px 0;
+}
+
+.list-titles {
+  list-style: none;
+  padding: 5px;
+  letter-spacing: 1px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.solution-ul a,
+.task-ul a {
+  color: #fff;
+}
+
+.solution-ul li:hover {
+  background-color: #6b4f00;
+}
+
+.task-ul li:hover {
+  background-color: #00474d;
+}
+
+.li-text {
+  margin-bottom: 0px;
+}
+
+.li-text-right {
+  color: #fff;
+  text-align: right;
+  font-size: 10px;
+}

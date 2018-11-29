@@ -6,7 +6,7 @@ export default {
   /* Get current user object, has hash and pebbles */
   getUser: function (hash) {
     if(hash){
-      return axios.post("fn/users/getUserData", "\"" + hash + "\"");
+      return axios.post("/fn/users/getUser", "\"" + hash + "\"");
     }
     return axios.post("/fn/users/getUser");
   },
@@ -89,6 +89,11 @@ export default {
   /* Get all tasks on the chain */
   getTasks: function () {
     return axios.post("/fn/tasks/readAllTasks");
+  },
+
+  /* Get all tasks associated with user on the chain */
+  getMyTasks: function () {
+    return axios.post("/fn/tasks/readMyTasks");
   },
 
   /* Get the task at one specific hash */

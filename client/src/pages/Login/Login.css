@@ -1,4 +1,5 @@
 .login-user-div {
+    position: relative;
     height: 250px;
     margin: 25px 20px;
     overflow: auto;
@@ -10,9 +11,11 @@
 }
 
 .notice {
-    position: relative;
-    bottom: 10px;
+    position: absolute;
+    bottom: 5px;
+    padding: 2px;
     text-align: center;
+    font-size: 12px;
 }
 
 .username {

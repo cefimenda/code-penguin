@@ -1,30 +1,92 @@
-.profile-div {
+.user-edit {
+  text-align: right;
+  font-size: 18px;
+}
+
+.user-edit i {
+  opacity: .5;
+}
+
+.user-edit i:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.user-label {
   text-align: center;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin: 40px auto 10px auto;
 }
 
-.span-user {
+.user-label hr {
+  width: 85%;
+  margin: 30px auto;
+}
+
+.span-short-user {
+  font-size: 15px;
+  text-decoration: underline #00b5ad dashed;
+}
+
+.span-long-user {
   font-size: 10px;
-  background-color: gold;
-  padding: 3px;
-}
-
-.label {
-  font-size: 25px;
-  letter-spacing: 6px;
-  margin-bottom: 10px;
-}
-
-.avatar {
   display: block;
-  margin: 0 auto;
-  margin-top: 20px;
+  padding: 3px;
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+  text-decoration: underline #00b5ad dashed;
 }
 
 .span-pebbles {
+  font-size: 14px;
   margin-top: 20px;
   display: block;
 }
 
+.user-stats {
+  width: 180px;
+  margin: 50px auto;
+  font-size: 12px;
+  letter-spacing: .5px;
+  color: #d8d8d8;
+}
+
+.user-stats p {
+  margin-bottom: 25px;
+}
+
+.user-stats p span {
+  font-size: 14px;
+  color:#00b5ad;
+  font-weight: 900;
+}
+
+/* Arrows */
+.prof-arrows {
+  position: absolute;
+  top: 15%;
+  font-size: 20px;
+  border: 3px solid #00b5ad;
+  padding: 8px 12px;
+  color: #00b5ad;
+  border-radius: 50px;
+  opacity: .5;
+}
+
+.prof-arrows:hover {
+  opacity: 1;
+  border: 3px solid #fff;
+  color: #fff;
+}
+
+.prof-arrows-right {
+  right: 0px;
+}
+
+
+
+/* Table */
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -53,6 +115,14 @@ td {
   color: gold;
 }
 
+td:nth-child(1),
+td:nth-child(3) {
+  width: 25%;
+}
+td:nth-child(2) {
+  width: 50%;
+} 
+
 .tr-row {
   background-color: #323232b7;
 }
@@ -62,39 +132,30 @@ td {
 }
 
 .table-header {
-  padding-top: 10%;
+  padding-top: 10px;
   text-align: center;
   letter-spacing: 3px;
   padding-bottom: 10px;
 }
 
-.profile-div input {
-  padding: 5px;
-  width: 80%;
-  color: #ffffff;
-  border-radius: 5px;
+
+.gitSol, .createdTasks {
+  position: absolute;
+  margin-top: 80px;
+}
+
+.gitSol p, .createdTasks p {
   font-size: 12px;
-  letter-spacing: 2px;
-  text-align: center;
-  background-color: #212f33;
-  display: block;
-  margin: 0 auto;
-  border: none;
 }
 
-.profile-div input::placeholder {
+.ui.button.edit-btn {
+  position: relative;
+  bottom: -100px;
   color: white;
+  background-color: #00b5ad;
 }
 
-.profile-div button {
-  margin: 0 auto;
-  margin-top: 5px;
-  display: block;
-  border-radius: 5px;
-  border: 2px solid #00b5ad;
-  background-color: transparent;
-  color: #00b5ad;
-  letter-spacing: 2px;
-  font-size: 16px;
-  padding: 6px 15px;
+.ui.button.edit-btn:hover {
+  box-shadow: 2px 2px 2px #5c7271ee;
+    cursor: pointer;
 }
