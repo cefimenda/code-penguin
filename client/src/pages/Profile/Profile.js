@@ -84,9 +84,9 @@ export default class Profile extends Component {
           </p>
           <div className="user-label">
             <p>
-              Hello,{' '}
+              Hello,
+              <br/>
               <span className={`${creator.length >= 20 ? 'span-long-user' : 'span-short-user'}`}>
-                {' '}
                 {creator}
               </span>
             </p>
@@ -94,7 +94,7 @@ export default class Profile extends Component {
           </div>
           <div className="user-stats">
             <p>
-              Total Pebble Count: <span>{pebbles}</span>{' '}
+              Total Pebble Count: <span>{pebbles}</span>
             </p>
             <p>
               Total Solution Submitions: <span>{totalSol}</span>
@@ -104,7 +104,6 @@ export default class Profile extends Component {
             </p>
           </div>
         </HoverBox>
-
         <Container padding={focus} bgcolor="rgb(32,32,32)">
           <div style={{ position: 'relative', width: '100%', marginTop: '10%' }}>
             {page === 'Transaction' ? (

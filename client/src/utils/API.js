@@ -72,7 +72,10 @@ export default {
     return axios.post("/fn/transactions/tabulate", "\"" + hash + "\"");
   },
 
-  getTransactionHistory: function () {
+  getTransactionHistory: function (hash) {
+    if(hash){
+      return axios.post("/fn/transactions/readUserTransactions", "\"" + hash + "\"");
+    }
     return axios.post("/fn/transactions/readUserTransactions");
   },
 
@@ -97,7 +100,10 @@ export default {
   },
 
   /* Get all tasks associated with user on the chain */
-  getMyTasks: function () {
+  getMyTasks: function (hash) {
+    if(hash){
+      return axios.post("/fn/tasks/readMyTasks", "\"" + hash + "\"");
+    }
     return axios.post("/fn/tasks/readMyTasks");
   },
 
