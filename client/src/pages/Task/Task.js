@@ -135,15 +135,17 @@ export default class Task extends Component {
   }
 
   handleBackTask = () => {
+    const { hash } = this.props.match.params;
     const { pebbles, maxPebbles } = this.state;
     if (pebbles <= maxPebbles) {
       API.backTask({
-        task: this.props.match.params.hash,
+        task: hash,
         pebbles: parseInt(pebbles)
       })
         .then(res => {
           // console.log(res);
           this.setState({ pebbles: '' });
+          this.getUserHash();
           this.getInfo();
         })
         .catch(err => {
@@ -199,10 +201,10 @@ export default class Task extends Component {
   };
 
   render() {
-    var { task, user, rewardHash, toggler, creatorUser } = this.state;
+    var { task, user, rewardHash, toggler, creatorUser, maxPebbles } = this.state;
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar coinupdate={maxPebbles}/>
         <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
             {this.state.message}
         </MessageBar>
