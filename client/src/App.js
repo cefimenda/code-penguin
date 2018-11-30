@@ -11,9 +11,7 @@ import API from "./utils/API";
 import './App.css';
 
 export default class App extends Component {
-    state = {
-        user: ""
-    }
+   
     login = user => {
         this.setState({ user })
     }

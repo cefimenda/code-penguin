@@ -90,6 +90,11 @@ export default class HoverBox extends Component {
         }
     };
 
+    handleClear = () => {
+        this.props.clearFilter()
+        this.setState({ filtCreator: "", filtStartDate: "", filtEndDate: "", filtPebble: "" })
+    }
+
     render() {
         const { activeItem } = this.state
         return (
@@ -164,7 +169,7 @@ export default class HoverBox extends Component {
                     </div>
                 </div>
 
-                <button className="clear-btn" onClick={this.props.clearFilter}>Reset</button>
+                <button className="clear-btn" onClick={this.handleClear}>Reset</button>
                 <button className="filtersort-btn" onClick={this.handleSubmit}>Search</button>
             </div>
         )
