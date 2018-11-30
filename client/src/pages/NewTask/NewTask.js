@@ -82,7 +82,7 @@ export default class Profile extends Component {
     render() {
         return (
             <React.Fragment>
-                <Navbar />
+                <Navbar updatemaxpeb={this.getHash}/>
                 <MessageBar isWarning={true} showDiv={this.state.showDiv} handleCancel={this.handleCancel}>
                     {this.state.message}
                 </MessageBar>

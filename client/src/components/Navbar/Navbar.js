@@ -43,6 +43,7 @@ export default class Navbar extends Component {
     API.distribute()
     .then(() => {
       this.setState({ showDiv: false})
+      this.props.updatemaxpeb()
       this.getHash()
     })
     .catch(err => console.log(err));
