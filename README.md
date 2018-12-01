@@ -21,7 +21,7 @@ If you find an open problem that has yet to find a satisfactory solution, you ca
 ## Solutions
 Solutions can be rewarded by the original creator of the task to one and only one solution. That solution's creator gets all the pebbles pledged to that task by its creator and any backers.
 
-## How to install
+## How to Install
 
 __Before starting, make sure you have Holochain installed and initialized, and are connected to the internet.__
 
