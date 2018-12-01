@@ -130,7 +130,7 @@ export default class GitTask extends Component {
             >
               {this.state.tasks.length !== 0
                 ? this.state.tasks.map((task, i) => (
-                    <a key={i} href={`task/${task.Hash}`}>
+                    <a key={i} href={`/task/${task.Hash}`}>
                       <li className="list-titles">
                         <p className="li-text">Title: {task.Entry.title}</p>
                         <p className="li-text li-text-right">Pebbles: {task.Entry.pebbles}</p>
