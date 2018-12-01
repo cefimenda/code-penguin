@@ -42,8 +42,9 @@ export default class Navbar extends Component {
   handleAccept = () => {
     API.distribute()
     .then(() => {
-      this.setState({ showDiv: false})
       this.getHash()
+      this.setState({ showDiv: false})
+      this.props.updatemaxpeb()
     })
     .catch(err => console.log(err));
   }
