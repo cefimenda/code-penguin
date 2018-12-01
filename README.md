@@ -23,11 +23,11 @@ Solutions can be rewarded by the original creator of the task to one and only on
 
 ## How to Install
 
-__Before starting, make sure you have Holochain installed and initialized, and are connected to the internet.__
+__Before starting, make sure you have [Holochain](https://github.com/holochain/holochain-proto) installed and initialized, and are connected to the internet.__
 
-In GitBash or Terminal:
+__In GitBash or Terminal:__
 
-1. Locate where you want your app folder to be
+1. Locate where you want your app's root folder to be.
 2. Get the repo: `$ git clone https://github.com/cefimenda/code-penguin.git`
 3. Enter the app's root folder and install the development packages:
   * `$ cd code-penguin` then
