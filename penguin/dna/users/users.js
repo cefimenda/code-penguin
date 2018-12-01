@@ -95,6 +95,7 @@ function isAuthorized(key) {
 
 /******************
  account:  {
+            username:"myUserName"
             credentials:{
                 email:email,
                 password:password
@@ -104,6 +105,10 @@ function isAuthorized(key) {
 
 //returns id hash
 function createAccount(data) {
+  if (data.username) {
+    var username = data.username
+    delete data.username
+  }
   //removing credentials information from the inserted argument
   var credentials = data.credentials
   delete data.credentials
@@ -122,6 +127,13 @@ function createAccount(data) {
   //create a credentials token linked to the id
   createcredentialsToken(id, credentials)
 
+  
+  if(username){
+    createUserdata({
+      type: "username",
+      data: username
+    })
+  }
   console.log("My Account Id: " + id)
   return id
 }
