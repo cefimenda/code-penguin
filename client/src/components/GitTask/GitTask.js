@@ -18,12 +18,9 @@ export default class GitTask extends Component {
     this.getUserTasks();
   };
 
-  handleToggler = () => {
-    if (this.state.toggler === 'tasks') {
-      this.setState({ toggler: 'solutions' });
-    } else {
-      this.setState({ toggler: 'tasks' });
-    }
+  handleToggler = e => {
+    const { name } = e.target
+    this.setState({ toggler: name });
   };
 
   getSolutions = res => {
