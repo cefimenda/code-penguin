@@ -23,7 +23,7 @@ Solutions can be rewarded by the original creator of the task to one and only on
 
 ## How to install
 
-Before starting, make sure you have Holochain installed and initialized, and are connected to the internet.
+__Before starting, make sure you have Holochain installed and initialized, and are connected to the internet.__
 
 In GitBash or Terminal:
 
@@ -32,13 +32,13 @@ In GitBash or Terminal:
 3. Enter the app's root folder and install the following packages:
   * `$ cd code-penguin` then
   * `$ yarn` or `$ npm install`
-3. Install react packages (enter in to client folder from the app's main folder ):
+4. Install react packages (enter in to client folder from the app's main folder ):
   * `$ cd client` then
   * `$ yarn` or `$ npm install`
-4. Build the holochain directory on your local machine.
+5. Build the holochain directory on your local machine.
   * `$ cd ../penguin` then
   * `$ hcadmin join . code-penguin`
-5. Then back to the home directory, and run the start script!
+6. Then back to the home directory, and run the start script!
   * `$ cd ..` then
   * `$ yarn start`
 
