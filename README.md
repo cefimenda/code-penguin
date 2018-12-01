@@ -29,10 +29,10 @@ In GitBash or Terminal:
 
 1. Locate where you want your app folder to be
 2. Get the repo: `$ git clone https://github.com/cefimenda/code-penguin.git`
-3. Enter the app's root folder and install the following packages:
+3. Enter the app's root folder and install the development packages:
   * `$ cd code-penguin` then
   * `$ yarn` or `$ npm install`
-4. Install react packages (enter in to client folder from the app's main folder ):
+4. Install react packages in the client folder:
   * `$ cd client` then
   * `$ yarn` or `$ npm install`
 5. Build the holochain directory on your local machine.
