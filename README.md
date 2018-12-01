@@ -20,3 +20,27 @@ If you find an open problem that has yet to find a satisfactory solution, you ca
 
 ## Solutions
 Solutions can be rewarded by the original creator of the task to one and only one solution. That solution's creator gets all the pebbles pledged to that task by its creator and any backers.
+
+## How to install
+
+Before starting, make sure you have Holochain installed and initialized, and are connected to the internet.
+
+In GitBash or Terminal:
+
+1. Locate where you want your app folder to be
+2. Get the repo: `$ git clone https://github.com/cefimenda/code-penguin.git`
+3. Enter the app's root folder and install the following packages:
+  * `$ cd code-penguin` then
+  * `$ yarn` or `$ npm install`
+3. Install react packages (enter in to client folder from the app's main folder ):
+  * `$ cd client` then
+  * `$ yarn` or `$ npm install`
+4. Build the holochain directory on your local machine.
+  * `$ cd ../penguin` then
+  * `$ hcadmin join . code-penguin`
+5. Then back to the home directory, and run the start script!
+  * `$ cd ..` then
+  * `$ yarn start`
+
+## More Info
+See our [website](https://code-penguin.herokuapp.com/) for more information! 
